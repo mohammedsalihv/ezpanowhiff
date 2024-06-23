@@ -1,0 +1,277 @@
+
+   <div class="d-flex justify-content-left">
+       
+        <button  style="margin-left: 3%; margin-top:5%; background-color:black; color:aliceblue; padding:7px; border-radius:5px;" onclick="goBack()">
+         Go back
+        </button>
+      
+    </div>
+   
+    <div class="container " style="margin-top: 2%;">
+      <h4 id="addingMsg" style="text-align: end;"></h4>
+      <h1 class="text-center mb-4">Add Product</h1>
+      <div class="row">
+        <form action="/admin/productUpload" method="post" class="col s12" enctype="multipart/form-data">
+          <div class="row">
+            <div class="input-field col s12 m12 l6">
+              <input  name="productName" id="first_name" type="text">
+              <label for="first_name">Product name</label>
+            </div>
+           <div class="input-field col s12 m12 l6">
+                            <select class="form-select" name="category" aria-label="Default select example">
+                                <option selected disabled>Categories</option>
+                                {{#each categories}}
+                                <option >{{this.categoryName}}</option>
+                                {{/each}}
+                            </select>
+             </div>
+            <div class="input-field col s12 m12 l6">
+              <input  name="brand" id="last_name" type="text">
+              <label for="last_name">Brand</label>
+            </div>
+            <div class="input-field col s12 m12 l6">
+              <input name="oldPrice" id="last_name" type="text">
+              <label for="last_name">Old Price</label>
+            </div>
+            <div class="input-field col s12 m12 l6">
+              <input  name="price" id="last_name" type="text">
+              <label for="last_name">Offer price</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12 m12 l6">
+              <input  name="Qty" id="address" type="text">
+              <label for="address">Quantity</label>
+            </div>
+            <div class="input-field col s12 m12 l6">
+              <input  name="CountOfstock" id="address" type="text">
+              <label for="address">Stock</label>
+            </div>
+            <div class="input-field col s12 m12 l6">
+              <input  name="offer" id="address" type="text">
+              <label for="address">Offer</label>
+            </div>
+            <div class="input-field col s12 m12 l6">
+              <input name="trending" id="town" type="text">
+              <label for="town">Trending</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12 m12 l6">
+              <input name="size" id="address" type="text">
+              <label for="address">Available sizes</label>
+            </div>
+            <div class="input-field col s12 m12 l6">
+              <input  name="Ingredients" id="address" type="text">
+              <label for="address">Ingredients</label>
+            </div>
+            <div class="input-field col s12 m12 l6">
+              <input name="IdealFor" id="address" type="text">
+              <label for="address">Idea For</label>
+            </div>
+            <div class="input-field col s12 m12 l6">
+              <input name="update" id="address" type="text">
+              <label for="address">Stock update</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s10 m12 l8">
+              <textarea name="features" id="town" type="text"></textarea>
+              <label for="town">Features</label>
+            </div>
+            <div class="input-field col s10 m12 l8">
+              <textarea name="tags" id="town" type="text"></textarea>
+              <label for="town">Tags</label>
+            </div>
+            <div class="input-field col s10 m12 l8">
+              <textarea name="deliveryInfo" id="town" type="text"></textarea>
+              <label for="town">Packaging & Delivery </label>
+            </div>
+            <div class="input-field col s10 m12 l8">
+              <textarea style="height: 2vh;" name="howTouse" id="town" type="text"></textarea>
+              <label for="town">How to Use</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s10 m6 l4">
+              <textarea style="height: 1vh; margin-bottom:5%" name="description" id="town"
+                type="text"></textarea>
+              <label for="town">Full description</label>
+            </div>
+          </div>
+         
+ <div class="input-field col s10 m6 l4">
+    <div class="row mt-4"></div>
+    <div class="input-uploads">
+        <img id="preview-img1" src="assets/imgs/theme/upload.svg" alt="">
+        <label class="btn-file-upload">
+            <input class="form-control" id="file-input1" type="file" name="img1[]" accept="image/*"
+                onchange="initCropper(event, 'preview-img1')">
+        </label>
+        <button class="btn-remove" onclick="removeImage('preview-img1', event)" type="button">
+            <i class="lni lni-cross-circle"></i>
+        </button>
+    </div>
+</div>
+ <div class="input-field col s10 m6 l4">
+    <div class="row mt-4"></div>
+    <div class="input-uploads">
+        <img id="preview-img2" src="assets/imgs/theme/upload.svg" alt="">
+        <label class="btn-file-upload">
+            <input class="form-control" id="file-input1" type="file" name="img2[]" accept="image/*"
+                onchange="initCropper(event, 'preview-img2')">
+        </label>
+        <button class="btn-remove" onclick="removeImage('preview-img2', event)" type="button">
+            <i class="lni lni-cross-circle"></i>
+        </button>
+    </div>
+</div>
+ 
+<div class="input-field col s10 m6 l4">
+    <div class="row mt-4"></div>
+    <div class="input-uploads" style="margin-bottom: 2%;">
+        <img id="preview-img3" src="assets/imgs/theme/upload.svg" alt="">
+        <label class="btn-file-upload">
+            <input class="form-control" id="file-input1" type="file" name="img3[]" accept="image/*"
+                onchange="initCropper(event, 'preview-img3')">
+        </label>
+        <button class="btn-remove" onclick="removeImage('preview-img3', event)" type="button">
+            <i class="lni lni-cross-circle"></i>
+        </button>
+    </div>
+</div>
+          </div>
+          <button style="color: rgb(255, 255, 255); background-color:black" id="btn-sbmit-product" class=" btn right" type="submit">ADD</button>
+        </form>
+      </div>
+
+</section>
+
+<script src="path/to/cropper.js"></script>
+
+
+<script>
+
+let croppers = {}; // Initialize an object to store Cropper instances
+
+function initCropper(event, imgId) {
+    const input = event.target;
+    const imgElement = document.getElementById(imgId);
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+        imgElement.src = e.target.result;
+
+        // Check if a Cropper instance already exists for this image
+        if (croppers[imgId]) {
+            // Destroy the existing Cropper instance
+            croppers[imgId].destroy();
+        }
+
+        // Initialize Cropper.js with aspectRatio set to NaN
+        const cropper = new Cropper(imgElement, {
+            aspectRatio: NaN, // Allow free cropping without a fixed aspect ratio
+            viewMode: 1, // Enable the preview mode
+            crop(event) {
+                // Do something when the crop is complete
+            }
+        });
+
+        // Save the new Cropper instance for the current image
+        croppers[imgId] = cropper;
+    };
+
+    // Read the selected file as a Data URL
+    reader.readAsDataURL(input.files[0]);
+}
+
+
+function removeImage(imgId, event) {
+    event.preventDefault(); // Prevent default action of the button
+    const imgElement = document.getElementById(imgId);
+    const parentDiv = imgElement.parentNode.parentNode; // Get the parent div of the image
+    // Reset the input value to allow selecting the same file again
+    const inputFile = parentDiv.querySelector('input[type="file"]');
+    inputFile.value = '';
+    // Remove the image preview
+    imgElement.src = 'assets/imgs/theme/upload.svg';
+    // Remove the Cropper instance if it exists
+    if (croppers[imgId]) {
+        croppers[imgId].destroy();
+        delete croppers[imgId]; // Remove the Cropper instance from the object
+    }
+}
+
+
+
+function removeImage1(imgId, event) {
+    event.preventDefault(); // Prevent default action of the button
+    const imgElement = document.getElementById(imgId);
+    const parentDiv = imgElement.parentNode.parentNode; // Get the parent div of the image
+    // Reset the input value to allow selecting the same file again
+    const inputFile = parentDiv.querySelector('input[type="file"]');
+    inputFile.value = '';
+    // Remove the image preview
+    imgElement.src = 'assets/imgs/theme/upload.svg';
+    // Remove the Cropper instance if it exists
+    if (croppers[imgId]) {
+        croppers[imgId].destroy();
+        delete croppers[imgId]; // Remove the Cropper instance from the object
+    }
+}
+
+function removeImage2(imgId, event) {
+    event.preventDefault(); // Prevent default action of the button
+    const imgElement = document.getElementById(imgId);
+    const parentDiv = imgElement.parentNode.parentNode; // Get the parent div of the image
+    // Reset the input value to allow selecting the same file again
+    const inputFile = parentDiv.querySelector('input[type="file"]');
+    inputFile.value = '';
+    // Remove the image preview
+    imgElement.src = 'assets/imgs/theme/upload.svg';
+    // Remove the Cropper instance if it exists
+    if (croppers[imgId]) {
+        croppers[imgId].destroy();
+        delete croppers[imgId]; // Remove the Cropper instance from the object
+    }
+}
+
+function removeImage3(imgId, event) {
+    event.preventDefault(); // Prevent default action of the button
+    const imgElement = document.getElementById(imgId);
+    const parentDiv = imgElement.parentNode.parentNode; // Get the parent div of the image
+    // Reset the input value to allow selecting the same file again
+    const inputFile = parentDiv.querySelector('input[type="file"]');
+    inputFile.value = '';
+    // Remove the image preview
+    imgElement.src = 'assets/imgs/theme/upload.svg';
+    // Remove the Cropper instance if it exists
+    if (croppers[imgId]) {
+        croppers[imgId].destroy();
+        delete croppers[imgId]; // Remove the Cropper instance from the object
+    }
+}
+
+
+
+
+</script>
+<script>
+  function goBack(){
+    console.log('eee')
+    window.location.href = '/admin/productManagement/'; 
+  }
+</script>
+
+
+<script src="/Javascript/sidebar.js"></script>
+
+
+
+
+
+
+
+
+
+

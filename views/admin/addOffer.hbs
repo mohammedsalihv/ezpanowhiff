@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Coupon</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="container pt-60">
+    <h1 style="margin-bottom: 5%;" class="text-center">Add Offer</h1>
+    <div class="row mt-4">
+        <form id="offerForm" class="col s12">
+            <div class="row">
+                <div style="margin-left: 5%;" class="col s12">
+                    <input type="radio" id="radio-product" name="productCategoryRadio" onclick="toggleProductCategory(false)" checked>
+                    <label for="radio-product">Product</label>
+                    <input style="margin-left: 15%;" type="radio" id="radio-category" name="productCategoryRadio" onclick="toggleProductCategory(true)">
+                    <label style="margin-left: 15%;" for="radio-category">Category</label>
+                </div>
+                <div id="productSelection" class="input-field col s12 m12 l6 ml4">
+                    <select style="width: 100%; margin-left:5%" id="productsValidation" name="product" class="form-select" aria-label="Default select example">
+                        <option selected disabled>Products</option>
+                        {{#each Products}}
+                        <option value="{{this._id}}">{{this.productName}}</option>
+                        {{/each}}
+                    </select>
+                    <span id="productsValidationError" class="text-danger"></span>
+                </div>
+                <div id="categorySelection" class="input-field col s12 m12 l6" style="display: none;">
+                    <select id="categoryValidation" name="category" class="form-select" aria-label="Default select example">
+                        <option selected disabled>Categories</option>
+                        {{#each Categories}}
+                        <option value="{{this._id}}">{{this.categoryName}}</option>
+                        {{/each}}
+                    </select>
+                    <span id="categoryValidationError" class="text-danger"></span>
+                </div>
+                <div style="margin-right: 20%;" class="input-field col s12 m12 l6">
+                    <select name="offerType" id="offer-type" class="form-select" aria-label="Default select example">
+                        <option selected disabled>Offer type</option>
+                        <option value="price">Price</option>
+                        <option value="percentage">Percentage</option>
+                    </select>
+                    <span id="offer-typeError" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <label for="expirationDate">Start</label>
+                <div class="input-field col s12 m12 l6">
+                    <input name="startDate" id="startDate" type="date" required title="Please enter a valid Expiration Date">
+                    <span id="startDateError" class="text-danger"></span>
+                </div>
+                <div class="input-field col s12 m12 l6">
+                    <input name="offerValue" id="value" type="text" required title="Please enter a valid value">
+                    <label for="Discountpercentage">Amount or Percentage</label>
+                    <span id="offerValueError" class="text-danger"></span>
+                </div>
+                <label for="expirationDate">End</label>
+                <div class="input-field col s12 m12 l6">
+                    <input name="endDate" id="endDate" type="date" required title="Please enter a valid Expiration Date">
+                    <span id="endDateError" class="text-danger"></span>
+                </div>
+                <div class="input-field col s12 m12 l6">
+                    <input name="description" id="description" type="text" required title="Please enter a valid Description">
+                    <label for="description">Description</label>
+                    <span id="descriptionError" class="text-danger"></span>
+                </div>
+            </div>
+            <button style="background-color: black;" id="btn-address" class="waves-effect waves-light btn right" type="submit">Create</button>
+        </form>
+    </div>
+
+    <script>
+        function toggleProductCategory(showCategory) {
+            const productSelection = document.getElementById('productSelection');
+            const categorySelection = document.getElementById('categorySelection');
+
+            if (showCategory) {
+                productSelection.style.display = 'none';
+                categorySelection.style.display = 'block';
+            } else {
+                productSelection.style.display = 'block';
+                categorySelection.style.display = 'none';
+            }
+        }
+
+        function addOffer(event) {
+            event.preventDefault();
+
+            const validProduct = document.getElementById('productsValidation').value;
+            const validCategory = document.getElementById('categoryValidation').value;
+            const isProductSelected = document.getElementById('radio-product').checked;
+            const isCategorySelected = document.getElementById('radio-category').checked;
+
+            if (isProductSelected && validProduct === 'Products') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: 'Please select a product',
+                });
+                return;
+            }
+
+            if (isCategorySelected && validCategory === 'Categories') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: 'Please select a category',
+                });
+                return;
+            }
+
+            const offerType = document.getElementById('offer-type').value;
+            if (offerType === 'Offer type') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: 'Please select an offer type',
+                });
+                return;
+            }
+
+            const description = document.getElementById('description');
+            const offerValue = document.getElementById('value');
+            const startDate = document.getElementById('startDate');
+            const endDate = document.getElementById('endDate');
+            const startDateError = document.getElementById('startDateError');
+            const endDateError = document.getElementById('endDateError');
+
+            clearErrors(); // Clear previous error messages
+
+            if (!validateInput(description, 'Description cannot be empty')) return;
+            if (!validateInput(offerValue, 'Offer amount cannot be empty')) return;
+            if (!validateInput(startDate, 'Start date cannot be empty')) return;
+            if (!validateInput(endDate, 'End date cannot be empty')) return;
+
+            const offerValueNum = parseFloat(offerValue.value);
+            if (isNaN(offerValueNum)) {
+                displayError(offerValue, 'Amount should be valid.');
+                return;
+            }
+
+            const selectedStartDate = new Date(startDate.value).setHours(0, 0, 0, 0);
+            const selectedEndDate = new Date(endDate.value).setHours(0, 0, 0, 0);
+
+            if (selectedStartDate >= selectedEndDate) {
+                endDateError.textContent = 'End date should be after start date.';
+                return;
+            }
+
+            // Collect form data
+            const formData = new FormData(document.getElementById('offerForm'));
+
+            // Use fetch to send form data
+            fetch('/admin/createOffer', {
+                method: 'POST',
+                body: JSON.stringify(Object.fromEntries(formData)),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.text())
+            .then(data => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Offer created successfully',
+                })
+                .then(() => {
+                    window.location.href = '/admin/OfferManagement';
+                });
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.message || 'There was an error submitting the form.',
+                });
+            });
+        }
+
+        function validateInput(input, errorMessage) {
+            if (!input.value.trim()) {
+                displayError(input, errorMessage);
+                return false;
+            }
+            return true;
+        }
+
+        function displayError(input, message) {
+            const errorSpan = document.getElementById(`${input.id}Error`);
+            errorSpan.textContent = message;
+        }
+
+        function clearErrors() {
+            const errorSpans = document.querySelectorAll('[id$="Error"]');
+            errorSpans.forEach(span => span.textContent = '');
+        }
+
+        // Set the addOffer function as the submit event handler
+        document.getElementById('offerForm').addEventListener('submit', addOffer);
+    </script>
+</body>
+
+</html>
+
+
+

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add New Coupon</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="container pt-60">
+  <h1 class="mb-4">Add New Coupon</h1>
+  <div class="row">
+    <form id="couponForm" class="col s12">
+      <div class="row">
+        <div class="input-field col s12 m12 l6">
+          <label for="couponCode">Coupon code</label>
+          <input type="text" class="form-control mt-2" id="couponCode" name="couponCode" placeholder="Coupon Code" readonly>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <button style="padding-bottom: 28px;" type="button" class="btn btn-primary mt-2" onclick="generateCouponCode()">Generate Coupon Code</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12 m12 l6">
+          <input name="Discountpercentage" id="Discountpercentage" type="text" required title="Please enter a valid Discount Percentage">
+          <label for="Discountpercentage">Discount Percentage</label>
+          <span id="DiscountpercentageError" class="text-danger"></span>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input name="minimumamount" id="minimumamount" type="text" required title="Please enter a valid Minimum Amount">
+          <label for="minimumamount">Minimum Amount</label>
+          <span id="minimumamountError" class="text-danger"></span>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input name="maximumdiscountamount" id="maximumdiscountamount" type="text" required title="Please enter a valid Maximum Discount Amount">
+          <label for="maximumdiscountamount">Maximum Amount</label>
+          <span id="maximumdiscountamountError" class="text-danger"></span>
+        </div>
+      </div>
+      <div class="row">
+        <label for="expirationDate">Expiry date</label>
+        <div class="input-field col s12 m12 l6">
+          <input name="expirationDate" id="expirationDate" type="date" required title="Please enter a valid Expiration Date">
+          <span id="expirationDateError" class="text-danger"></span>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input name="description" id="description" type="text" required title="Please enter a valid Description">
+          <label for="description">Description</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <select class="form-control" name="statusCoupon" id="statusCoupon">
+            <option value="select">Please select status</option>
+            <option value="Active">Active</option>
+            <option value="InActive">InActive</option>
+          </select>
+        </div>
+      </div>
+      <button id="btn-address" class="waves-effect waves-light btn right" type="submit">Save</button>
+    </form>
+  </div>
+
+  <script>
+    function generateCouponCode() {
+      const couponCodeInput = document.getElementById('couponCode');
+      if (couponCodeInput.value) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'One code already generated',
+        });
+        return;
+      }
+      const generatedCode = Math.random().toString(36).substring(2).toUpperCase();
+      couponCodeInput.value = generatedCode;
+    }
+
+    function addCoupon(event) {
+      event.preventDefault();  // Prevent form submission until validation passes
+
+      const status = document.getElementById('statusCoupon').value;
+      if (status === 'select') {
+        Swal.fire({
+          icon: 'error',
+          title: 'Validation Error',
+          text: 'Please select a status',
+        });
+        return;
+      }
+
+      const couponCode = document.querySelector('#couponCode');
+      const description = document.querySelector('#description');
+      const Discountpercentage = document.querySelector('#Discountpercentage');
+      const maximumdiscountamount = document.querySelector('#maximumdiscountamount');
+      const minimumamount = document.querySelector('#minimumamount');
+      const expirationDate = document.querySelector('#expirationDate');
+      const minimumAmountError = document.querySelector('#minimumamountError');
+      const maximumAmountError = document.querySelector('#maximumdiscountamountError');
+      const expirationDateError = document.querySelector('#expirationDateError');
+
+      clearErrors();  // Clear previous error messages
+
+      if (!validateInput(couponCode, 'Coupon code cannot be empty')) return;
+      if (!validateInput(description, 'Description cannot be empty')) return;
+      if (!validateInput(Discountpercentage, 'Discount percentage cannot be empty')) return;
+      if (!validateInput(maximumdiscountamount, 'Maximum discount amount cannot be empty')) return;
+      if (!validateInput(minimumamount, 'Minimum amount cannot be empty')) return;
+
+      const minimumAmount = parseFloat(minimumamount.value);
+      const maximumAmount = parseFloat(maximumdiscountamount.value);
+
+      if (isNaN(minimumAmount) || isNaN(maximumAmount) || maximumAmount <= minimumAmount) {
+        minimumAmountError.textContent = 'Minimum amount should be less than the maximum amount.';
+        maximumAmountError.textContent = 'Maximum amount should be greater than the minimum amount.';
+        return;
+      }
+
+      const currentDate = new Date().setHours(0, 0, 0, 0);
+      const selectedDate = new Date(expirationDate.value).setHours(0, 0, 0, 0);
+
+      if (selectedDate < currentDate) {
+        expirationDateError.textContent = 'Expiration date cannot be in the past.';
+        return;
+      }
+
+      // Collect form data
+      const formData = new FormData(document.getElementById('couponForm'));
+
+      // Use fetch to send form data
+      fetch('/admin/couponAdding', {
+        method: 'POST',
+        body: JSON.stringify(Object.fromEntries(formData)),
+        headers: {
+                'Content-Type': 'application/json',
+      },
+      })
+      .then(response => response.text())
+      .then(data => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Coupon created Successfully',
+        })
+      .then(() => {
+          window.location.href = '/admin/couponManagement';
+     })
+      })
+      .catch(error => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: error.message || 'There was an error submitting the form.',
+        });
+      });
+    }
+
+    function validateInput(input, errorMessage) {
+      if (!input.value.trim()) {
+        displayError(input, errorMessage);
+        return false;
+      }
+      return true;
+    }
+
+    function displayError(input, message) {
+      const errorSpan = document.querySelector(`#${input.id}Error`);
+      errorSpan.textContent = message;
+    }
+
+    function clearErrors() {
+      const errorSpans = document.querySelectorAll('[id$="Error"]');
+      errorSpans.forEach(span => span.textContent = '');
+    }
+
+    // Set the addCoupon function as the submit event handler
+    document.getElementById('couponForm').addEventListener('submit', addCoupon);
+  </script>
+</body>
+</html>
+

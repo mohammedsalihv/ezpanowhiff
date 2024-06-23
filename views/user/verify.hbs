@@ -1,0 +1,92 @@
+<link rel="stylesheet" href="/css/verify.css">
+<section>
+    <div class="wrapper">
+        <div class="container main mt-2">
+            <div class="row" id="reset">
+                <div id="card-otp" class="col-md-6">
+                    <div class="input-box">
+                        <header id="title-head">
+                            <h6 id="head-otp">Enter OTP here</h6>
+                        </header>
+                        <p id="invalidOtp">{{ this.invalidOtp }}</p>
+                        <form action="/verifyOtp" method="post">
+                            <div class="input-field" id="otp-field">
+                                <input type="text" id="inpt-otp" name="otp" required autocomplete="off">
+                            </div>
+                            <div id="login-otp" class="input-field mt-4">
+                                <input type="submit" class="submit" value="VERIFY">
+                            </div>
+                        </form>
+                        <p id="timer">OTP will expire after <span id="timer-value">{{ timerValue }}</span> seconds</p>
+                        <a id="resendOtp" class="btn btn-dark disabled" href="#">Resend OTP</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const invalidOtp = document.getElementById('invalidOtp');
+        if (invalidOtp) {
+            setTimeout(() => {
+                invalidOtp.style.display = 'none';
+            }, 3000);
+        }
+
+        const resendButton = document.getElementById('resendOtp');
+
+        function updateTimer(timerValue) {
+            const timerElement = document.getElementById('timer-value');
+            timerElement.textContent = timerValue;
+            if (timerValue <= 0) {
+                resendButton.classList.remove('disabled');
+                resendButton.href = '/resendOtp';
+            } else {
+                resendButton.classList.add('disabled');
+                resendButton.removeAttribute('href');
+            }
+        }
+
+        function startTimer(duration) {
+            let timer = duration;
+            const interval = setInterval(function () {
+                if (timer < 0) {
+                    clearInterval(interval);
+                } else {
+                    updateTimer(timer);
+                    sessionStorage.setItem('otpTimer', timer);
+                    timer--;
+                }
+            }, 1000);
+        }
+
+        const storedTime = sessionStorage.getItem('otpTimer');
+        let timerValue = storedTime !== null ? parseInt(storedTime, 10) : {{ timerValue }};
+        const initialTimerValue = {{ timerValue }};
+        if (isNaN(timerValue) || timerValue < 0) {
+            timerValue = initialTimerValue;
+        }
+
+        startTimer(timerValue);
+
+        // Event listener for Resend OTP button
+        resendButton.addEventListener('click', function (event) {
+            event.preventDefault();
+            // Reset timer to 30 seconds
+            timerValue = initialTimerValue;
+            startTimer(timerValue);
+            // Make AJAX call to resend OTP
+            fetch('/resendOtp')
+                .then(response => response.json())
+                .then(data => {
+                    // Update UI if needed
+                })
+                .catch(error => {
+                    console.error('Error resending OTP:', error);
+                    // Handle error
+                });
+        });
+    });
+</script>
+

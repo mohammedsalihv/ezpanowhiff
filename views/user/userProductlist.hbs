@@ -1,0 +1,514 @@
+<header class="header-area header-style-1">
+    <div id="main-header-higlights" style="background-color:#ffffff; border:1px solid #ffffff; color:black"
+        class="header-top header-top-ptb-1 d-none d-lg-block">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-xl-3 col-lg-4">
+                    <div style="color: #ffffff;" class="header-info">
+                        <ul>
+                            <li id="header-li-bg-clr">
+                                <a style="color: black; font-weight:900;" href="/userHome">Home</a>
+                            </li>
+                            <li id="header-li-bg-clr"><a style="color: black; font-weight:900;"
+                                    href="/userProductlist">Shop </a>
+                            </li>
+                            <li id="header-li-bg-clr">
+                                <a style="color: black; font-weight:900;" href="/userAccount">Account</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-4">
+                    <div class="text-center">
+                        <div style="color: black;" id="news-flash" class="d-inline-block">
+                            <ul>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4">
+                    <div class="header-info header-info-right">
+                        <ul>
+
+                            <div class="header-action-right">
+                                <div class="header-action-2">
+                                    <div class="header-action-icon-2">
+                                        <a href="/wishlistPage">
+                                            <img class="svgInject" alt="Evara"
+                                                src="assets/imgs/theme/icons/icon-heart.svg">
+                                            <span style="background-color: #ffffff; color:rgb(255, 255, 255)"
+                                                class="pro-count "></span>
+                                        </a>
+                                    </div>
+                                    <div class="header-action-icon-2">
+                                        <a class="mini-cart-icon" href="/cart">
+                                            <img alt="Evara" src="assets/imgs/theme/icons/icon-cart.svg">
+                                            <span style="background-color: #ffffff; color:rgb(255, 255, 255)"
+                                                class="pro-count #"></span>
+                                        </a>
+
+                                    </div>
+                                </div>
+                            </div>
+                            {{#if this.userLogged}}
+                            <div class="d-flex justify-content-right ml-4 mt-2">
+                                <button style="background: transparent; border:none" onclick="logoutConfirmation()" type="button">
+                                    <i style="color: #000000; font-size:x-large; " class="fa-solid fa-user"></i><i
+                                        style="color: #000000; font-size:small"
+                                        class="fa-solid fa-right-from-bracket"></i>
+                                </button>
+                            </div>
+                            {{else}}
+                            <li>
+                                <div style="margin-left: 42%;" class="d-flex justify-content-right "></div>
+                                <i class="fi-rs-user"></i><a style="color: #046963;" href="/login">Log In / Sign Up</a>
+                    </div>
+                    </li>
+                    {{/if}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</header>
+<main class="main">
+    <div class="page-header breadcrumb-wrap" style="background-color: #ffffff;">
+        <div class="container d-flex justify-content-center" style="background-color: #ffffff;">
+            <div class="breadcrumb" style="background-color: #ffffff;">
+                <a href="/userHome" rel="nofollow">Home</a>
+                <span></span> <a href="/userProductlist">Shop</a>
+
+            </div>
+        </div>
+    </div>
+    <section>
+        {{#if addToWishlistProd}}
+        <div style="text-align: center; font-weight:900" class="alert alert-success">
+            {{addToWishlistProd}}
+        </div>
+        {{/if}}
+        {{#if addTocartProductList}}
+        <div style="text-align: center; font-weight:900" class="alert alert-success">
+            {{addTocartProductList}}
+        </div>
+        {{/if}}
+    </section>
+    <section class="mt-50 mb-50">
+        <div class="container">
+            <div class="row flex-row-reverse">
+                <div class="col-lg-9">
+                    <div class="shop-product-fillter">
+                        <div class="totall-product">
+                            <p><strong class="text-brand"></strong></p>
+                        </div>
+                        <div style="margin-right: -10%;" class="search-style-2">
+                            <form id="productSearchForm">
+                                <input id="productSearchInput" class="form-control me-2" type="search"
+                                    placeholder="Search for products...">
+                            </form>
+                        </div>
+                        <form id="formSorting" action="/userProductlist?sortBy" method="post">
+
+                            <div class="s">
+                                <select id="sort-btn-dropdwon" class="form-select" aria-label="Default select example">
+                                    <option selected value="default">Sort by : Default</option>
+                                    <option value="lowTohigh">Price: Low to High</option>
+                                    <option value="highTolow">Price: High to Low</option>
+                                    <option value="A-z">Aa - Zz</option>
+                                    <option value="z-A">Zz - Aa</option>
+                                    <option value="featured">Featured</option>
+                                    <option value="newArrivals">New Arrivals</option>
+                                    <option value="popularity">Popularity</option>
+                                    <option value="rating">Avg Rating</option>
+                                </select>
+                        </form>
+                    </div>
+                </div>
+                <div class="row product-grid-3" id="product-list">
+                    {{#each products}}
+                    <div class="col-lg-4 col-md-4 col-12 col-sm-6">
+                        <div class="product-cart-wrap mb-30">
+                            <div class="product-img-action-wrap">
+                                <div class="product-img product-img-zoom">
+                                    <a href="/productDetail?id={{this._id}}">
+                                        <img class="default-img" src="/images/{{this.img1}}" alt="">
+                                        <img class="hover-img" src="/images/{{this.img3}}" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-action-1">
+                                    <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal"
+                                        data-bs-target="#quickViewModal">
+                                        <i class="fi-rs-search"></i></a>
+                                    <a aria-label="Add To Wishlist" class="action-btn hover-up"
+                                        href="/addTowishlistProductlist/{{this._id}}"><i class="fi-rs-heart"></i></a>
+                                    <a aria-label="Compare" class="action-btn hover-up" href=""><i
+                                            class="fi-rs-shuffle"></i></a>
+                                </div>
+                                <div class="product-badges product-badges-position product-badges-mrg">
+
+                                    {{#if this.update}}
+                                    <span style="background-color:#d00c0c;" id="outstock"
+                                        class="sale">{{this.status}}</span>
+                                    {{else}}
+                                    <span style="background-color:#000000;" id="outstock"
+                                        class="sale">{{this.status}}</span>
+
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div class="product-content-wrap">
+                                <div class="product-category">
+                                    <a href="shop-grid-right.html"></a>
+                                </div>
+                                <h2><a href="shop-product-right.html">{{this.productName}}</a></h2>
+                                <div class="rating-result" title="90%">
+                                    <span>
+                                        <span></span>
+                                    </span>
+                                </div>
+                                <div class="product-price">
+                                    <span><i class="fa-solid fa-indian-rupee-sign"></i>{{this.price}}.00</span>
+                                    <span class="old-price">{{this.offer}}</span>
+                                </div>
+                                <div class="product-action-1 show">
+                                    <a aria-label="Add To Cart" class="action-btn hover-up"
+                                        href="/productListAddtocart?productId={{this._id}}"><i
+                                            class="fi-rs-shopping-bag-add"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
+
+                </div>
+
+            </div>
+            <div class="col-lg-3 primary-sidebar sticky-sidebar">
+                <div class="widget-category mb-30">
+                    <h3 style="margin-bottom: 10%;" class="text-center">Filters</h3>
+                    {{#if this.sortBy}}
+                    <button onclick="removeFilter()" class="mb-4"
+                        style="background-color: grey; padding:5px; width:50%; color:#ffffff">
+                        {{this.sortBy}} <i style="margin-left:10px;" class="fa-solid fa-xmark"></i>
+                    </button>
+                    {{else if this.filterBy}}
+                    <button onclick="removeFilter()" class="mb-4"
+                        style="background-color: grey; padding:5px; width:50%; color:#ffffff">
+                        {{this.filterBy}} <i style="margin-left:10px;" class="fa-solid fa-xmark"></i>
+                    </button>
+                    {{else if this.maxPrice}}
+                    <button onclick="removeFilter()" class="mb-4"
+                        style="background-color: grey; padding:5px; width:50%; color:#ffffff">
+                        {{this.minPrice}}-{{this.maxPrice}} <i style="margin-left:10px;" class="fa-solid fa-xmark"></i>
+                    </button>
+                    {{/if}}
+
+                    <h5 class="section-title style-1 mb-30 wow fadeIn animated">Category</h5>
+                    <ul class="categories">
+                        <li><a href="/userProductlist?filterBy=men">Men's</a></li>
+                        <li><a href="/userProductlist?filterBy=women">Women's</a></li>
+                        <li><a href="/userProductlist?filterBy=featured">Featured</a></li>
+                        <li><a href="/userProductlist?filterBy=fragrance">Fragrance</a></li>
+                        <li><a href="/userProductlist?filterBy=top-sales">Top Sales</a></li>
+                        <li><a href="/userProductlist?filterBy=newarrivals">New Arrivals</a></li>
+
+                    </ul>
+                </div>
+
+                <!-- Fillter By Price -->
+                <div class="sidebar-widget price_range range mb-30">
+                    <div class="widget-header position-relative mb-20 ">
+                        <h5 class="widget-title mb-10">Filter by price</h5>
+                        <div class="bt-1 border-color-1"></div>
+                    </div>
+                    <form id="formFilter" action="/userProductlist" method="get">
+                        <div class="price-filter mb-3">
+                            <div class="price-filter-inner">
+                                <div class="price-slider-amount">
+                                    <div class="label-input">
+                                        <div class="row">
+                                            <div class="col">
+                                                <input type="text" id="price-min" name="minPrice"
+                                                    placeholder="Min: 500" />
+                                            </div>
+                                            <div class="col">
+                                                <input type="text" id="price-max" name="maxPrice"
+                                                    placeholder="Max: 10000" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" id="applyFilterBtn" class="btn-filter">
+                            <i class="fi-rs-filter mr-5"></i>Filter
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+    </section>
+<section class="d-flex justify-content-center">
+    <div class="pagination-wrap">
+        <ul class="pagination">
+            <li class="page-item {{#if (eq page 1)}}disabled{{/if}}">
+                <a class="page-link" href="/userProductlist?page={{add page - 1}}&limit={{limit}}&sortBy={{this.sortBy}}">&laquo;</a>
+            </li>
+            {{#each pages}}
+            <li class="page-item {{#if (eq page ../page)}}active{{/if}}">
+                <a class="page-link" href="/userProductlist?page={{this}}&limit={{limit}}&sortBy={{this.sortBy}}">{{this.sortBy}}</a>
+            </li>
+            {{/each}}
+            <li class="page-item {{#if (eq page totalPages)}}disabled{{/if}}">
+                <a class="page-link" href="/userProductlist?page={{add page 1}}&limit={{limit}}&sortBy={{this.sortBy}}">&raquo;</a>
+            </li>
+        </ul>
+    </div>
+</section>
+
+
+</main>
+<footer class="main">
+    <section class="section-padding footer-mid">
+        <div class="container pt-15 pb-20">
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="widget-about font-md mb-md-5 mb-lg-0">
+                        <div class="logo logo-width-1 wow fadeIn animated">
+                            <a href="/userHome"><img style="width: 100px; height:90px;"
+                                    src="Logo/5313c5dfeae341de827bdfebb4154726.png" alt="logo"></a>
+                        </div>
+                        <h5 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">Contact</h5>
+                        <p class="wow fadeIn animated">
+                            <strong>Address: </strong>562 Wellington Road, Street 32, San Francisco
+                        </p>
+                        <p class="wow fadeIn animated">
+                            <strong>Phone: </strong>+01 2222 365 /(+91) 01 2345 6789
+                        </p>
+                        <p class="wow fadeIn animated">
+                            <strong>Hours: </strong>10:00 - 18:00, Mon - Sat
+                        </p>
+                        <h5 class="mb-10 mt-30 fw-600 text-grey-4 wow fadeIn animated">Follow Us</h5>
+                        <div class="mobile-social-icon wow fadeIn animated mb-sm-5 mb-md-0">
+                            <a href="#"><img src="assets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
+                            <a href="#"><img src="assets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
+                            <a href="#"><img src="assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
+                            <a href="#"><img src="assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
+                            <a href="#"><img src="assets/imgs/theme/icons/icon-youtube.svg" alt=""></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3">
+                    <h5 class="widget-title wow fadeIn animated">About</h5>
+                    <ul class="footer-list wow fadeIn animated mb-sm-5 mb-md-0">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Delivery Information</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms &amp; Conditions</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Support Center</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2  col-md-3">
+                    <h5 class="widget-title wow fadeIn animated">My Account</h5>
+                    <ul class="footer-list wow fadeIn animated">
+                        <li><a href="/signUp">Sign In</a></li>
+                        <li><a href="#">View Cart</a></li>
+                        <li><a href="#">My Wishlist</a></li>
+                        <li><a href="#">Track My Order</a></li>
+                        <li><a href="#">Help</a></li>
+                        <li><a href="#">Order</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h5 class="widget-title wow fadeIn animated">Install App</h5>
+                    <div class="row">
+                        <div class="col-md-8 col-lg-12">
+                            <p class="wow fadeIn animated">From App Store or Google Play</p>
+                            <div class="download-app wow fadeIn animated">
+                                <a href="#" class="hover-up mb-sm-4 mb-lg-0"><img class="active"
+                                        src="assets/imgs/theme/app-store.jpg" alt=""></a>
+                                <a href="#" class="hover-up"><img src="assets/imgs/theme/google-play.jpg" alt=""></a>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-12 mt-md-3 mt-lg-0">
+                            <p class="mb-20 wow fadeIn animated">Secured Payment Gateways</p>
+                            <img class="wow fadeIn animated" src="assets/imgs/theme/payment-method.png" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="container pb-20 wow fadeIn animated">
+        <div class="row">
+            <div class="col-12 mb-20">
+                <div class="footer-bottom"></div>
+            </div>
+            <div class="col-lg-6">
+                <p class="float-md-left font-sm text-muted mb-0">&copy; 2022, <strong class="text-brand">Evara</strong>
+                    - HTML Ecommerce Template </p>
+            </div>
+            <div class="col-lg-6">
+                <p class="text-lg-end text-start font-sm text-muted mb-0">
+                    Designed by <a href="http://alithemes.com" target="_blank">Alithemes.com</a>. All rights reserved
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Preloader Start -->
+<div id="preloader-active">
+    <div class="preloader d-flex align-items-center justify-content-center">
+        <div class="preloader-inner position-relative">
+            <div class="text-center">
+                <h5 class="mb-5">Now Loading</h5>
+                <div class="loader">
+                    <div class="bar bar1"></div>
+                    <div class="bar bar2"></div>
+                    <div class="bar bar3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/Javascript/products.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+    function logoutConfirmation() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You will be logged out!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, log out!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Logged out!',
+                    'You have been logged out.',
+                    'success'
+                ).then(() => {
+                    window.location.href = "/userLogout";
+                });
+            } else {
+                window.location.href = "/userHome";
+            }
+        });
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#applyFilterBtn").click(function () {
+            $("#formFilter").submit();
+        });
+    });
+
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+    $(document).ready(function () {
+        const productList = document.getElementById('product-list');
+
+        // Search input event listener
+        $('#productSearchInput').on('input', function (e) {
+            const query = $(this).val().trim();
+            fetchProducts(query);
+        });
+
+        // Fetch products based on search query
+        async function fetchProducts(query) {
+            try {
+                const response = await fetch(`/searchProducts?query=${query}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const products = await response.json();
+
+                updateProductList(products);
+            } catch (error) {
+                console.error('Error fetching products:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Failed to fetch products!',
+                });
+            }
+        }
+
+        // Update product list in the DOM
+        // Update product list in the DOM
+        function updateProductList(products) {
+            productList.textContent = '';
+            products.forEach(product => {
+
+                const productHTML = `
+            <div class="col-lg-4 col-md-4 col-12 col-sm-6">
+                <div class="product-cart-wrap mb-30">
+                    <div class="product-img-action-wrap">
+                        <div class="product-img product-img-zoom">
+                            <a href="/productDetail?id=${product._id}">
+                                <img class="default-img" src="/images/${product.img1}" alt="">
+                                <img class="hover-img" src="/images/${product.img2}" alt="">
+                            </a>
+                        </div>
+                        <div class="product-action-1">
+                            <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal">
+                                <i class="fi-rs-search"></i>
+                            </a>
+                            <a aria-label="Add To Wishlist" class="action-btn hover-up" href="/addTowishlistProductlist/${product._id}">
+                                <i class="fi-rs-heart"></i>
+                            </a>
+                            <a aria-label="Compare" class="action-btn hover-up" href="#">
+                                <i class="fi-rs-shuffle"></i>
+                            </a>
+                        </div>
+                        <div class="product-badges product-badges-position product-badges-mrg">
+                            <span style="background-color:${product.update ? '#d00c0c' : '#000000'};" id="outstock" class="sale">${product.status}</span>
+                        </div>
+                    </div>
+                    <div class="product-content-wrap">
+                        <div class="product-category">
+                            <a href="shop-grid-right.html"></a>
+                        </div>
+                        <h2><a href="shop-product-right.html">${product.productName}</a></h2>
+                        <div class="rating-result" title="90%">
+                            <span><span></span></span>
+                        </div>
+                        <div class="product-price">
+                            <span><i class="fa-solid fa-indian-rupee-sign"></i>${product.price}.00</span>
+                            <span class="old-price">${product.offer}</span>
+                        </div>
+                        <div class="product-action-1 show">
+                            <a aria-label="Add To Cart" class="action-btn hover-up" href="/productListAddtocart?productId=${product._id}">
+                                <i class="fi-rs-shopping-bag-add"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+                productList.insertAdjacentHTML('beforeend', productHTML);
+            });
+        }
+
+    });
+
+</script>
+
+<script>
+    function removeFilter() {
+        window.location.href = '/userProductlist'
+    }
+</script>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Address</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+<body class="container pt-60">
+  <h4 class="mb-4">Add Address </h4>
+  <div class="row">
+    <form id="address-form" class="col s12">
+      <div class="row">
+        <div class="input-field col s12 m12 l6">
+          <input name="fullname" id="fullname" type="text" required title="Please enter a valid name">
+          <label for="fullname">Full name</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input name="phone" id="phone" type="text" required title="Please enter a valid phone number">
+          <label for="phone">Phone</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input name="email" id="email" type="email" required title="Please enter a valid email">
+          <label for="email">Email</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12 m12 l6">
+          <input name="addressLine" id="addressLine" type="text" required title="Please enter a valid address">
+          <label for="addressLine">Address</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input name="street" id="street" type="text" required title="Please enter a valid street">
+          <label for="street">Street</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input name="City" id="City" type="text" required title="Please enter a valid city/town">
+          <label for="City">City/Town</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12 m12 l6">
+          <input name="state" id="state" type="text" required title="Please enter a valid state">
+          <label for="state">State</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input name="country" id="country" type="text" required title="Please enter a valid country">
+          <label for="country">Country</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input name="pincode" id="pincode" type="number" required title="Please enter a valid zip code">
+          <label for="pincode">Zip code</label>
+        </div>
+      </div>
+
+      <button style="padding-bottom: 35px;" id="btn-address" class="waves-effect waves-light btn right" type="submit">Submit</button>
+    </form>
+  </div>
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('address-form');
+  
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    // Enhanced form validation
+    const formData = new FormData(form);
+    let isValid = true;
+    let errorMessage = '';
+
+    formData.forEach((value, key) => {
+      const trimmedValue = value.trim();
+      if (!trimmedValue) {
+        isValid = false;
+        errorMessage = `The field "${key}" cannot be empty or whitespace.`;
+      }
+      form[key].value = trimmedValue; // Trim the value in the form
+    });
+
+    if (!isValid) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Validation Error',
+        text: errorMessage
+      });
+      return;
+    }
+
+    // Gather form data into an object
+    const data = {};
+    formData.forEach((value, key) => {
+      data[key] = value.trim(); // Ensure values are trimmed
+    });
+
+    // Submit form data using Fetch API
+    fetch('/checkout/newaddressAdding', { // Update the URL to your endpoint
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        console.log()
+        throw new Error('Network response was not ok.');
+      }
+    })
+    .then(responseData => {
+      if (responseData.redirect) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Your address has been submitted successfully!'
+        }).then(() => {
+          window.location.href = responseData.redirect;
+        });
+      }
+    })
+    .catch(error => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Submission Error',
+        text: `There was an error submitting your address: ${error.message}`
+      });
+    });
+  });
+});
+
+  </script>
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,52 @@
+<body class="container pt-60">
+  <h1 class="mb-4">Add Address </h1>
+  <div class="row">
+    <form action="/userAccount/newaddressAdding" method="post" class="col s12"required>
+      <div class="row">
+      </div>
+      <div class="row">
+        <div class="input-field col s12 m12 l6">
+          <input name="fullname" id="address" type="text" required  title="Please enter a valid address">
+          <label for="address">Full name</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input name="phone" id="town" type="text" required title="Please enter a valid City/Town">
+          <label for="town">Phone</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input name="email" id="town" type="text" required title="Please enter a valid City/Town">
+          <label for="town">email</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12 m12 l6">
+          <input name="addressLine" id="address" type="text" required  title="Please enter a valid address">
+          <label for="address">Address</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input name="street" id="town" type="text" required title="Please enter a valid City/Town">
+          <label for="town">Street</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input name="City" id="town" type="text" required title="Please enter a valid City/Town">
+          <label for="town">City/Town</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12 m12 l6">
+          <input name="state" id="address" type="text"  title="Please enter a valid address" required>
+          <label for="state">state</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input name="country" id="town" type="text">
+          <label for="town">Country</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input name="pincode" id="town" type="number" required >
+          <label for="town">Zip code</label>
+        </div>
+      </div>
+
+      <button id="btn-address" class="waves-effect waves-light btn right " type="submit">Submit</button>
+    </form>
+  </div>

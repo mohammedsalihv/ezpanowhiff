@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Landing Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .hero-section {
+            position: relative;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: auto;
+        }
+
+        .nav-overlay {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        .nav-overlay ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .nav-overlay li {
+            margin-left: 20px;
+        }
+
+        .nav-overlay a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .nav-overlay a:hover {
+            text-decoration: underline;
+        }
+
+        .shop-button {
+            font-style: italic;
+            display: inline-block;
+            padding: 20px 20px;
+            background: transparent;
+            color: #b31111;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 51px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin-left: 30%;
+            height: 34vh;
+            width: 33px;
+            text-decoration: none;
+            font-weight: bolder;
+          
+        }
+
+        .shop-button:hover {
+            background: transparent;
+            color: #b31111;
+        }
+        
+        .link-main-home{
+
+         color: #000;
+             
+        }
+    </style>
+</head>
+<body>
+    <section class="hero-section">
+        <img src="/images/Black-bottle.jpg" alt="Product Image" class="hero-image">
+        <div class="nav-overlay">
+            <div class="logo">
+                <a href="/">
+                    <img src="/Logo/5313c5dfeae341de827bdfebb4154726.png" alt="Logo" style="height: 80px; border-radius:50px;"> <!-- Replace with your logo -->
+                </a>
+            </div>
+            <div class="nav-links">
+                <ul>
+                    <li><i class="fi-rs-user"></i><a style="color: #ffffff;" href="/login">Log In / Sign Up</a></li>
+                    <li><a class="link-main-home" style="color: #b31111; font-weight:bolder" href="/userProductlist">Shop</a></li>
+                    <li><a  style="color: #b31111; font-weight:bolder"  href="/userAccount">Account</a></li>
+                    <li><a  style="color: #b31111; font-weight:bolder" href="#">About</a></li>
+                    <li><a  style="color: #b31111; font-weight:bolder"  href="#">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <a style="text-decoration: none;" class="shop-button" href="/userProductlist">SHOP now<i style="color: white;" class="lni lni-pointer-right"></i></a>
+    </section>
+</body>
+</html>
+

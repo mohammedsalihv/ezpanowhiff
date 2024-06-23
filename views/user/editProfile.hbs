@@ -1,0 +1,21 @@
+
+
+<body style="margin-top: 7%;" class="container">
+  <h1 style="margin-bottom: 3%;">Edit Profile</h1>
+  <div class="row">
+    <form action="/userAccount/editedProfileData" method="post" class="col s12">
+      <div class="row">
+        <div class="input-field col s12 m12 l6">
+          <input  value="{{userData.name}}" name="name" id="editProfile-form" type="text">
+          <label for="first_name">Name</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+       <input value="{{userData.phone}}" name="phone" id="editProfile-form" type="tel">
+          <label for="phone-number">Phone Number</label>
+        </div>
+      </div>
+       
+  
+      <button class="text-right" id="btn-editProfile"  type="submit">Submit</button>
+    </form>
+  </div>

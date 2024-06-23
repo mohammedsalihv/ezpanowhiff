@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Coupon</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="container pt-60">
+    <h1 class="mb-4">Add New Coupon</h1>
+    <div class="row">
+        <form id="couponForm" class="col s12" action="/admin/CouponEdited/{{coupons._id}}" method="post">
+            <div class="row">
+                <div class="input-field col s12 m12 l6">
+                    <label for="couponCode">Coupon code</label>
+                    <input value="{{coupons.couponCode}}" type="text" class="form-control mt-2" id="couponCode"
+                        name="couponCode" placeholder="Coupon Code" readonly>
+                </div>
+                <div class="input-field col s12 m12 l6">
+                    <button style="padding-bottom: 28px;" type="button" class="btn btn-primary mt-2"
+                        onclick="generateCouponCode()">Generate Coupon Code</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12 m12 l6">
+                    <input value="{{coupons.discount_percentage}}" name="Discountpercentage" id="Discountpercentage"
+                        type="text" required title="Please enter a valid Discount Percentage">
+                    <label for="Discountpercentage">Discount Percentage</label>
+                    <span id="DiscountpercentageError" class="text-danger"></span>
+                </div>
+                <div class="input-field col s12 m12 l6">
+                    <input value="{{coupons.min_discount_amount}}" name="minimumamount" id="minimumamount" type="text"
+                        required title="Please enter a valid Minimum Amount">
+                    <label for="minimumamount">Minimum Amount</label>
+                    <span id="minimumamountError" class="text-danger"></span>
+                </div>
+                <div class="input-field col s12 m12 l6">
+                    <input value="{{coupons.max_discount_amount}}" name="maximumdiscountamount"
+                        id="maximumdiscountamount" type="text" required
+                        title="Please enter a valid Maximum Discount Amount">
+                    <label for="maximumdiscountamount">Maximum Amount</label>
+                    <span id="maximumdiscountamountError" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <label for="expirationDate">Expiry date</label>
+                <div class="input-field col s12 m12 l6">
+                    <input value="{{coupons.expiry_date}}" name="expirationDate" id="expirationDate" type="date"
+                        required title="Please enter a valid Expiration Date">
+                    <span id="expirationDateError" class="text-danger"></span>
+                </div>
+                <div class="input-field col s12 m12 l6">
+                    <input value="{{coupons.description}}" name="description" id="description" type="text" required
+                        title="Please enter a valid Description">
+                    <label for="description">Description</label>
+                </div>
+                <div class="input-field col s12 m12 l6">
+                    <select class="form-control" name="statusCoupon" id="statusCoupon">
+                        <option value="select">Please select status</option>
+                        <option value="Active" {{#if (eq coupons.coupanStatus 'Active' )}}selected{{/if}}>Active
+                        </option>
+                        <option value="InActive" {{#if (eq coupons.coupanStatus 'InActive' )}}selected{{/if}}>InActive
+                        </option>
+                    </select>
+                </div>
+
+            </div>
+            <button id="btn-address" class="waves-effect waves-light btn right" type="submit">Save</button>
+        </form>
+    </div>

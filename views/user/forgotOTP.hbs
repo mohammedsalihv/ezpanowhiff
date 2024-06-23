@@ -1,0 +1,58 @@
+<link rel="stylesheet" href="/css/verify.css">
+<section>
+    <div class="wrapper">
+        <div class="container main mt-2">
+            <div class="row" id="reset">
+                <div id="card-otp" class="col-md-6">
+                    <div class="input-box">
+                        <header id="title-head">
+                            <h6 id="head-otp">Enter OTP here</h6>
+                              <p style="color: red;">{{this.error}}</p>
+                        </header>
+                      
+                        <form action="/forgotOTP" method="post">
+                            <div class="input-field" id="otp-field">
+                                <input type="text" id="inpt-otp" name="forgotiInputOtp" required="" autocomplete="off">
+                            </div>
+                           <button style="width: 50%;  padding:12px; background-color:#046963" class="text-center">
+                              VERIFY
+                           </button>
+                        </form>
+                        <p id="timer">otp will expire after <span id="timer-value">{{ timerValue }}</span> seconds</p>
+                        <a id="resendOtp" class="btn btn-dark disabled" href="/resendOtp">Resend OTP</a>                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+
+    const invalidOtp = document.getElementById('invalidOtp');
+    if (invalidOtp) {
+        setTimeout(() => {
+            invalidOtp.style.display = 'none';
+        }, 3000);
+    }
+
+    const resendButton = document.getElementById('resendOtp');
+
+    function updateTimer(timerValue) {
+    document.getElementById('timer-value').textContent = timerValue;
+    if (timerValue <= 0) {
+        resendButton.classList.remove('disabled');
+        resendButton.href = '/resendOtp';
+    }
+}
+
+    function startTimer(duration) {
+        let timer = duration;
+        const interval = setInterval(function () {
+            updateTimer(timer);
+            if (--timer < 0) {
+                clearInterval(interval);
+            }
+        }, 1000);
+    }
+    startTimer(30);
+</script>

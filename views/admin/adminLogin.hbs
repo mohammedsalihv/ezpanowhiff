@@ -1,0 +1,29 @@
+<link rel="stylesheet" href="/css/adminlogin.css">
+
+<section>
+    <div id="loginadmin" class="text-center">{{this.InvalidAdmin}}</div>
+    <div id="loginadmin" class="text-center">{{this.notAdmin}}</div>
+ </section>
+ <section class="content-main mt-150 mb-80" >
+   
+            <div class="card mx-auto card-login" style="width: 30%;">
+                
+                <div class="card-body">
+                   
+                    <h4 id="admn" class="card-title mb-4">ADMIN</h4>
+                    <form id="admin-form" action="/admin/adminValidation" method="post">
+                        <div class="mb-3">
+                            <label id="admin-label-login"  for="email">Email</label>
+                            <input value="adminEzp@gmail.com" class="form-control"  type="text" name="email">
+                        </div> <!-- form-group// -->
+                        <div class="mb-3">
+                            <label id="admin-label-login" for="password">Password</label>
+                            <input value="Ezp123" class="form-control"  type="password" name="password">
+                        </div> <!-- form-group// -->
+                        <div class="mb-4">
+                            <button id="isAdmin" type="submit" class="btn btn-info w-70"> Login </button>
+                        </div> <!-- form-group// -->
+                    </form>
+                </div>
+            </div>
+        </section>

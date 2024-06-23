@@ -1,0 +1,42 @@
+<link rel="stylesheet" href="/css/verify.css">
+<section>
+        <div class="wrapper">
+            <div class="container main">
+                <div class="row " id="reset">
+                    <div class="col-md-6 right">
+                        <div class="input-box">
+                            <header id="title-head">
+                                <h6 id="head">Enter otp here</h6>
+                            </header>
+                            <h1 id="invalidOtp">{{this.invalidOtp}}</h1>
+                             <form action="/verifyOtp" method="post">
+                                <div class="input-field">
+                                    <input type="text" class="input" name="otp" required="" autocomplete="off" >
+                                </div> 
+                                <div id="login" class="input-field mt-4">
+                                    <input type="submit" class="submit" value="VERIFY">
+                                </div> 
+                            </form> 
+                              <a id="verify" href="/resendOtp">Resend Otp</a>
+                              <div id="remaining-time">
+                             <p>Remaining time: <span id="countdown"></span> seconds</p></div>
+                             <input style="width: 100%;" type="text" class="input mt-3" name="email" required="" autocomplete="off" >
+                            <div class="signin">
+                                <span>Back to <a href="">
+                                    <button id="btn">LOGIN</button>
+                                </a></span>
+                            </div>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        const invalidOtp = document.getElementById('invalidOtp')
+        if(invalidOtp){
+           setTimeout(()=>{
+            invalidOtp.style.display = 'none';
+           } , 3000)
+        }
+    </script>

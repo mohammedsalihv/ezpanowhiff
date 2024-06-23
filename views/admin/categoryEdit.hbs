@@ -1,0 +1,28 @@
+<section>
+ <div class="d-flex justify-content-left">
+        <button style="margin-top: 2%; margin-left:8%; background-color:black; padding:8px; border-radius:5px;" id="back-product-btn">
+            <a style="color: #ffffff;" id="back-txt" href="/admin/categoryManagement/"> Go Back</a>
+        </button>
+    </div>
+        <div style="margin-top: 5%;" class="container">
+            <h3 style="margin-bottom: 3%;">Edit Category</h3>
+            <div class="row">
+                <form action="/admin/updateCategory/{{categoryId}}" method="post" class="col s12">
+                    <div class="row">
+                        <div class="input-field col s12 m12 l6">
+                            <input value="{{categoryData.categoryName}}" name="categoryName" id="editProfile-form"
+                                type="text">
+                            <label for="first_name">Category name</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12 m12 l6">
+                            <textarea name="categoryDescription" id="">{{categoryData.description}}</textarea>
+                            <label for="first_name">Description</label>
+                        </div>
+                    </div>
+                    <button id="btn-editProfile" style="background-color:#000000; border: 1px solid #000000" type="submit">update</button>
+                </form>
+            </div>
+
+</section> <!-- content-main end// -->
