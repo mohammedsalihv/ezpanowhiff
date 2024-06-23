@@ -1,0 +1,83 @@
+.circular-image-container {
+    width: 50px; /* Adjust as needed */
+    height: 50px; /* Adjust as needed */
+    overflow: hidden;
+    border-radius: 50%; /* Ensure circular shape */
+    margin-right: 5px; /* Add some space between images */
+}
+
+#back-product-btn{
+    padding: 15px;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+}
+#back-product-btn:hover{
+    background-color:#0e2238;
+    text-decoration: none;
+}
+
+.circular-image-container img {
+    width: 100%;
+    height: auto;
+}
+
+@media (max-width: 768px) {
+    .circular-image-container {
+        width: 40px; /* Adjust as needed for smaller screens */
+        height: 40px; /* Adjust as needed for smaller screens */
+    }
+}
+
+@media (max-width: 576px) {
+    .circular-image-container {
+        width: 30px; /* Adjust as needed for even smaller screens */
+        height: 30px; /* Adjust as needed for even smaller screens */
+    }
+}
+#back-txt{
+    color: rgb(255, 255, 255);
+}
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1em;
+    flex-wrap: wrap;
+    background-color: white;
+    color: black;
+  }
+  
+  .page-numbers {
+    margin: 1em 1em 0;
+  }
+  
+  .page-number {
+    padding: 0.5em;
+    opacity: 0.5;
+    cursor: pointer;
+  }
+  
+  .active {
+    opacity: 1;
+  }
+
+  .th-main{
+    color: white;
+  }
+  
+  @media screen and (min-width: 540px) {
+    .backward {
+      order: 1;
+    }
+  
+    .page-numbers {
+      order: 2;
+      margin-top: 0;
+    }
+    
+    .forward {
+      order: 3;
+    }
+}

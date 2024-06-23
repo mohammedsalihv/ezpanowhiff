@@ -1,0 +1,160 @@
+.offer-item-container {
+    display: flex;
+    justify-content: start;
+    margin: 20px 0 20px 10px;
+  }
+  
+  .offer-items-head {
+    display: flex;
+    /* border-bottom: 2px solid #ddd; Add a bottom border */
+    gap: 10px;
+    border-radius: 10px;
+  }
+  
+  .offer-items {
+    padding: 10px 20px;
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Add a transition for smooth color change */
+  }
+  
+  .offer-item-heading {
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 10px;
+  }
+  
+  .offer-item-heading.active {
+    background-color: #333; /* Darker background color for active heading */
+    color: #fff; /* Change text color for better contrast */
+    border-bottom: 1px solid white;
+  }
+
+
+  .offer-item-heading:not(.active) {
+    /* Styles for non-active headings */
+    background-color: #f2f2f2;
+    color: #333;
+    font-size: 15px;
+  }
+  
+  .offer-item-content {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .offer-item-section {
+    padding: 20px;
+    border: 1px solid #ddd;
+    width: 100%;
+    /* margin: 0 10px; */
+  }
+  
+  .hidden {
+    display: none;
+  }
+
+
+  .add-product-offer {
+    border: 1px solid #666666;
+    padding: 10px;
+  }
+
+
+  .input-item {
+    margin: 20px 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+  }
+
+
+  .input-rows {
+    display: flex;
+  }
+
+  .offer-input {
+    flex-grow: 1;
+    padding: 10px;
+  }
+
+
+  .btn-submit {
+    padding: 10px 20px;
+    background-color: #000000;
+    /* background-color: #00bfff; */
+    color: white;
+    font-weight: bold;
+    width: 50%;
+    border: none;
+    border-radius: 10px;
+    margin: 20px 0;
+  }
+
+  .btn-submit:hover {
+    cursor: pointer;
+    color: white;
+  }
+
+  .btn-div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+
+  option {
+    padding: 5px;
+  }
+
+
+
+table {
+  width: 100%;
+  min-width: 200px;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background-color: #f2f2f2;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.table-div {
+  flex: 1 1 200px;
+}
+
+thead {
+  background-color: #000;
+  color: #fff;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;  /* flex-grow: 1; */
+
+}
+
+th {
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background-color: #e6e6e6;
+}
+
+tr:hover {
+  background-color: #d9d9d9;
+}
+
+
+.table-div {
+  margin: 40px 0;
+}
+
+
+.btn-delete {
+  color: red;
+  border: none;
+  cursor: pointer;
+}

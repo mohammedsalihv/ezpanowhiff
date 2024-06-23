@@ -1,0 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+#Admin{
+    color: #000000;
+    text-decoration: none;
+}
+.admin-nav{
+   display: flex;
+   justify-content: center;
+   background-color: #000000;
+   color: #ffffff;
+   overflow: hidden;
+  
+   
+}
+#admin-nav{
+    color: #ffffff;
+    overflow: hidden;
+}
+#navlink{
+    color: #fff;
+    font-size: medium;
+    font-weight: 900;
+    
+}
+
+#customers
+::after,
+::before {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+li {
+    list-style: none;
+}
+
+h1 {
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+
+}
+
+.wrapper{
+    display: flex;
+}
+.main-top{
+    min-height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    transition: all 0.35s ease-in-out;
+    background-color: #000000;
+    z-index: 999; 
+}
+#sidebar{
+    width:70px;
+    min-width:30px;
+    z-index: 1000;
+    transition: all .25s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    background-color: #0e2238;
+    height: 250vh;
+}
+
+#sidebar.expand{
+    width: 160px;
+    min-width: 220px;
+}
+#toggle-btn{
+    background-color: transparent;
+    cursor: pointer;
+    border: 0;
+    padding: 1rem 1.5rem;
+}
+
+#toggle-btn i {
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+.sidebar-logo{
+    margin: auto;
+}
+.sidebar-logo a{
+    color: #fff;
+    font-size:x-large;
+    font-weight: 600;
+}
+#sidebar:not(.expand).sidebar-logo,
+#sidebar:not(.expand) a.sidebar-link span{
+    display: none;
+    text-decoration: none;
+}
+
+.sidebar-nav{
+    padding: 2rem 0;
+    flex: 1 1 auto;
+}
+a.sidebar-link {
+    padding: .625rem 1.625rem;
+    color: #fff;
+    display: block;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    border-left: 3px solid transparent;
+}
+
+.sidebar-link i{
+   font-size: 1.1rem;
+   margin-right: .75rem;
+}
+a.sidebar-link:hover{
+    background-color: rgba(255, 255, 255, 0.75);
+    border-left: 3px solid #0e2238;
+}
+.sidebar-item{
+    position: relative;
+}
+#sidebar:not(.expand) .sidebar-item .sidebar-dropdown{
+    position: absolute;
+    top: o;
+    left: 70px;
+    background-color: #0e2238;
+    padding: 0;
+    min-width: 15rem;
+    display: none;
+}
+#sidebar:not(.expand) .sidebar-item:hover .has-dropdown+ .sidebar-dropdown{
+    display: none;
+    max-height: 15rem;
+    width: 100%;
+    opacity: 1;
+}
+#sidebar.expand .admin{
+    color: #fff;
+}
+#sidebar.expand .sidebar-link[data-bs-toggle="collapse"]::after{
+    border: solid;
+    border-width: 0 .075rem .075rem 0;
+    content: "";
+    display: inline-block;
+    padding: 2px;
+    position: absolute;
+    right: 1.5rem;
+    top: 1.4rem;
+    transform: rotate(-135deg);
+    transition: all .2s ease-out ;
+}
+#sidebar.expand .sidebar-link[data-bs-toggle="collapse"].collapsed::after{
+    transform: rotate(45deg);
+    transition: all .2s ease-out;
+}
+
+.left-sidebar-cover {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 20px; 
+    background-color: #0e2238;
+    z-index: 999; 
+    margin-top: 4.1%;
+
+}
+.left-maintop-cover {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 20px; 
+    background-color: #ffffff;
+}
+
+
+#addingMsg{
+    font-size: small;
+    font-weight: 900;
+    color: red;
+}
+#added-btn{
+    background-color: #0e2238;
+}
+
+form{
+    font-size: small;
+}
+.btn-remove{
+    background-color: #0e2238;
+    color: #fff;
+    padding-bottom: 28px;
+    border-radius: 7px;
+   display: flex;
+   justify-content: center;
+    margin-bottom: 5px;
+    width: 40%;
+    margin-top: 35%;
+
+}   
+
+#file-input1{
+    margin-top: -15%;
+}
+.cropper-container {
+    width: 50px; /* Set a fixed width for the Cropper container */
+    height: 1vh; /* Set a fixed height for the Cropper container */
+    /* Center the Cropper container */
+}
+
+.input-uploads{
+    height:280px;
+    width: 280px;
+}

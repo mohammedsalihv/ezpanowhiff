@@ -1,0 +1,172 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+
+.table-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: lightblue; */
+}
+
+.content-table{
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    width: 90%;
+    /* min-width: 400px; */
+    border-radius: 5px 5px 0 0;
+    /* overflow: hidden; */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15) ;
+}
+
+.content-table thead tr {
+    background-color: lightblue;
+    /* background-color: #009879; */
+    position: sticky;
+    top: 0;
+    color: #fff;
+    text-align:  left;
+    font-weight: bold;
+}
+
+.content-table th,
+.content-table td {
+    padding: 12px 15px;
+    /* max-width: 100px; */
+}
+
+.content-table tbody {
+    border-bottom: 1px solid #dddddd;
+}
+
+.content-table tbody tr:nth-of-type( even ){
+    background-color: #f3f3f3;
+}
+
+.content-table tbody tr {
+    border-bottom: 2px solid lightblue;
+    /* border-bottom: 2px solid #009879; */
+}
+
+.content-table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
+
+
+.from-to-date {
+    display: flex;
+    /* margin-left: 1%; */
+    gap: 10px;
+    align-items: center;
+}
+
+.input-date {
+    padding: 5px 20px;
+}
+
+.btn-apply, button {
+    padding: 8px 20px;
+    color: white;
+    /* background-color: rgb(95, 201, 236); */
+    background-color: rgb(55, 187, 231);
+    border: none;
+    border-radius: 5px;
+}
+
+
+.btn-apply:hover, button:hover {
+    background-color: rgb(33, 151, 190);
+    cursor: pointer;
+}
+
+
+.options-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+.sales-report-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .sales-report-box {
+    background-color: #e6f7ff;
+    border: 1px solid #b3e0ff;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 30%;
+  }
+
+  .sales-report-box h4 {
+    margin: 10px 0;
+    font-size: 16px;
+    color: #333;
+  }
+
+  .sales-report-box h4 span {
+    font-weight: bold;
+  }
+
+  .content-table {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+
+.sales-report-div {
+    width: 100%;
+    margin-top: 10px;
+    padding: 20px;
+    border: 1px solid black;
+}
+
+.sales-report-div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.sales-report-div > div {
+    flex: 1 0 45%;
+    background-color: #f0f8ff; /* Light blue background */
+    padding: 20px;
+    /* margin-bottom: 20px; */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sales-report-div h3 {
+    margin-bottom: 10px;
+}
+
+.product-item,
+.category-item,
+.payment-item,
+.status-item {
+    background-color: #fff; /* White background for item boxes */
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.product-item p,
+.category-item p,
+.payment-item p,
+.status-item p {
+    margin: 0;
+}
