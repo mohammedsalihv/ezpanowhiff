@@ -463,11 +463,10 @@ const getTopCategories = async (fromDate, toDate) => {
             };
         }
 
-        console.log('Match Stage:', JSON.stringify(matchStage, null, 2));
-
+       
         // Initial match stage
         const initialMatch = await Order.aggregate([{ $match: matchStage }]);
-        console.log('Initial Match:', initialMatch.length);
+ 
 
         if (initialMatch.length === 0) {
             console.log('No orders found within the given date range.');
@@ -490,7 +489,7 @@ const getTopCategories = async (fromDate, toDate) => {
             { $unwind: '$productInfo' },
             {
                 $lookup: {
-                    from: 'categories',  // Ensure this matches your collection name
+                    from: 'categories', 
                     localField: 'productInfo.category',
                     foreignField: '_id',
                     as: 'categoryInfo'
