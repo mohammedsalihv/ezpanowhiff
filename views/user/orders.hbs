@@ -220,11 +220,11 @@
     </div>
     </div>
 </header>
- <section style="width: 1000px; background-color:#ffffff">
+<section style="width: 1000px; background-color:#ffffff">
   <div class="container mt-4" style="width: 1500px;">
     <div class="woocommerce-order">
       <p style="width: 1428px;" id="thankyouorder"
-         class="woocommerce-notice woocommerce-notice--success woocommerce-thankyou-order-received">
+        class="woocommerce-notice woocommerce-notice--success woocommerce-thankyou-order-received">
         Your order details
       </p>
 
@@ -235,7 +235,7 @@
             <li class="woocommerce-order-overview__order order" style="font-weight: 900;">
               Order ID: <br>
               <strong id="bg-orders" class="badge badge-secondary"
-                      style="font-weight: 900; font-size: small;">{{orders.nameRandom}}</strong>
+                style="font-weight: 900; font-size: small;">{{orders.nameRandom}}</strong>
             </li>
             <li class="woocommerce-order-overview__date date" style="font-weight: 900;">
               Ordered Date: <br>
@@ -247,8 +247,8 @@
             </li>
             <li class="woocommerce-order-overview__total total" style="font-weight: 900;">
               Total: <br>
-              <strong><span class="woocommerce-Price-amount amount"><span id="bg-orders"
-                                                                        class="bg badge-danger">Rs: {{orders.totalAmount}}</span></span></strong>
+              <strong><span class="woocommerce-Price-amount amount"><span id="bg-orders" class="bg badge-danger">Rs:
+                    {{orders.totalAmount}}</span></span></strong>
             </li>
             <li class="woocommerce-order-overview__payment-method method" style="font-weight: 900;">
               Order status: <br>
@@ -256,7 +256,7 @@
             </li>
           </ul>
 
-          <h2 class="woocommerce-order-details__title">Order details</h2>
+          <h4 class="woocommerce-order-details__title">Order details</h4>
           <table class="woocommerce-table woocommerce-table--order-details shop_table order_details">
             <thead>
               <tr>
@@ -287,10 +287,11 @@
                 {{#unless (eq this.statusProduct "returned")}}
                 {{#unless (eq this.statusProduct "canceled")}}
                 <td class="woocommerce-table__product-total product-total">
-                  <form  action="/returnProductOrder" method="POST">
+                  <form action="/returnProductOrder" method="POST">
                     <input type="hidden" id="order-id" name="orderId" value="{{../orderID}}">
                     <input type="hidden" id="product-id" name="productId" value="{{this.productId}}">
-                    <select style="width: 80%;" id="reason-select" name="returnReason" class="form-select" aria-label="Default select example">
+                    <select style="width: 80%;" id="reason-select" name="returnReason" class="form-select"
+                      aria-label="Default select example">
                       <option selected value="Price very high">Price very high</option>
                       <option value="Delivery Time too long">Delivery Time too long</option>
                       <option value="Unsatisfactory Product Information">Unsatisfactory Product Information</option>
@@ -299,7 +300,8 @@
                       <option value="Change Mind">Change Mind</option>
                       <option value="Other">Other</option>
                     </select>
-                    <button style="margin-left: 25%; width: 80%; color:#fff" id="btn-orderReturn" type="submit" >Return</button><br>
+                    <button style="margin-left: 25%; width: 80%; color:#fff" id="btn-orderReturn"
+                      type="submit">Return</button><br>
                   </form>
                 </td>
                 {{/unless}}
@@ -310,7 +312,8 @@
                 {{#unless (eq this.statusProduct "canceled")}}
                 <td class="woocommerce-table__product-total product-total">
                   <span class="woocommerce-Price-amount amount"></span>
-                 <button id="btn-ordr-sts-product" style="width: 100%; color:#fff" onclick="productCancel('{{this.productId}}','{{this.orderId}}')">Product cancel</button>
+                  <button id="btn-ordr-sts-product" style="width: 100%; color:#fff"
+                    onclick="productCancel('{{this.productId}}','{{this.orderId}}')">Product cancel</button>
 
                 </td>
                 {{/unless}}
@@ -327,7 +330,8 @@
               <tr>
                 <td colspan="3" class="text-center">
                   <input type="hidden" id="order-Id" value="{{orders._id}}">
-                  <button style="width: 20%; color:#fdfdfd" id="btn-orderReturn" type="button" onclick="cancelOrder()">Cancel
+                  <button style="width: 20%; color:#fdfdfd" id="btn-orderReturn" type="button"
+                    onclick="cancelOrder()">Cancel
                   </button>
                 </td>
               </tr>
@@ -338,34 +342,54 @@
 
             <tfoot>
               <tr>
-                <th scope="row">Subtotal:</th>
-                <td><span class="woocommerce-Price-amount amount">Rs: {{orders.totalAmount}}</span></td>
-              </tr>
-              <tr>
                 <th scope="row">Payment method:</th>
                 <td>{{orders.paymentMethod}}</td>
               </tr>
+              {{#if orders.couponApplied}}
               <tr>
-                <th scope="row">Total:</th>
+                 <th scope="row">Discount</th>
+                 <td style="color: green;">-{{orders.couponDetails.discountedAmount}}.00</td>
+              </tr>
+              {{/if}}
+              {{#if orders.deliveryCharge}}
+              <tr>
+                <th scope="row">Delivery charge applied:</th>
+                <td><span style="color: red;" class="woocommerce-Price-amount amount">50.00</span></td>
+              </tr>
+              {{/if}}
+              <tr>
+                <th scope="row">Subtotal:</th>
                 <td><span class="woocommerce-Price-amount amount">Rs: {{orders.totalAmount}}</span></td>
+              </tr>
+              
+              <tr>
+                <th style="font-weight: 900;" scope="row">Total:</th>
+                <td><span style="font-weight: 900;" class="woocommerce-Price-amount amount">Rs: {{orders.totalAmount}}</span></td>
               </tr>
             </tfoot>
           </table>
         </div>
 
         <!-- Right Column: Customer Details and Billing Address -->
-        <div class="col-md-6 mt-3" style="width: 45%;">
+        <div class="col-md-4 mt-3" style="width: 45%;">
           <section class="woocommerce-customer-details">
-            <h2>Customer details</h2>
+             <div class="text-right">
+              <button  onclick="downloadInvoice(`{{orders._id}}`)" style="background-color:#046963; padding-bottom:80px;" class="btn btn-info pb-4">
+                  <i style="font-size:15px; margin-right:4px;" class="fa-solid fa-download"></i>Download invoice
+              </button>
+            
+            </div>
+            <h4>Customer details</h4>
+           
             <table class="woocommerce-table woocommerce-table--customer-details shop_table customer_details">
               <tbody>
-              <tr>
-                <th>Phone:</th>
-                <td>{{orders.address.phone}}</td>
-              </tr>
+                <tr>
+                  <th>Phone:</th>
+                  <td>{{orders.address.phone}}</td>
+                </tr>
               </tbody>
             </table>
-
+        
             <h4 class="woocommerce-column__title mb-3 mt-2">Billing address</h4>
             <address>
               {{orders.address.fullname}}<br>
@@ -376,8 +400,17 @@
               {{orders.address.pincode}}
             </address>
             <div class="text-center mt-4">
+              {{#if orders.returnRequest}}
+              <div style="color: #000; font-weight:900; width:30%; padding:1px;" class="bg bg-warning">Return is requested</div>
+              <button onclick="cancelRequest('{{orders._id}}')" class="bg badge-danger mt-2"
+                style="width: 50%; margin-right:50%; border: 1px; solid #fff; padding: 4px; border-radius:6px;">Cancel
+                request</button>
+              {{else}}
+        
+        
+        
               {{#if isDelivered}}
-              <form id="return-form" action="/returnOrder" method="POST">
+              <form>
                 <input type="hidden" id="order-id" name="orderId" value="{{orders._id}}">
                 <select id="reason-select" name="returnReason" class="form-select" aria-label="Default select example">
                   <option selected value="Reason">Reason</option>
@@ -399,20 +432,27 @@
               {{/unless}}
               {{/unless}}
               {{/if}}
+              {{/if}}
+              {{#if orders.acceptRequest}}
+              <p style="font-size: medium; color:green">Return request is approved</p>
+              {{/if}}
+              {{#if orders.rejectRequest}}
+              <p style="font-size: medium; color:rgb(228, 3, 3)">Return request is rejected</p>
+              {{/if}}
             </div>
-
+        
           </section>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-          </div>
         </div>
-      </div>
-    </div>
-  </section>
+        </div>
+        </div>
+        </section>
+        
+        </div>
+        </div>
+        </div>
+        </div>
+        </section>
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -442,44 +482,118 @@
       });
     }
   </script>
+<script>
+async function confirmReturn() {
+  // Get the selected option value
+  const selectedOption = document.getElementById('reason-select').value;
+  const selectOrderId = document.getElementById('order-id').value;
+  // Check if any option other than the default is selected
+  if (selectedOption !== "Reason") {
+    const confirmation = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Return it!"
+    });
 
-  <script>
-    function confirmReturn() {
-      // Get the selected option value
-      const selectedOption = document.getElementById('reason-select').value;
+    if (confirmation.isConfirmed) {
+      const response = await fetch(`/returnOrderRequest/${selectOrderId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ returnReason: selectedOption })
+      });
 
-      // Check if any option other than the default is selected
-      if (selectedOption !== "Reason") {
-        Swal.fire({
-          title: "Are you sure?",
-          text: "You won't be able to revert this!",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Yes, Return it!"
-        }).then((result) => {
-          if (result.isConfirmed) {
-            Swal.fire({
-              title: "Returned!",
-              text: "Your order has been returned",
-              icon: "success"
-            }).then(() => {
-              // Submit the form
-              document.getElementById('return-form').submit();
-            });
-          }
+      if (!response.ok) {
+        await Swal.fire({
+          title: "Error",
+          text: "Your return request failed.",
+          icon: "error"
         });
       } else {
-        // Show SweetAlert error message if no option is selected
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Please select a return reason!',
-        });
+        const result = await response.json();
+        if (result.success) {
+          await Swal.fire({
+            title: "Requested!",
+            text: "Your return request was sent successfully.",
+            icon: "success"
+          });
+          window.location.reload();
+        } else {
+          console.log(result.error)
+          await Swal.fire({
+            title: "Error",
+            text: 'Failed to request',
+            icon: "error"
+          });
+        }
       }
     }
-  </script>
+  } else {
+    // Show SweetAlert error message if no option is selected
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Please select a return reason!',
+    });
+  }
+}
+</script>
+
+<script>
+
+ async function cancelRequest(orderId){
+
+ const confirmation = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, cancel it!"
+    });
+
+
+ if (confirmation.isConfirmed) {
+      const response = await fetch(`/cancelRequest/${orderId}`,{
+         method : 'GET',
+         headers : {
+           'Content-Type':'application/json'
+         }
+      })
+
+      if(!response.ok){
+     await Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'request cancel failed!',
+    });
+      }else{
+
+        const result =  await response.json()
+        if(result.success){
+            await Swal.fire({
+            title: "Canceled!",
+            text: "Your return request canceled successfully.",
+            icon: "success"
+          });
+          window.location.reload();
+        }else{
+          await Swal.fire({
+            title: "Error",
+            text: 'Failed to cancel',
+            icon: "error"
+          });
+        }
+      }
+   }  
+}
+</script>
 
   <script>
     function cancelOrder(){
@@ -553,3 +667,16 @@
      
     }
   </script>
+  <script>
+
+    function downloadInvoice(orderId) {
+
+      // Construct the URL with the order ID
+      var url = '/generateInvoice/' + orderId;
+
+      // Redirect to the generated URL
+      window.location.href = url;
+    }
+
+  </script>
+  <script src="https://unpkg.com/easyinvoice/dist/easyinvoice.min.js"></script>

@@ -179,11 +179,11 @@ const updateCategory = async (req, res) => {
 const deleteCategory = async (req, res) => {
 
     try {
+      
 
         if (req.session.admin) {
 
-            await Category.deleteOne({ _id: req.params.id })
-
+            await  Category.deleteOne({ _id: req.params.id })
             res.redirect('/admin/categoryManagement')
 
         } else {

@@ -38,6 +38,12 @@ admin_routes.post('/adminValidation', Controller.adminLoginValidation)
 
 
 
+//---------------Dashbaord-------------------//
+
+
+admin_routes.get('/adminDashboard' , isAdmin , Controller.homeAdmin)
+admin_routes.get('/dashboard/data', isAdmin , Controller.adminDashboard)
+admin_routes.get('/dashboard/data/custom?:filterType' , isAdmin , Controller.customDashboard)
 
 
 
@@ -48,8 +54,8 @@ admin_routes.post('/adminValidation', Controller.adminLoginValidation)
 
 admin_routes.get('/listUsers' , isAdmin , adminUserController.userManagement)
 admin_routes.get('/deleteUser/:userId', isAdmin , adminUserController.deleteUser)
-admin_routes.get('/blockUser/:userId' , isAdmin ,  adminUserController.blockUser)
-admin_routes.get('/unBlockUser/:userId', isAdmin ,  adminUserController.unBlockUser)
+admin_routes.put('/blockUser/:userId' , isAdmin ,  adminUserController.blockUser)
+admin_routes.put('/unBlockUser/:userId', isAdmin ,  adminUserController.unBlockUser)
 
 
 
@@ -59,7 +65,7 @@ admin_routes.get('/unBlockUser/:userId', isAdmin ,  adminUserController.unBlockU
 // --------------ADMIN  PRODUCT CONTROLLER ----------//
 
 admin_routes.get('/productManagement', isAdmin , productController.productManagement)
-admin_routes.get('/productManagementDetail' , isAdmin , productController.productManagementDetail)
+admin_routes.get('/productManagementDetail/:productId' , isAdmin , productController.productManagementDetail)
 admin_routes.get('/productManagement/addProduct', isAdmin , productController.addProduct)
 admin_routes.get('/productEdit/:id', isAdmin , productController.productEdit)
 admin_routes.get('/deleteProduct/:id',isAdmin , productController.deleteProducts)
@@ -67,7 +73,7 @@ admin_routes.get('/deleteSoft/:id' , isAdmin , productController.softDelete)
 
 
 admin_routes.post('/productUpload', isAdmin ,  store.any() , productController.uploadProduct)
-admin_routes.post('/productUpdate/:id', isAdmin , store.any() , productController.updateProduct)
+admin_routes.post('/productUpdate/:productId', isAdmin , store.any() , productController.updateProduct)
 
 
 
@@ -91,9 +97,11 @@ admin_routes.post('/updateCategory/:id',isAdmin ,  categoryController.updateCate
 
 admin_routes.get('/orderManagement' , isAdmin , adminOrderController.orderManagement)
 admin_routes.get('/moreOrderData' , isAdmin , adminOrderController.moreOrderData)
+admin_routes.post('/acceptReturn', isAdmin, adminOrderController.acceptReturn);
+admin_routes.post('/rejectReturn' , isAdmin , adminOrderController.rejectReturn)
+
 admin_routes.post('/ordersUpdate' , isAdmin , adminOrderController.updateOrder)
 admin_routes.post('/ordersProductUpdate' , isAdmin , adminOrderController.orderProductUpdate)
-
 
 
 
@@ -127,20 +135,17 @@ admin_routes.delete('/offerDelete/:offerId' , isAdmin , adminOfferController.del
 
 
 
-//---------------Dashbaord and sales report
+//---------------sales report--------------//
 
 
-admin_routes.get('/adminDashboard', isAdmin , Controller.adminDashboard)
 admin_routes.get('/salesReport' , isAdmin , Controller.salesReport)
 admin_routes.get('/sales-report' , isAdmin , Controller.salesReport)
 admin_routes.get('/costum-sales-report/:reportType' , isAdmin , Controller.customSalesReport)
 admin_routes.get('/salesReport/pdf/:reportType' , isAdmin , Controller.salesReportPdf)
 admin_routes.get('/salesReport/excel/:reportType' , isAdmin , Controller.salesReportExcel)
 
-// ------------- ADMIN BANNER CONTROLLER ---------------//
 
 
-//admin_routes.get('/banner',Controller.getCouponAppled)
 
 
 

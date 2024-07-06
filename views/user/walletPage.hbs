@@ -161,7 +161,8 @@
                             </div>
                             {{#if this.userLogged}}
                             <div class="d-flex justify-content-right ml-4 mt-2">
-                                <button style="background: transparent; border:none" onclick="logoutConfirmation()" type="button">
+                                <button style="background: transparent; border:none" onclick="logoutConfirmation()"
+                                    type="button">
                                     <i style="color: #000000; font-size:x-large; " class="fa-solid fa-user"></i><i
                                         style="color: #000000; font-size:small"
                                         class="fa-solid fa-right-from-bracket"></i>
@@ -188,7 +189,8 @@
             <div class="col-md-6 column1">
                 <h5> <span id="span-wallet">My Wallets</span> <span>
                         <input id="addMoneyInput" name="addTowallet" class="text-center mt-4" type="number">
-                        <button style="color: #e1e1e1;" onclick="addMoney()" class="btn-addMoney">Add money</button></h5>
+                        <button style="color: #e1e1e1;" onclick="addMoney()" class="btn-addMoney">Add money</button>
+                </h5>
                 <div class="credit visa">
 
                     <h2>**** **** ****</h2>
@@ -218,24 +220,26 @@
                                 <span style="font-size: large;">{{this.description}}</span>
                             </div>
 
-                    <div class="col text-right d-flex align-items-center justify-content-end">
-    {{#if this.canceled}}
-        <br>
-        <span class="bg badge-primary" id="bg-wallet" style="color: #ffffff; font-weight: 500; margin-right: 5%;">
-            {{this.canceled}}
-        </span><sup></sup>
-    {{else}}
-        {{#if this.returned}}
-            <br>
-            <span class="bg badge-primary" id="bg-wallet" style="color: #ffffff; font-weight: 500; margin-right: 5%;">
-                {{this.returned}}
-            </span><sup></sup>
-        {{/if}}
-    {{/if}}
-    <span id="bg-wallet" style="color: #000000; font-weight: 700;">
-        {{this.amount}}.00
-    </span>
-</div>
+                            <div class="col text-right d-flex align-items-center justify-content-end">
+                                {{#if this.canceled}}
+                                <br>
+                                <span class="bg badge-primary" id="bg-wallet"
+                                    style="color: #ffffff; font-weight: 500; margin-right: 5%;">
+                                    {{this.canceled}}
+                                </span><sup></sup>
+                                {{else}}
+                                {{#if this.returned}}
+                                <br>
+                                <span class="bg badge-primary" id="bg-wallet"
+                                    style="color: #ffffff; font-weight: 500; margin-right: 5%;">
+                                    {{this.returned}}
+                                </span><sup></sup>
+                                {{/if}}
+                                {{/if}}
+                                <span id="bg-wallet" style="color: #000000; font-weight: 700;">
+                                    {{this.amount}}.00
+                                </span>
+                            </div>
 
 
                         </div>
@@ -255,24 +259,18 @@
             </div>
         </div>
     </div>
-   ...
-<section class="d-flex justify-content-center" style="height: 10vh;  color:#fff">
-<li class="page-item {{#if (eq page 1)}}disabled{{/if}}">
-    <a style="font-size: xx-large;" href="/walletPage?page={{subtract page 1}}">&laquo;</a>
-</li>
-{{#each pages}}
-    <li class="page-item {{#if (eq ../page @index)}}active{{/if}}">
-        <a   class="page-link" href="/walletPage?page={{this}}">{{this}}</a>
-    </li>
-{{/each}}
-<li class="page-item {{#if (eq page totalPages)}}disabled{{/if}}">
-    <a style="font-size: xx-large;" href="/walletPage?page={{add page 1}}">&raquo;</a>
-</li>
-
-
-
-
-</section>
+    <section class="d-flex justify-content-center" style="height: 10vh;  color:#fff">
+        <div class="pagination-wrap">
+            <ul class="pagination">
+                {{#range 1 totalPages}}
+                <li style="background-color: #ffffff;" class="page-item {{#if (eq ../page this)}}active{{/if}}">
+                    <a style="background-color: #ffffff; color:#000000" class="page-link"
+                        href="walletPage?page={{this}}&limit={{../limitRow}}"><strong>{{this}}</strong></a>
+                </li>
+                {{/range}}
+            </ul>
+        </div>
+    </section>
 
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

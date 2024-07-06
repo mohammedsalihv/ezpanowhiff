@@ -165,17 +165,19 @@ user_route.delete('/item-delete/:productId' , isLogged , isBlocked ,cartControll
 
 user_route.get('/checkoutPage' , isLogged , isBlocked , checkoutController.checkoutPage)
 user_route.get('/checkout/Addaddress' ,isLogged , isBlocked ,checkoutController.addAddress)
+user_route.get('/failedPayment/:orderId'  , isLogged , isBlocked ,checkoutController.failedPayment )
 
-
-user_route.post('/rzrpay-verify:razorpayOrderId' , isLogged , isBlocked ,  checkoutController.verifyRazorpay)
+user_route.post('/rzrpay-verify/:orderCreationId' , isLogged , isBlocked ,  checkoutController.verifyRazorpay)
 user_route.post('/checkout/newaddressAdding', isLogged , isBlocked ,  checkoutController.checkoutaddressPost)
 user_route.post('/placeorder' , isLogged , isBlocked , upload.none(), checkoutController.placeorder)
-
-
+user_route.post('/checkout-error', isLogged , isBlocked , upload.none(), checkoutController.errorCheckout)
+user_route.post('/payment-pending', isLogged , isBlocked , upload.none(), checkoutController.paymentContinue)
 //--------------------Coupons------------------------//
 
 user_route.post('/applyCoupon/:enteredCouponCode' , isLogged , isBlocked, checkoutController.applyCoupon)
 user_route.post('/removeCoupon/:couponCode' , isLogged , isBlocked, checkoutController.removeCoupon)
+
+
 
 //-----------------------Orders---------------------------//
 
@@ -183,13 +185,12 @@ user_route.post('/removeCoupon/:couponCode' , isLogged , isBlocked, checkoutCont
 
 user_route.get('/successOrder/:orderId' ,isLogged , isBlocked ,  orderController.successOrder)
 user_route.get('/orderView?:orderId' , isLogged , isBlocked ,orderController.ordersPage)
-// user_route.get('/productStatusReturn',isLogged , isBlocked ,  orderController.productStatusReturn);
 user_route.get('/generateInvoice/:orderId', isLogged , isBlocked , orderController.invoice)
 user_route.get('/productStatusCancel/:productId/:orderId', isLogged, isBlocked, orderController.productStatusCancel);
-
+user_route.get('/cancelRequest/:orderId',isLogged, isBlocked, orderController.cancelRequest)
 
 user_route.post('/returnProductOrder', isLogged , isBlocked ,orderController.returnProductOrder)
-user_route.post('/returnOrder', isLogged , isBlocked ,orderController.returnOrder)
+user_route.post('/returnOrderRequest/:orderId', isLogged , isBlocked ,orderController.returnRequest)
 user_route.post('/orderCancel' , isLogged , isBlocked , orderController.cancelOrder)
 
 

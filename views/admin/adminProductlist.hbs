@@ -137,24 +137,24 @@
           <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
-                  <div class="d-flex justify-content-between align-items-center mt-2 ml-2">
-                                       
-                                        <a onclick="addProduct()" class="btn btn-gradient-primary btn-sm">Add Product</a>
-                                    </div>
+                <div class="d-flex justify-content-between align-items-center mt-2 ml-2">
+
+                  <a onclick="addProduct()" class="btn btn-gradient-primary btn-sm">Add Product</a>
+                </div>
                 <div class="card-body">
 
                   <div class="table-responsive">
                     <table class="table table-striped">
                       <thead>
                         <tr>
-                          <th>Image</th>
-                          <th>Product name</th>
-                          <th>Quantity</th>
-                          <th>Price</th>
-                          <th>status</th>
-                          <th>Edit</th>
-                          <th>Delete</th>
-                          <th>more</th>
+                          <th style="font-weight: 900;">Image</th>
+                          <th style="font-weight: 900;">Product name</th>
+                          <th style="font-weight: 900;" >Quantity</th>
+                          <th style="font-weight: 900;">Price</th>
+                          <th style="font-weight: 900;">status</th>
+                          <th style="font-weight: 900;" >Edit</th>
+                          <th style="font-weight: 900;">Delete</th>
+                          <th style="font-weight: 900;">more</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -163,19 +163,19 @@
                           <td>
                             <div class="circular-product-image-container">
                               <img class="mx-auto d-block img-fluid img-thumbnail rounded-circle"
-                                style="width: 90px; height: 90px;" src="/images/cropped_{{this.img1}}" alt="Image">
+                                style="width: 50px; height: 50px;" src="/images/cropped_{{this.img1}}" alt="Image">
                             </div>
                           </td>
                           <td>{{this.productName}}</td>
                           <td>{{this.Qty}}</td>
                           <td>{{this.price}}</td>
-                           {{#if (eq this.status 'In stock')}}
+                          {{#if (eq this.status 'In stock')}}
                           <td style="color:forestgreen;">
                             {{this.status}}
                           </td>
                           {{else}}
                           <td style="color: red;">
-                             {{this.status}}
+                            {{this.status}}
                           </td>
                           {{/if}}
                           <td><button onclick="editProduct('{{this._id}}')"
@@ -185,7 +185,7 @@
                               class="btn bg-gradient-danger btn-sm btn-unlist" data-product-id="">Delete</button>
                           </td>
                           <td>
-                            <button onclick="viewMore()" class="btn bg-gradient-primary btn-sm btn-list"
+                            <button onclick="viewMore('{{this._id}}')" class="btn bg-gradient-primary btn-sm btn-list"
                               data-product-id="">view more</button>
                           </td>
                         </tr>
@@ -197,17 +197,12 @@
                 </div>
                 <div class="pagination-wrap">
                   <ul class="pagination">
-                    <li class="page-item {{#if (eq page 1)}}disabled{{/if}}">
-                      <a class="page-link" href="/admin/productManagement?page={{add page - 1}}&limit={{limit}}">&laquo;</a>
+                    {{#range 1 totalPages}}
+                    <li style="background-color: #ffffff;" class="page-item {{#if (eq ../page this)}}active{{/if}}">
+                      <a style="background-color: #ffffff; color:#000000" class="page-link"
+                        href="/admin/productManagement?page={{this}}&limit={{../limitRow}}"><strong>{{this}}</strong></a>
                     </li>
-                    {{#each pages}}
-                    <li class="page-item {{#if (eq page this)}}active{{/if}}">
-                      <a class="page-link" href="/admin/productManagement?page={{this}}&limit={{limit}}">{{this}}</a>
-                    </li>
-                    {{/each}}
-                    <li class="page-item {{#if (eq page totalPages)}}disabled{{/if}}">
-                      <a class="page-link" href="/admin/productManagement?page={{add page 1}}&limit={{limit}}">&raquo;</a>
-                    </li>
+                    {{/range}}
                   </ul>
                 </div>
               </div>
@@ -273,10 +268,12 @@
     
   }
 
-  function viewMore(){
-    window.location.href = `/admin/productManagementDetail`
-  }
+function viewMore(productId) {
+   window.location.href = `/admin/productManagementDetail/${productId}`
+     
+}
 </script>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 <script>

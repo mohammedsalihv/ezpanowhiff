@@ -121,6 +121,13 @@
         return;
       }
 
+      const percentage = Discountpercentage.value
+     if (percentage < 1 || percentage > 100) {
+       DiscountpercentageError.textContent = 'Discount percentage should be between 1 and 100';
+       return
+      }
+
+
       // Collect form data
       const formData = new FormData(document.getElementById('couponForm'));
 

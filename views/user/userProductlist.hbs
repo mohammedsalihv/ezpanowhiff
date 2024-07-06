@@ -103,7 +103,7 @@
                         <div class="totall-product">
                             <p><strong class="text-brand"></strong></p>
                         </div>
-                        <div style="margin-right: -10%;" class="search-style-2">
+                        <div style="width:50%;" class="search-style-2">
                             <form id="productSearchForm">
                                 <input id="productSearchInput" class="form-control me-2" type="search"
                                     placeholder="Search for products...">
@@ -250,23 +250,18 @@
                 </div>
             </div>
     </section>
-<section class="d-flex justify-content-center">
-    <div class="pagination-wrap">
-        <ul class="pagination">
-            <li class="page-item {{#if (eq page 1)}}disabled{{/if}}">
-                <a class="page-link" href="/userProductlist?page={{add page - 1}}&limit={{limit}}&sortBy={{this.sortBy}}">&laquo;</a>
-            </li>
-            {{#each pages}}
-            <li class="page-item {{#if (eq page ../page)}}active{{/if}}">
-                <a class="page-link" href="/userProductlist?page={{this}}&limit={{limit}}&sortBy={{this.sortBy}}">{{this.sortBy}}</a>
-            </li>
-            {{/each}}
-            <li class="page-item {{#if (eq page totalPages)}}disabled{{/if}}">
-                <a class="page-link" href="/userProductlist?page={{add page 1}}&limit={{limit}}&sortBy={{this.sortBy}}">&raquo;</a>
-            </li>
-        </ul>
-    </div>
-</section>
+    <section class="d-flex justify-content-center" style="height: 10vh;  color:#fff">
+        <div class="pagination-wrap">
+            <ul class="pagination">
+                {{#range 1 totalPages}}
+                <li style="background-color: #ffffff;" class="page-item {{#if (eq ../page this)}}active{{/if}}">
+                    <a style="background-color: #ffffff; color:#000000" class="page-link"
+                        href="userProductlist?page={{this}}&limit={{../limitRow}}"><strong>{{this}}</strong></a>
+                </li>
+                {{/range}}
+            </ul>
+        </div>
+    </section>
 
 
 </main>

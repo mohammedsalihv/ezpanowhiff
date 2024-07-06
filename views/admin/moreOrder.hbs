@@ -1,104 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Data</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .badge-primary { background-color: #007bff; color: white; }
+        .badge-danger { background-color: #dc3545; color: white; }
+    </style>
+</head>
+<body>
 <section>
-  <button onclick="window.history.back();" style="padding: 8px; background-color:black" class="btn btn-info mt-4 ml-4">Go back</button>
-  <div style="margin-top: -5%;" class="content-main-category">
-    <div class="row" id="row-order">
-      <div id="tbl" class="table-responsive">
-        <table class="table table-hover">
-          <thead id="tbl" class="tble-head-category">
-            <tr id="head">
-              <th style="font-weight: 900;">Product Details</th>
-              <th style="font-weight: 900;">Ordered date</th>
-              <th style="font-weight: 900;">Billing Address</th>
-              <th style="font-weight: 900;">Order Status Change</th>
-            </tr>
-          </thead>
-          <tbody id="body-table">
-            <tr>
-              <td>
-                <table>
-                  <thead>
-                    <tr>
-                      <th style="color: rgb(0, 0, 0);">Product Image</th>
-                      <th style="color: rgb(0, 0, 0);">Product Name</th>
-                      <th style="color: rgb(0, 0, 0);">Product Quantity</th>
-                      <th style="color: rgb(0, 0, 0);">Product Price</th>
-                      <th style="color: rgb(0, 0, 0);">Product Status</th>
-                      <th style="color: rgb(0, 0, 0);">Change</th>
-                      {{#if this.reasonReturn}}
-                      <th style="color: rgb(0, 0, 0);">Return reason</th>
-                     {{/if}}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {{#each orderDetails.products}}
-                    <tr>
-                      <td><img style="height:150px; width:150px;" src="/images/cropped_{{this.img1}}" alt="{{this.productName}}"></td>
-                      <td>{{this.productName}}</td>
-                      <td>{{this.quantity}}</td>
-                      <td>{{this.salesPrice}}</td>
-                      <td>{{this.status}}</td>
-                   
-                      {{#if (eq this.status 'canceled')}}
-                      <td>Already canceled</td>
-                      {{else}}
-                      <td>
-                        <form action="/admin/ordersProductUpdate" method="post">
-                          <input type="hidden" name="productId" value="{{this._id}}">
-                          <select name="newStatus" class="form-select" aria-label="Default select example">
-                            <option selected>Select</option>
-                            <option value="pending">Pending</option>
-                            <option value="shipped">Shipped</option>
-                            <option value="canceled">Cancelled</option>
-                            <option value="delivered">Delivered</option>
-                            <option value="returned">Returned</option>
-                          </select>
-                          <button style="padding-bottom: 28px; width:80%" id="btn-order" type="submit" class="btn btn-primary mt-3">Save</button>
-                        </form>
-                      </td>
-                      {{/if}}
-                        {{#if this.returnReason}} 
-                      <td>{{this.returnReason}}</td>
-                      {{/if}}
-                    </tr>
-                    {{/each}}
-                  </tbody>
+    <button onclick="window.history.back();" style="padding: 8px; background-color:black" class="btn btn-info mt-4 ml-4">Go back</button>
+    <div style="margin-top: -5%;" class="content-main-category">
+        <div class="row" id="row-order">
+            <div id="tbl" class="table-responsive">
+                <table class="table table-hover">
+                    <thead id="tbl" class="tble-head-category">
+                        <tr id="head">
+                            <th style="font-weight: 900;">Product Details</th>
+                            <th style="font-weight: 900;">Ordered date</th>
+                            <th style="font-weight: 900;">Billing Address</th>
+                            <th style="font-weight: 900;">Order Status Change</th>
+                        </tr>
+                    </thead>
+                    <tbody id="body-table">
+                        <tr>
+                            <td>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th style="color: rgb(0, 0, 0);">Product Image</th>
+                                            <th style="color: rgb(0, 0, 0);">Product Name</th>
+                                            <th style="color: rgb(0, 0, 0);">Product Quantity</th>
+                                            <th style="color: rgb(0, 0, 0);">Product Price</th>
+                                            <th style="color: rgb(0, 0, 0);">Product Status</th>
+                                            <th style="color: rgb(0, 0, 0);">Change</th>
+                                            {{#if this.reasonReturn}}
+                                            <th style="color: rgb(0, 0, 0);">Return reason</th>
+                                            {{/if}}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each orderDetails.products}}
+                                        <tr>
+                                            <td><img style="height:150px; width:150px;" src="/images/cropped_{{this.img1}}" alt="{{this.productName}}"></td>
+                                            <td>{{this.productName}}</td>
+                                            <td>{{this.quantity}}</td>
+                                            <td>{{this.salesPrice}}</td>
+                                            <td>{{this.status}}</td>
+                                            {{#if (eq this.status 'canceled')}}
+                                            <td>Already canceled</td>
+                                            {{else}}
+                                            <td>
+                                                <form action="/admin/ordersProductUpdate" method="post">
+                                                    <input type="hidden" name="productId" value="{{this._id}}">
+                                                    <select name="newStatus" class="form-select" aria-label="Default select example">
+                                                        <option selected>Select</option>
+                                                        <option value="pending">Pending</option>
+                                                        <option value="shipped">Shipped</option>
+                                                        <option value="canceled">Cancelled</option>
+                                                        <option value="delivered">Delivered</option>
+                                                        <option value="returned">Returned</option>
+                                                    </select>
+                                                    <button style="padding-bottom: 28px; width:80%" id="btn-order" type="submit" class="btn btn-primary mt-3">Save</button>
+                                                </form>
+                                            </td>
+                                            {{/if}}
+                                            {{#if this.returnReason}}
+                                            <td>{{this.returnReason}}</td>
+                                            {{/if}}
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td>{{orderDetails.OrderedDate}}</td>
+                            <td>
+                                <br>{{orderDetails.address.fullname}},
+                                <br>{{orderDetails.address.addressLine}},
+                                <br>{{orderDetails.address.City}},
+                                <br>{{orderDetails.address.state}},
+                                <br>{{orderDetails.address.country}},
+                                {{orderDetails.address.pincode}}
+                            </td>
+                            {{#if (eq orderDetails.orderStatus 'canceled')}}
+                            <td>Order canceled</td>
+                            {{else}}
+                            <td>
+                                <form action="/admin/ordersUpdate" method="post">
+                                    <input type="hidden" name="orderId" value="{{orderDetails.orderId}}">
+                                    <select name="newStatus" class="form-select" aria-label="Default select example">
+                                        <option selected>Select</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="shipped">Shipped</option>
+                                        <option value="canceled">Cancelled</option>
+                                        <option value="delivered">Delivered</option>
+                                        <option value="returned">Returned</option>
+                                    </select>
+                                    <button style="padding-bottom: 28px; width:80%" id="btn-order" type="submit" class="btn btn-primary mt-3">Save</button>
+                                </form>
+                            </td>
+                            {{/if}}
+                        </tr>
+                    </tbody>
                 </table>
-              </td>
-              <td>{{orderDetails.OrderedDate}}</td>
-              <td>
-                <br>{{orderDetails.address.fullname}},
-                <br>{{orderDetails.address.addressLine}},
-                <br>{{orderDetails.address.City}},
-                <br>{{orderDetails.address.state}},
-                <br>{{orderDetails.address.country}},
-                {{orderDetails.address.pincode}}
-              </td>
-              {{#if (eq orderDetails.orderStatus 'canceled')}}
-              <td>Order canceled</td>
-              {{else}}
-              <td>
-                <form action="/admin/ordersUpdate" method="post">
-                <input type="hidden" name="orderId" value="{{orderDetails.orderId}}">
-                  <select name="newStatus" class="form-select" aria-label="Default select example">
-                    <option selected>Select</option>
-                    <option value="pending">Pending</option>
-                    <option value="shipped">Shipped</option>
-                    <option value="canceled">Cancelled</option>
-                    <option value="delivered">Delivered</option>
-                    <option value="returned">Returned</option>
-                  </select>
-                  <button style="padding-bottom: 28px; width:80%" id="btn-order" type="submit" class="btn btn-primary mt-3">Save</button>
-                </form>
-              </td>
-              {{/if}}
-            </tr>
-          </tbody>
-        </table>
-      </div>
+            </div>
+            {{#if orderDetails.requestTrue}}
+            <section class="d-flex justify-content-center">
+                <div style="border: 1px solid #000; height:24vh; text-align:center" class="col-lg-4">
+                    <h4 class="mb-2 mt-2">Return request</h4>
+                    <p class="text-left"><span class="mr-3 mt-2" style="font-weight: 900;">Reason : </span>{{this.reasonReturn}}</p>
+                    <button onclick="adminAcceptReturn('{{this.ID}}','{{orderDetails.userId}}')" style="border:1px solid #fff; border-radius:5px;" class="bg badge-primary mt-2">Accept</button>
+                    <button onclick="adminRejectReturn('{{this.ID}}','{{orderDetails.userId}}')" style="border:1px solid #fff; border-radius:5px;" class="bg badge-danger">Reject</button>
+                </div>
+            </section>
+            {{/if}}
+        </div>
     </div>
-  </div>
 </section>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    async function adminAcceptReturn(orderId, userId) {
+      
+        const confirm = await Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, accept it!"
+        });
 
-</section>
+        if (confirm.isConfirmed){
+            try {
+                const response = await fetch(`/admin/acceptReturn`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({orderId,userId})
+                   
+                });
 
+                console.log('Response status:', response.status);
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const result = await response.json();
+                if (result.success) {
+                    await Swal.fire({
+                        title: "Accepted!",
+                        text: "Return request is approved.",
+                        icon: "success"
+                    });
+                    window.location.reload();
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Bad request!",
+                    });
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: error.message,
+                });
+            }
+        }
+    }
+
+   
+  
+</script>
+
+<script>
+    async function adminRejectReturn(orderId, userId) {
+    const confirm = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, cancel it!"
+    });
+
+    if (confirm.isConfirmed) {
+        try {
+            const response = await fetch(`/admin/rejectReturn`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ orderId })
+            });
+
+            console.log('Response status:', response.status);
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const result = await response.json();
+            if (result.success) {
+                await Swal.fire({
+                    title: "Canceled!",
+                    text: "Return request is canceled.",
+                    icon: "success"
+                });
+                window.location.reload(); // Reload the page to reflect the updated status
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Bad request!",
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: error.message,
+            });
+        }
+    }
+}
+
+</script>
+</body>
+</html>

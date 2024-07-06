@@ -12,6 +12,8 @@ const crypto = require('crypto');
 const Wishlist = require('../models/wishlistSchema')
 require('dotenv').config();
 const Cart = require('../models/cartDB')
+const Category = require('../models/category')
+const mongoose = require('mongoose');
 
 
 const { RAZORPAY_ID_KEY, RAZORPAY_SECRET_KEY } = process.env;
@@ -562,6 +564,7 @@ const homePagerender = async (req, res) => {
 
 
 
+
 const productList = async (req, res) => {
     const userLogged = req.session.user ? true : false;
     const searchQuery = req.query.query || '';
@@ -625,28 +628,29 @@ const productList = async (req, res) => {
         if (filterBy) {
             switch (filterBy) {
                 case 'men':
-                    query.filter.category = 'men';
+                    query.filter.category = new mongoose.Types.ObjectId('663f97c7874a0c69117c0c41');
                     break;
                 case 'women':
-                    query.filter.category = 'women';
+                    query.filter.category = new mongoose.Types.ObjectId('663f9a49ea7d8859e45d772f');
                     break;
                 case 'featured':
-                    query.filter.category = 'featured';
+                    query.filter.category = new mongoose.Types.ObjectId('664e366783b1998b6579e88e');
                     break;
                 case 'fragrance':
-                    query.filter.category = 'fragrance';
+                    query.filter.category = new mongoose.Types.ObjectId('664e361683b1998b6579e884');
                     break;
                 case 'top-sales':
-                    query.filter.category = 'best selling';
+                    query.filter.category = new mongoose.Types.ObjectId('664e363883b1998b6579e88a');
                     break;
                 case 'newarrivals':
-                    query.filter.category = 'latest arrivals';
-                    break;   
+                    query.filter.category = new mongoose.Types.ObjectId('664e369e83b1998b6579e892');
+                    break;
                 // Add more cases as per your application's categories
                 default:
                     break;
             }
         }
+
 
         // Applying price filtering
         if (!isNaN(minPrice) && !isNaN(maxPrice)) {
@@ -736,11 +740,12 @@ const productDetail = async (req, res) => {
         }
 
         const quantityOfProduct = productData.Qty;
-        const productCategory = productData.category;
+        const CategoryObjId = productData.category;
         
      
+       
         const relatedProducts = await Product.find({
-            category: productCategory,
+            category: CategoryObjId,
             _id: { $ne: productId }
         }).lean();
 
@@ -922,6 +927,7 @@ const userAccount = async (req, res) => {
                 const totalPages = Math.ceil(totalOrders / limitRow);
 
                 const orders = await Order.find({ userId })
+                    .sort({createdAt : -1})
                     .skip((page - 1) * limitRow)
                     .limit(limitRow)
                     .lean();
@@ -1175,7 +1181,7 @@ const walletPage = async (req, res) => {
             transactions: currentPageTransactions,
             page,
             totalPages,
-            isZero: totalTransactions === 0
+            isZero: totalTransactions === 0,
         });
     } catch (error) {
         console.error(error);

@@ -2,16 +2,16 @@ const mongoose = require('mongoose');
 
 const offerSchema = new mongoose.Schema({
     product: {
-        type:mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Product",
     },
     category: {
-        type:mongoose.Schema.Types.ObjectId,
-        ref: "category",
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category", 
     },
     offerType: {
         type: String,
-        enum: [ "percentage", "price"],
+        enum: ["percentage", "price"],
     },
     offerValue: {
         type: Number,
@@ -31,7 +31,5 @@ const offerSchema = new mongoose.Schema({
     }
 });
 
-
-
-const offerModel = new mongoose.model("Offers", offerSchema );
+const offerModel = mongoose.model("Offers", offerSchema);
 module.exports = offerModel;

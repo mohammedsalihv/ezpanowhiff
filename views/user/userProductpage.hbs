@@ -78,7 +78,6 @@
         <div class="container d-flex justify-content-center">
             <div class="breadcrumb">
                 <a href="index.html" rel="nofollow">Home</a>
-                <span></span> {{productData.category}}
                 <span></span> {{productData.productName}}
             </div>
         </div>
@@ -101,12 +100,12 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="product-detail accordion-detail">
-                        <div style="width: 100%" class="row mb-50">
+                        <div style="width: 115%" class="row mb-50">
                             <div   class="col-md-6 col-sm-12 col-xs-12">
-                                <div style="width:300px" class="detail-gallery">
+                                <div class="detail-gallery">
                                     <span class="zoom-icon"><i class="fi-rs-search"></i></span>
                                     <!-- MAIN SLIDES -->
-                                    <div style="height: 600px; width:580px" id="product-img"
+                                    <div style="height: 600px; width:600px" id="product-img"
                                         class="product-image-slider">
                                         <figure class="border-radius-10">
                                             <img style="height: 700px; width:600px" src="/images/{{productData.img1}}"
@@ -133,7 +132,7 @@
                                 </div>
                                 <!-- End Gallery -->
                             </div>
-                            <div  class="col-md-6 col-sm-12 col-xs-12 ">
+                            <div style="width: 40%;"  class="col-md-6 col-sm-12 col-xs-12 ">
                                 <div class="detail-info">
                                     <h2 id="productName" class="title-detail">{{productData.productName}}</h2>
                                     <div class="product-detail-rating">
@@ -476,7 +475,7 @@
     function increaseQuantity() {
     let qtyElement = document.getElementById('qty-val');
     let currentQuantity = parseInt(qtyElement.textContent);
-    let availableStock = parseInt("{{ productData.CountOfstock }}"); // Assuming CountOfstock is correctly set
+    let availableStock = parseInt("{{ productData.Qty }}"); // Assuming CountOfstock is correctly set
 
     // Check if the current quantity is less than the available stock
     if (currentQuantity < availableStock) {
@@ -484,7 +483,16 @@
         qtyElement.textContent = currentQuantity + 1;
         document.getElementById('selected-quantity').value = currentQuantity + 1;
     } else {
-        alert("Sorry, the maximum available quantity has been reached.");
+          Swal.fire({
+                    text: 'Sorry, the maximum available quantity has been reached.',
+                    position: 'top',
+                    timer: 3000,
+                    background: 'red',
+                    color: 'white',
+                    showConfirmButton: false
+                });
+         return;
+      
     }
 }
 

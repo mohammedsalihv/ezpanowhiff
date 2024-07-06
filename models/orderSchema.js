@@ -7,7 +7,7 @@ const orderSchema = new mongoose.Schema({
         unique: true,
         default: function () {
           const randomString = crypto.randomBytes(6).toString('hex').toUpperCase();
-          return `rzrpay${randomString}`;
+          return `#ORD${randomString}`;
         },
       },
        nameRandom: {
@@ -63,7 +63,7 @@ const orderSchema = new mongoose.Schema({
             cancelstatus: {
                 type: String,
                 default: 'pending',
-                enum:['pending','processing','shipped','delivered','canceled','returned','failed']
+                enum:['pending','processing','shipped','delivered','canceled','returned','failed','requested']
             },
             reason: {
                 type: String,
@@ -122,12 +122,21 @@ const orderSchema = new mongoose.Schema({
     orderStatus: {
         type: String,
         default: 'pending',
-        enum:['pending','processing','shipped','delivered','canceled','returned','failed']
+        enum:['pending','processing','shipped','delivered','canceled','returned','failed','requested']
     },
     returnReason:{
         type:String,
         default:null
         
+    },
+    returnRequest :{
+        type : Boolean,
+    },
+    acceptRequest : {
+        type: Boolean
+    },
+    rejectRequest : {
+        type : Boolean
     },
     ExpectedArrival: {
         type: String,
@@ -135,7 +144,6 @@ const orderSchema = new mongoose.Schema({
     },
     paymentStatus: {
         type: String,
-        default: 'pending',
     },
     couponDetails:{
         appliedCoupon:{
@@ -146,10 +154,19 @@ const orderSchema = new mongoose.Schema({
         discountedAmount:Number,
         
     },
+    couponApplied : {
+        type : Boolean
+    },
+    deliveryCharge:{
+        type : Boolean
+    },
     deliveredAt: {
         type: Date,
       
      },
+    failedPayment : {
+        type : Boolean
+    } 
     
 }, {
     timestamps: true, // Corrected: Use 'timestamps' instead of 'timeseries'

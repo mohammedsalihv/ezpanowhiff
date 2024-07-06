@@ -107,142 +107,140 @@
                         <a class="nav-link" href="/admin/categoryManagement">
                             <span class="menu-title">Category Management</span>
                             <i class="mdi mdi-crosshairs-gps menu-icon"></i>
-                            </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/productManagement">
-                                    <span class="menu-title">Product Management</span>
-                                    <i class="mdi mdi-format-list-bulleted menu-icon"></i>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/orderManagement">
-                                    <span class="menu-title">Order Management</span>
-                                    <i class="mdi mdi-chart-bar menu-icon"></i>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/couponManagement">
-                                    <span class="menu-title">Coupon Management</span>
-                                    <i class="mdi mdi-table-large menu-icon"></i>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/offerManagement">
-                                    <span class="menu-title">Offer Management</span>
-                                    <i class="mdi mdi-table-large menu-icon"></i>
-                                </a>
-                            </li>
-                            </ul>
-                            </nav>
-                            
-                            
-                            <div style="margin-top: -5%;" class="main-panel">
-                                <div class="content-wrapper">
-                                    <div class="page-header">
-                                        <h3 class="page-title">
-                                            <span style="font-size: small;" class="page-title-icon bg-gradient-primary text-white me-2">
-                                                <i class="mdi mdi-folder-multiple"></i>
-                                            </span><span style="font-size: large;"> Categories</span>
-                                        </h3>
-                            
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/productManagement">
+                            <span class="menu-title">Product Management</span>
+                            <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/orderManagement">
+                            <span class="menu-title">Order Management</span>
+                            <i class="mdi mdi-chart-bar menu-icon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/couponManagement">
+                            <span class="menu-title">Coupon Management</span>
+                            <i class="mdi mdi-table-large menu-icon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/offerManagement">
+                            <span class="menu-title">Offer Management</span>
+                            <i class="mdi mdi-table-large menu-icon"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+
+            <div style="margin-top: -5%;" class="main-panel">
+                <div class="content-wrapper">
+                    <div class="page-header">
+                        <h3 class="page-title">
+                            <span style="font-size: small;" class="page-title-icon bg-gradient-primary text-white me-2">
+                                <i class="mdi mdi-folder-multiple"></i>
+                            </span><span style="font-size: large;"> Categories</span>
+                        </h3>
+
+                    </div>
+
+                    <div style="margin-top: -2%;" class="row">
+                        <div class="col-md-6 stretch-card grid-margin">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Add Category</h4>
+                                    <div class="msg-box">
+                                        <p class="msg-para"></p>
                                     </div>
-                            
-                                    <div style="margin-top: -2%;" class="row">
-                                        <div class="col-md-6 stretch-card grid-margin">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <h4 class="card-title">Add Category</h4>
-                                                    <div class="msg-box">
-                                                        <p class="msg-para"></p>
-                                                    </div>
-                                                    <form id="new-category-form">
-                                                        <div class="form-group input-item form-child">
-                                                            <label for="category">Category</label>
-                                                            <input type="text" class="form-control" id="categoryname" name="categoryName"
-                                                                placeholder="Enter category name" required>
-                                                            <label for="category">Description</label>
-                                                            <input id="categoryDescription" type="text" class="form-control"
-                                                                name="categoryDescription" placeholder="Enter category description" required>
-                                                        </div>
-                                                        <button id="addCategory" type="submit"
-                                                            class="btn btn-add-category btn-gradient-primary me-2">Add Category</button>
-                                                    </form>
-                            
-                                                </div>
-                                            </div>
+                                    <form id="new-category-form">
+                                        <div class="form-group input-item form-child">
+                                            <label for="category">Category</label>
+                                            <input type="text" class="form-control" id="categoryname"
+                                                name="categoryName" placeholder="Enter category name" required>
+                                            <label for="category">Description</label>
+                                            <input id="categoryDescription" type="text" class="form-control"
+                                                name="categoryDescription" placeholder="Enter category description"
+                                                required>
                                         </div>
-                                    </div>
-                            
-                                    <div class="row" style="margin-top: -6%;">
-                                        <div class="col-md-12 grid-margin stretch-card">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <h4 class="card-title">Category List</h4>
-                                                    <div class="table-responsive">
-                                                        <table class="table">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Category Name</th>
-                                                                    <th>Description</th>
-                                                                    <th>Edit</th>
-                                                                    <th>Delete</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                            
-                                                                {{#each categories}}
-                            
-                                                                <tr>
-                                                                    <td>{{this.categoryName}}</td>
-                                                                    <td>{{this.description}}</td>
-                            
-                                                                    <td><button class="btn bg-gradient-warning btn-sm btn-edit"
-                                                                            onclick="editCategory('{{this._id}}')" data-category-id="">Edit</button>
-                                                                    </td>
-                                                                    <td>
-                            
-                                                                        <button class="btn btn-unlist bg-gradient-danger btn-sm"
-                                                                            onclick="DeleteCategory('{{this._id}}')"
-                                                                            data-category-id="">Delete</button>
-                            
-                                                                    </td>
-                                                                </tr>
-                            
-                                                                {{/each}}
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                                <div class="pagination-wrap">
-                                                    <ul class="pagination">
-                                                        <li class="page-item {{#if (eq page 1)}}disabled{{/if}}">
-                                                            <a class="page-link"
-                                                                href="/admin/categoryManagement?page={{add page - 1}}&limit={{limit}}">&laquo;</a>
-                                                        </li>
-                                                        {{#each pages}}
-                                                        <li class="page-item {{#if (eq page this)}}active{{/if}}">
-                                                            <a class="page-link"
-                                                                href="/admin/categoryManagement?page={{this}}&limit={{limit}}">{{this}}</a>
-                                                        </li>
-                                                        {{/each}}
-                                                        <li class="page-item {{#if (eq page totalPages)}}disabled{{/if}}">
-                                                            <a class="page-link"
-                                                                href="/admin/categoryManagement?page={{add page 1}}&limit={{limit}}">&raquo;</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                            
+                                        <button id="addCategory" type="submit"
+                                            class="btn btn-add-category btn-gradient-primary me-2">Add Category</button>
+                                    </form>
+
                                 </div>
-                                <!-- content-wrapper ends -->
                             </div>
-                            <!-- main-panel ends -->
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: -6%;">
+                        <div class="col-md-12 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Category List</h4>
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th style="font-weight: 900;">Category Name</th>
+                                                    <th style="font-weight: 900;">Description</th>
+                                                    <th style="font-weight: 900;">Edit</th>
+                                                    <th style="font-weight: 900;">Delete</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                {{#each categories}}
+
+                                                <tr>
+                                                    <td>{{this.categoryName}}</td>
+                                                    <td>{{this.description}}</td>
+
+                                                    <td><button class="btn bg-gradient-warning btn-sm btn-edit"
+                                                            onclick="editCategory('{{this._id}}')"
+                                                            data-category-id="">Edit</button>
+                                                    </td>
+                                                    <td>
+
+                                                        <button class="btn btn-unlist bg-gradient-danger btn-sm"
+                                                            onclick="DeleteCategory('{{this._id}}')"
+                                                            data-category-id="">Delete</button>
+
+                                                    </td>
+                                                </tr>
+
+                                                {{/each}}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="pagination-wrap">
+                                    <ul class="pagination">
+                                        {{#range 1 totalPages}}
+                                        <li style="background-color: #ffffff;"
+                                            class="page-item {{#if (eq ../page this)}}active{{/if}}">
+                                            <a style="background-color: #ffffff; color:#000000" class="page-link"
+                                                href="/admin/categoryManagement?page={{this}}&limit={{../limitRow}}"><strong>{{this}}</strong></a>
+                                        </li>
+                                        {{/range}}
+                                    </ul>
+                                </div>
+
+
+
                             </div>
-                            <!-- page-body-wrapper ends -->
-                            </div>
+                        </div>
+                    </div>
+                    <!-- content-wrapper ends -->
+                </div>
+                <!-- content-wrapper ends -->
+            </div>
+            <!-- main-panel ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
     <!-- container-scroller -->
     <!-- plugins:js -->
     <script src="/asset/vendors/js/vendor.bundle.base.js"></script>

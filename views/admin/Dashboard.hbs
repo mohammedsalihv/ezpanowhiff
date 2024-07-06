@@ -2,32 +2,18 @@
 <html lang="en">
 
 <head>
-  <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Admin Dashboard</title>
-  <!-- plugins:css -->
   <link rel="stylesheet" href="asset/vendors/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="asset/vendors/ti-icons/css/themify-icons.css">
   <link rel="stylesheet" href="asset/vendors/css/vendor.bundle.base.css">
   <link rel="stylesheet" href="asset/vendors/font-awesome/css/font-awesome.min.css">
-  <!-- endinject -->
-  <!-- Plugin css for this page -->
-  <link rel="stylesheet" href="asset/vendors/font-awesome/css/font-awesome.min.css" />
   <link rel="stylesheet" href="asset/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css">
-  <!-- End plugin css for this page -->
-  <!-- inject:css -->
-  <!-- endinject -->
-  <!-- Layout styles -->
   <link rel="stylesheet" href="asset/css/style.css">
-  <!-- End layout styles -->
-  <link rel="shortcut icon" href="asset/images/favicon.png" />
-  <!-- Custom CSS -->
-  <!-- <link rel="stylesheet" href="/admin/custom-css/admin-home.css" /> -->
-  <!-- <link rel="stylesheet" href="/admin/custom-css/sidebar.css" /> -->
+  <link rel="shortcut icon" href="asset/images/favicon.png">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
   <style>
-    /* Custom styles for date and day filters */
     .form-container {
       background: #f7f7f7;
       padding: 20px;
@@ -77,39 +63,23 @@
 
     .card-title {
       color: #4caf50;
-      /* Matching color with the sidebar */
     }
   </style>
 </head>
 
 <body>
   <div class="container-scroller">
-    <div class="row p-0 m-0 proBanner" id="proBanner">
-      <div class="col-md-12 p-0 m-0">
-        <div class="card-body card-body-padding d-flex align-items-center justify-content-between">
-          <div class="d-flex align-items-center justify-content-between">
-            <a href="https://www.bootstrapdash.com/product/purple-bootstrap-admin-template/"><i
-                class="mdi mdi-home me-3 text-white"></i></a>
-            <button id="bannerClose" class="btn border-0 p-0">
-              <i class="mdi mdi-close text-white mr-0"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- partial:partials/_navbar.html -->
-    <!-- Navbar starts -->
     <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
         <a class="navbar-brand brand-logo" href="/home">
           <h4 style="color: black; font-size: 30px; margin-right: 45px;">EzpanoWhiff</h4>
         </a>
-        <a class="navbar-brand brand-logo-mini" href="/home"><img src="/asset/images/logo-mini.svg" alt="logo" /></a>
+        <a class="navbar-brand brand-logo-mini" href="/home"><img src="/asset/images/logo-mini.svg" alt="logo"></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-stretch justify-content-end">
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item">
-            <a class="nav-link"  onclick="adminLogout()">
+            <a class="nav-link" onclick="adminLogout()">
               <i class="mdi mdi-logout"></i> Logout
             </a>
           </li>
@@ -118,26 +88,18 @@
           data-toggle="offcanvas">
           <span class="mdi mdi-menu"></span>
         </button>
-        
       </div>
     </nav>
-    <!-- Navbar ends -->
-    <!-- partial -->
     <div class="container-fluid page-body-wrapper">
-      <!-- partial:partials/_sidebar.html -->
-      <!-- Sidebar starts -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item nav-profile">
             <a href="#" class="nav-link">
               <div class="nav-profile-image">
-
                 <span class="login-status online"></span>
-                <!--change to offline or busy as needed-->
               </div>
               <div class="nav-profile-text d-flex flex-column">
                 <span class="font-weight-bold mb-2">ADMIN</span>
-
               </div>
               <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
             </a>
@@ -149,9 +111,8 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/admin/salesReport">
+            <a class="nav-link" href="/admin/sales-report/">
               <span class="menu-title">Sales Report</span>
-
               <i class="mdi mdi-chart-bar menu-icon"></i>
             </a>
           </li>
@@ -191,150 +152,142 @@
               <i class="mdi mdi-table-large menu-icon"></i>
             </a>
           </li>
-
-
         </ul>
       </nav>
-      <!-- Sidebar ends -->
-      <!-- partial -->
       <div style="margin-top: -5%;" class="main-panel">
         <div class="content-wrapper">
           <div class="page-header">
             <h3 class="page-title">
               <span style="font-size: small;" class="page-title-icon bg-gradient-primary text-white me-2">
                 <i class="mdi mdi-home"></i>
-              </span><span style="font-size: large;">Dashboard</span>
+              </span>
+              <span style="font-size: large;"> Dashboard</span>
             </h3>
-
           </div>
-          <!-- Filter Form -->
-    
-
-
-                    
-            <!-- Dashboard stats -->
-            <div class="row">
-              <div class="col-md-3 stretch-card grid-margin">
-                <div class="card bg-gradient-danger card-img-holder text-white">
-                  <div class="card-body">
-                    <img src="asset/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                    <h4 class="font-weight-normal mb-3">Revenue<i class="mdi mdi-chart-line mdi-24px float-end"></i>
-                    </h4>
-                    <h2 class="mb-5 total-revenue"> ₹ {{this.totalAmount}}</h2>
-                   
+          <div class="form-container container-divs mb-4">
+            <form action="#" id="filter-form">
+              <div class="filter-container">
+                <div class="filter-item-div filter-dates">
+                  <div class="from-date date-div">
+                    <input type="date" name="from-date" class="from-date date-item input-item">
+                  </div>
+                  <div class="to-date date-div">
+                    <input type="date" name="to-date" class="to-date date-item input-item">
                   </div>
                 </div>
-              </div>
-              <div class="col-md-3 stretch-card grid-margin">
-                <div class="card bg-gradient-info card-img-holder text-white">
-                  <div class="card-body">
-                    <img src="asset/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                    <h4 class="font-weight-normal mb-3">Orders <i class="mdi mdi-bookmark-outline mdi-24px float-end"></i>
-                    </h4>
-                    <h2 class="mb-5 total-orders">{{this.ordersCount}}</h2>
-                  
+                <div class="filter-item-div">
+                  <div class="filter-container">
+                    <select style="width: 100%;" name="filter-type" id="filterBy" class="form-select ml-4">
+                      <option value="custom">Custom</option>
+                      <option value="daily" selected>Daily</option>
+                      <option value="weekly">Weekly</option>
+                      <option value="monthly">Monthly</option>
+                      <option value="yearly">Yearly</option>
+                    </select>
                   </div>
                 </div>
-              </div>
-              <div class="col-md-3 stretch-card grid-margin">
-                <div class="card bg-gradient-success card-img-holder text-white">
-                  <div class="card-body">
-                    <img src="asset/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                    <h4 class="font-weight-normal mb-3">Users<i class="mdi mdi-diamond mdi-24px float-end"></i>
-                    </h4>
-                    <h2 class="mb-5 total-users">{{this.users}}</h6>
-                   
-                  </div>
+                <div class="filter-item-div">
+                  <button type="submit" class="btn-apply">Apply</button>
                 </div>
               </div>
-              <div class="col-md-3 stretch-card grid-margin">
-                <div class="card bg-gradient-warning card-img-holder text-white">
-                  <div class="card-body">
-                    <img src="asset/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                    <h4 class="font-weight-normal mb-3">Products <i class="mdi mdi-cube-outline mdi-24px float-end"></i>
-                    </h4>
-                    <h2 class="mb-5 total-products">{{this.productCounts}}</h2>
-                    
-                  </div>
+            </form>
+          </div>
+          <div class="row">
+                    <div class="col-md-3 stretch-card grid-margin">
+                        <div class="card bg-gradient-danger card-img-holder text-white">
+                            <div class="card-body">
+                                <img src="asset/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image">
+                                <h4 class="font-weight-normal mb-3">Revenue<i class="mdi mdi-chart-line mdi-24px float-end"></i></h4>
+                                <h2 class="mb-5 total-revenue"> ₹ </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 stretch-card grid-margin">
+                        <div class="card bg-gradient-info card-img-holder text-white">
+                            <div class="card-body">
+                                <img src="asset/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image">
+                                <h4 class="font-weight-normal mb-3">Orders <i class="mdi mdi-bookmark-outline mdi-24px float-end"></i></h4>
+                                <h2 class="mb-5 total-orders"></h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 stretch-card grid-margin">
+                        <div class="card bg-gradient-success card-img-holder text-white">
+                            <div class="card-body">
+                                <img src="asset/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image">
+                                <h4 class="font-weight-normal mb-3">Users<i class="mdi mdi-diamond mdi-24px float-end"></i></h4>
+                                <h2 class="mb-5 total-users"></h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 stretch-card grid-margin">
+                        <div class="card bg-gradient-warning card-img-holder text-white">
+                            <div class="card-body">
+                                <img src="asset/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image">
+                                <h4 class="font-weight-normal mb-3">Products <i class="mdi mdi-cube-outline mdi-24px float-end"></i></h4>
+                                <h2 class="mb-5 total-products"></h2>
+                                <h6 class="card-text">Updated now</h6>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-            <!-- Dashboard charts -->
-
-            <div class="container-divs">
-              <div class="charts-container">
-                <div class="line-chart-div">
-                  <canvas id="myChart-lines"></canvas>
+                <div class="container-divs">
+                    <div class="charts-container">
+                        <div class="line-chart-div">
+                            <canvas id="myChart-lines"></canvas>
+                        </div>
+                        <div class="product-chart-div">
+                            <canvas id="myChart-products"></canvas>
+                        </div>
+                    </div>
                 </div>
-                <div class="product-chart-div">
-                  <canvas id="myChart-products"></canvas>
+                <div class="row">
+                    <div class="col-md-6 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Products</h4>
+                                <div class="table-responsive">
+                                    <table class="table product-table">
+                                        <thead>
+                                        <tr>
+                                            <th>Products</th>
+                                            <th>Count</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="product-table-body">
+                                        <!-- Top products will be dynamically inserted here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Categories</h4>
+                                <div class="table-responsive">
+                                    <table class="table category-table">
+                                        <thead>
+                                        <tr>
+                                            <th>Categories</th>
+                                            <th>Count</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="category-table-body">
+                                        <!-- Top categories will be dynamically inserted here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-
-            <div class="row">
-             <div class="col-md-6 grid-margin stretch-card">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">Products</h4>
-            <div class="table-responsive">
-                <table class="table product-table">
-                    <thead>
-                        <tr>
-                         
-                        </tr>
-                    </thead>
-                    <tbody class="product-table-body">
-                        {{#each namesOfProducts}}
-                        <tr>
-                            <td>{{this}}</td>
-                        </tr>
-                        {{/each}}
-                    </tbody>
-                </table>
+                </main>
             </div>
         </div>
     </div>
 </div>
-
-              <div class="col-md-6 grid-margin stretch-card">
-                <div class="card">
-                  <div class="card-body">
-                    <h4 class="card-title">Categories</h4>
-                    <div class="table-responsive">
-                      <table class="table category-table ">
-                        <thead>
-                          <tr>
-                          
-                          </tr>
-                        </thead>
-                        <tbody class="category-table-body">
-                          {{#each namesOfcategory}}
-                          <tr>
-                            <td>{{this}}</td>
-                          </tr>
-                          {{/each}}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-            </div>
-            </main>
-
-          </div>
-        
-
-          
-          
-          <!-- content-wrapper ends -->
-        </div>
-        <!-- main-panel ends -->
-      </div>
-      <!-- page-body-wrapper ends -->
-    </div>
     <!-- container-scroller -->
     <!-- plugins:js -->
     <script src="asset/vendors/js/vendor.bundle.base.js"></script>
@@ -355,6 +308,223 @@
     <!-- End custom js for this page -->
     <!-- Fetch and Display Dashboard Data -->
      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-     <script src="/Javascript/salesReport.js"></script>
    
-   
+
+<script>
+  let productsChart, categoryChart;
+
+document.addEventListener("DOMContentLoaded", async function () {
+  try {
+    const response = await fetch("/admin/dashboard/data");
+    if (!response.ok) throw new Error("Network response was not ok");
+    const data = await response.json();
+    updateDashboard(data);
+    console.log(data)
+  } catch (error) {
+    failureMessage("Failed to load dashboard data");
+    console.error("Error fetching dashboard data:", error);
+  }
+});
+
+
+
+ async function updateDashboard(data) {
+    try {
+        document.querySelector(".total-users").textContent = `Users: ${data.totalUsers}`;
+        document.querySelector(".total-orders").textContent = `Orders: ${data.totalOrders}`;
+        document.querySelector(".total-revenue").textContent = `Revenue: ₹${data.totalRevenue}`;
+        document.querySelector(".total-products").textContent = `Products: ${data.totalProducts}`;
+
+        populateTable(data);
+        createCharts(data);
+        
+        successMessage("Dashboard updated successfully");
+    } catch (error) {
+        failureMessage("Failed to update dashboard");
+        console.error("Error updating dashboard:", error);
+    }
+}
+
+
+
+       function populateTable(data) {
+        const productBody = document.querySelector('.product-table tbody');
+        const categoryBody = document.querySelector('.category-table tbody');
+
+        productBody.innerHTML = data.topProducts.map(item => `<tr><td>${item.productName || 'Unknown'}</td><td>${item.count || 'Unknown'}</td></tr>`).join('');
+        categoryBody.innerHTML = data.topCategoryies.map(item => `<tr><td>${item.categoryName || 'Unknown'}</td><td>${item.count || 'Unknown'}</td></tr>`).join('');
+      }
+
+
+ function createCharts(data) {
+    if (productsChart) productsChart.destroy();
+    if (categoryChart) categoryChart.destroy();
+
+    const myChartProducts = document.getElementById("myChart-products");
+    productsChart = new Chart(myChartProducts, {
+        type: "bar",
+        data: {
+            labels: data.topProducts.map(item => item.productName),
+            datasets: [{
+                label: "Most Selling Products",
+                data: data.topProducts.map(item => item.count),
+                borderWidth: 1,
+            }],
+        },
+        options: {
+            animation: { duration: 0 },
+            scales: { y: { beginAtZero: true } },
+        },
+    });
+
+
+
+ const myChartLines = document.getElementById("myChart-lines");
+    categoryChart = new Chart(myChartLines, {
+        type: "line",
+        data: {
+            labels: data.topCategories.map(item => item.categoryName),
+            datasets: [{
+                label: "Most Selling Categories",
+                data: data.topCategories.map(item => item.count),
+                borderWidth: 1,
+            }],
+        },
+        options: {
+            animation: { duration: 0 },
+            scales: { y: { beginAtZero: true } },
+        },
+    });
+}
+
+
+
+const filterForm = document.querySelector("#filter-form");
+filterForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    
+    let fromDate = filterForm.elements["from-date"].value;
+    let toDate = filterForm.elements["to-date"].value;
+    const filterType = document.querySelector("#filterBy").value;
+
+    if (!validateDates(fromDate, toDate)) return;
+
+    try {
+        const response = await fetch(`/admin/dashboard/data/custom?filterType=${filterType}&fromDate=${fromDate}&toDate=${toDate}`);
+        if (!response.ok) throw new Error("Network response was not ok");
+        const data = await response.json();
+        if (data.error) throw new Error(data.error);
+
+        updateDashboard(data);
+    } catch (error) {
+        failureMessage("Failed to load filtered data");
+        console.error("Error fetching filtered data:", error);
+    }
+});
+
+function validateDates(fromDate, toDate) {
+  const today = new Date().toISOString().split("T")[0];
+
+  if (fromDate > today || toDate > today) {
+    failMessage("Dates cannot be in the future.");
+    return false;
+  }
+
+  if (fromDate > toDate) {
+    failMessage("From date cannot be later than To date.");
+    return false;
+  }
+
+  return true;
+}
+
+function successMessage(message) {
+  Swal.fire({
+    text: message,
+    position: "top",
+    timer: 2000,
+    background: "green",
+    color: "white",
+    showConfirmButton: false,
+  });
+}
+
+function failMessage(message) {
+    Swal.fire({
+        text: message,
+        position: 'top',
+        timer: 2000,
+        background: 'red',
+        color: 'white',
+        showConfirmButton: false
+    });
+}
+
+</script>
+
+<script>
+function adminLogout() {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You will be logged out!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, log out!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire(
+                'Logged out!',
+                'You have been logged out.',
+                'success'
+            ).then(() => {
+                window.location.href = "/admin/adminLogout";
+            });
+        }
+    });
+}
+</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+  <script src="asset/vendors/js/vendor.bundle.base.js"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page -->
+  <script src="asset/vendors/chart.js/chart.umd.js"></script>
+  <script src="asset/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+  <!-- End plugin js for this page -->
+  <!-- inject:js -->
+  <script src="asset/js/off-canvas.js"></script>
+  <script src="asset/js/misc.js"></script>
+  <script src="asset/js/settings.js"></script>
+  <script src="asset/js/todolist.js"></script>
+  <script src="asset/js/jquery.cookie.js"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page -->
+  <script src="asset/js/dashboard.js"></script>
+  <!-- End custom js for this page -->
+  <!-- Fetch and Display Dashboard Data -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    function adminLogout() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You will be logged out!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, log out!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Logged out!',
+                    'You have been logged out.',
+                    'success'
+                ).then(() => {
+                    window.location.href = "/admin/adminLogout";
+                });
+            }
+        });
+    }
+</script>

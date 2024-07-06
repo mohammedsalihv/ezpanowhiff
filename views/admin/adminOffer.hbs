@@ -156,15 +156,15 @@
                                     </div>
                                     <div class="table-responsive">
                                         <table class="table table-striped">
-                                            <thead>
+                                            <thead style="font-weight: 900;">
                                                 <tr>
-                                                    <th>Product/category wise</th>
-                                                    <th>Offer type</th>
-                                                    <th>Start date</th>
-                                                    <th>End date</th>
-                                                    <th>Offer value </th>
-                                                    <th>Description</th>
-                                                    <th>Remove</th>
+                                                    <th  style="font-weight: 900;">Product/category wise</th>
+                                                    <th  style="font-weight: 900;">Offer type</th>
+                                                    <th  style="font-weight: 900;">Start date</th>
+                                                    <th  style="font-weight: 900;">End date</th>
+                                                    <th  style="font-weight: 900;">Offer value </th>
+                                                    <th  style="font-weight: 900;">Description</th>
+                                                    <th  style="font-weight: 900;">Remove</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -194,6 +194,17 @@
                                         </table>
                                     </div>
                                 </div>
+                                <div class="pagination-wrap">
+                                    <ul class="pagination">
+                                        {{#range 1 totalPages}}
+                                        <li style="background-color: #ffffff;"
+                                            class="page-item {{#if (eq ../page this)}}active{{/if}}">
+                                            <a style="background-color: #ffffff; color:#000000" class="page-link"
+                                                href="/admin/offerManagement?page={{this}}&limit={{../limitRow}}"><strong>{{this}}</strong></a>
+                                        </li>
+                                        {{/range}}
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -220,6 +231,7 @@
     <script src="/asset/js/jquery.cookie.js"></script>
     <!-- endinject -->
 </body>
+
 </html>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>

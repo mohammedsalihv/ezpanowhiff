@@ -49,12 +49,7 @@
         <a class="navbar-brand brand-logo-mini" href="/home"><img src="/asset/images/logo-mini.svg" alt="logo" /></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-stretch justify-content-end">
-        <ul class="navbar-nav navbar-nav-right">
-          <li class="nav-item">
-            <a class="nav-link" href="/admin/products/add">
-              <i class="mdi mdi-plus-box"></i> Add Product
-            </a>
-          </li>
+        <ul class="navbar-nav navbar-nav-right">`
           <li class="nav-item">
             <a class="nav-link" onclick="adminLogout()">
               <i class="mdi mdi-logout"></i> Logout
@@ -157,16 +152,16 @@
             <div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Users</h4>
+                 
                   <div class="table-responsive">
                     <table class="table table-striped">
                       <thead>
                         <tr>
-                          <th>Username</th>
-                          <th>Email</th>
-                          <th>Phone</th>
-                          <th>Status</th>
-                          <th>Actions</th>
+                          <th style="font-weight: 900;">Username</th>
+                          <th style="font-weight: 900;">Email</th>
+                          <th style="font-weight: 900;">Phone</th>
+                          <th style="font-weight: 900;">Status</th>
+                          <th style="font-weight: 900;">Actions</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -176,208 +171,196 @@
                           <td>{{this.email}}</td>
                           <td>{{this.phone}}</td>
                           <td class="user-status">
-                            <span
-                               class="btn bg-gradient-primary btn-sm btn-list">
-                               Active
-                            </span>
+                            <span class="btn bg-gradient-primary btn-sm btn-list">Active</span>
                           </td>
                           <td>
                             {{#if this.block}}
-                            <button onclick="block('{{this._id}}')"  class="btn btn-gradient-danger btn-sm block"
-                              data-user-id="">Block</button>
+                            <button onclick="unblock('{{this._id}}')" class="btn btn-gradient-danger btn-sm activate"
+                              data-user-id="">block</button>
                             {{else}}
-
-                            <button  onclick="unblock('{{this._id}}')" class="btn btn-gradient-success btn-sm activate"
-                              data-user-id="">Unblock</button>
-
+                            <button onclick="block('{{this._id}}')" class="btn btn-gradient-success btn-sm block"
+                              data-user-id="">unblock</button>
                             {{/if}}
                           </td>
-
                         </tr>
                         {{/each}}
                       </tbody>
                     </table>
                   </div>
                 </div>
-                
+                <div class="pagination-wrap">
+                  <ul class="pagination">
+                    {{#range 1 totalPages}}
+                    <li style="background-color: #ffffff;" class="page-item {{#if (eq ../page this)}}active{{/if}}">
+                      <a style="background-color: #ffffff; color:#000000" class="page-link"
+                        href="/admin/categoryManagement?page={{this}}&limit={{../limitRow}}"><strong>{{this}}</strong></a>
+                    </li>
+                    {{/range}}
+                  </ul>
+                </div>
               </div>
-              
+
             </div>
-            
+
           </div>
-          <div style="margin-top: 5%; " class="text-center">
-        <button style="background-color:rgb(255, 255, 255); font-size:large" class="backward" id="first"></button>
-        <button style="background-color:rgb(0, 0, 0); font-size:large" class="backward" id="prev"></button>
-        <button style="background-color:rgb(0, 0, 0)" class="forward" id="next"></button>
-        <button style="background-color:rgb(255, 255, 255)" class="forward" id="last"></button>
-        <div class="page-numbers" id="pageNumbers"></div>
-      </div>
         </div>
 
-        
+
         <!-- content-wrapper ends -->
       </div>
-            <!-- main-panel ends -->
-        </div>
-        <!-- page-body-wrapper ends -->
+      <!-- main-panel ends -->
     </div>
- 
-    <!-- container-scroller -->
-    <!-- plugins:js -->
-    <script src="/asset/vendors/js/vendor.bundle.base.js"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <script src="/asset/vendors/chart.js/chart.umd.js"></script>
-    <script src="/asset/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
-    <script src="/asset/js/off-canvas.js"></script>
-    <script src="/asset/js/misc.js"></script>
-    <script src="/asset/js/settings.js"></script>
-    <script src="/asset/js/todolist.js"></script>
-    <script src="/asset/js/jquery.cookie.js"></script>
-    <!-- endinject -->
+    <!-- page-body-wrapper ends -->
+  </div>
+
+  <!-- container-scroller -->
+  <!-- plugins:js -->
+  <script src="/asset/vendors/js/vendor.bundle.base.js"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page -->
+  <script src="/asset/vendors/chart.js/chart.umd.js"></script>
+  <script src="/asset/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+  <!-- End plugin js for this page -->
+  <!-- inject:js -->
+  <script src="/asset/js/off-canvas.js"></script>
+  <script src="/asset/js/misc.js"></script>
+  <script src="/asset/js/settings.js"></script>
+  <script src="/asset/js/todolist.js"></script>
+  <script src="/asset/js/jquery.cookie.js"></script>
+  <!-- endinject -->
 </body>
+
 </html>
 
 <script>
-  function block(Id){
-    window.location.href=`/admin/unBlockUser/${Id}`
-  }
-  function unblock(Id){
-    window.location.href=`/admin/blockUser/${Id}`
-  }
-</script>
-
-<script>
-  let pageList = new Array()
-  let currentPage = 1
-  const numberPerPage = 12
-  const rows = Array.prototype.slice.call(document.querySelectorAll('tbody tr'))
-  const firstBtn = document.getElementById('first')
-  const lastBtn = document.getElementById('last')
-  const prevBtn = document.getElementById('prev')
-  const nextBtn = document.getElementById('next')
-  const numberOfPages = getNumberOfPages()
-  const pageNumbers = document.getElementById('pageNumbers')
-
-  firstBtn.addEventListener('click', firstPage, false)
-  lastBtn.addEventListener('click', lastPage, false)
-  prevBtn.addEventListener('click', prevPage, false)
-  nextBtn.addEventListener('click', nextPage, false)
-
-  window.onload = load(numberOfPages)
-
-  function getNumberOfPages() {
-    return Math.ceil(rows.length / numberPerPage)
-  }
-
-  function generatePageNumbers(pageCount) {
-    for (let j = 1; j <= pageCount; j++) {
-      const pageNumber = document.createElement('span')
-      pageNumber.innerHTML = j
-      pageNumber.classList.add('page-number')
-      pageNumbers.appendChild(pageNumber)
-      if (j === currentPage) {
-        pageNumber.classList.add('active')
-      }
-      pageNumber.addEventListener('click', jumpToPage, false)
-    }
-  }
-
-  function jumpToPage(event) {
-    currentPage = event.target.innerHTML
-    loadRows()
-    activePageNum(currentPage)
-  }
-
-  function activePageNum(activePage) {
-    const pageNumbers = Array.prototype.slice.call(document.querySelectorAll('.page-number'))
-    pageNumbers.forEach(function (pageNumber) {
-      if (parseInt(pageNumber.innerHTML) === activePage) {
-        pageNumber.classList.add('active')
-      } else {
-        pageNumber.classList.remove('active')
-      }
-    })
-  }
-
-  function nextPage() {
-    currentPage += 1
-    loadRows()
-    activePageNum(currentPage)
-  }
-
-  function prevPage() {
-    currentPage -= 1
-    loadRows()
-    activePageNum(currentPage)
-  }
-
-  function firstPage() {
-    currentPage = 1
-    loadRows()
-    activePageNum(currentPage)
-  }
-
-  function lastPage() {
-    currentPage = numberOfPages
-    loadRows()
-    activePageNum(currentPage)
-  }
-
-  function loadRows() {
-    const start = ((currentPage - 1) * numberPerPage)
-    const end = start + numberPerPage
-    for (let i = 0; i < pageList.length; i++) {
-      pageList[i].classList.add('hidden')
-    }
-    pageList = rows.slice(start, end)
-    drawRows()
-    buttonStates()
-  }
-
-  function drawRows() {
-    for (let i = 0; i < pageList.length; i++) {
-      pageList[i].classList.remove('hidden')
-    }
-  }
-
-  function buttonStates() {
-    document.getElementById('next').disabled = currentPage == numberOfPages ? true : false
-    document.getElementById('prev').disabled = currentPage == 1 ? true : false
-    document.getElementById('first').disabled = currentPage == 1 ? true : false
-    document.getElementById('last').disabled = currentPage == numberOfPages ? true : false
-  }
-
-  function load(pageCount) {
-    generatePageNumbers(numberOfPages)
-    loadRows()
-  }
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
-<script>
-function adminLogout() {
-    Swal.fire({
+  async function block(Id) {
+    try {
+      const confirmation = await Swal.fire({
         title: 'Are you sure?',
-        text: "You will be logged out!",
+        text: "This user will be blocked!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, log out!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire(
-                'Logged out!',
-                'You have been logged out.',
-                'success'
-            ).then(() => {
-                window.location.href = "/admin/adminLogout";
-            });
+        confirmButtonText: 'Yes, block!'
+      });
+
+      if (confirmation.isConfirmed) {
+        const response = await fetch(`/admin/blockUser/${Id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          console.error('Fetch error:', response.statusText);
+          await Swal.fire({
+            title: 'Error',
+            text: `Error: ${response.statusText}`,
+            icon: 'error',
+            confirmButtonText: 'OK',
+          });
+          return; // Exit the function if there's an error
         }
+
+        const result = await response.json();
+        await Swal.fire({
+          icon: 'success',
+          title: 'Blocked',
+          text: 'User account has been blocked',
+          confirmButtonText: 'OK',
+        });
+
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error('An unexpected error occurred:', error);
+      await Swal.fire({
+        title: 'Error',
+        text: 'An unexpected error occurred. Please try again later.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+    }
+  }
+
+  async function unblock(Id) {
+    try {
+      const confirmation = await Swal.fire({
+        title: 'Are you sure?',
+        text: "This user will be unblocked!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, unblock!'
+      });
+
+      if (confirmation.isConfirmed) {
+        const response = await fetch(`/admin/unBlockUser/${Id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          await Swal.fire({
+            title: 'Error',
+            text: `Error: ${response.statusText}`,
+            icon: 'error',
+            confirmButtonText: 'OK',
+          });
+          return;
+        }
+
+        const result = await response.json();
+        await Swal.fire({
+          icon: 'success',
+          title: 'Unblocked',
+          text: 'User account has been unblocked',
+          confirmButtonText: 'OK',
+        });
+
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error('An unexpected error occurred:', error);
+      await Swal.fire({
+        title: 'Error',
+        text: 'An unexpected error occurred. Please try again later.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+    }
+  }
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script>
+  function adminLogout() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You will be logged out!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, log out!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Logged out!',
+          'You have been logged out.',
+          'success'
+        ).then(() => {
+          window.location.href = "/admin/adminLogout";
+        });
+      }
     });
-}
+  }
 </script>

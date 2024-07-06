@@ -7,7 +7,7 @@ const Coupon = require('../models/couponSchema')
 const couponLists = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
-        const limitPerPage = parseInt(req.query.limit) || 7;
+        const limitPerPage = parseInt(req.query.limit) || 5;
 
         const totalCoupons = await Coupon.countDocuments({});
         const totalPages = Math.ceil(totalCoupons / limitPerPage);

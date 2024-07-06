@@ -1,179 +1,63 @@
-
 <section>
-
-    <div id="seconnd-list" class="card-body">
-    <div class="d-flex justify-content-between">
-        <button style="margin-bottom: 2%; background-color:black; padding:5px; border-radius:5px;" id="back-product-btn">
-            <a style="color: #ffffff;" id="back-txt" href="/admin/productManagement/"> Go Back</a>
-        </button>
-    </div>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead style="background-color:#ffffff; color:white;" class="text-center">
-                <tr>
-                    <th style="color: rgb(0, 0, 0);">Images</th>
-                    <th  style="color: rgb(0, 0, 0);">Product name</th>
-                    <th  style="color: rgb(0, 0, 0);">Category</th>
-                    <th  style="color: rgb(0, 0, 0);">Brand</th>
-                    <th  style="color: rgb(0, 0, 0);">Price</th>
-                    <th  style="color: rgb(0, 0, 0);">Promotional Price</th>
-                    <th  style="color: rgb(0, 0, 0);">Trending</th>
-                    <th  style="color: rgb(0, 0, 0);">Offers</th>
-                    <th  style="color: rgb(0, 0, 0);">How to use</th>
-                    <th  style="color: rgb(0, 0, 0);">Ingredients</th>
-                    <th  style="color: rgb(0, 0, 0);">Features</th>
-                    <th  style="color: rgb(0, 0, 0);">Tags</th>
-                    <th  style="color: rgb(0, 0, 0);">Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each products}}
-                <tr>
-                    <td>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="circular-image-container">
-                                <img class="img-fluid rounded-circle" src="/images/cropped_{{this.img1}}" alt="Image 1">
-                            </div><br>
-                            <div class="circular-image-container">
-                                <img class="img-fluid rounded-circle" src="/images/cropped_{{this.img2}}" alt="Image 2">
-                            </div><br>
-                            <div class="circular-image-container">
-                                <img class="img-fluid rounded-circle" src="/images/cropped_{{this.img3}}" alt="Image 3">
+    <div id="second-list" class="card-body">
+        <div class="d-flex justify-content-between">
+            <button onclick="window.history.back()" style="margin-bottom: 2%; background-color:black; padding:5px; border-radius:5px; color:#ffffff" id="back-product-btn">
+              Go Back
+            </button>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead style="background-color:#ffffff; color:white;" class="text-center">
+                    <tr>
+                        <th style="color: rgb(0, 0, 0);">Images</th>
+                        <th style="color: rgb(0, 0, 0);">Product name</th>
+                        <th style="color: rgb(0, 0, 0);">Category</th>
+                        <th style="color: rgb(0, 0, 0);">Brand</th>
+                        <th style="color: rgb(0, 0, 0);">Price</th>
+                        <th style="color: rgb(0, 0, 0);">Promotional Price</th>
+                        <th style="color: rgb(0, 0, 0);">Trending</th>
+                        <th style="color: rgb(0, 0, 0);">Offers</th>
+                        <th style="color: rgb(0, 0, 0);">How to use</th>
+                        <th style="color: rgb(0, 0, 0);">Ingredients</th>
+                        <th style="color: rgb(0, 0, 0);">Features</th>
+                        <th style="color: rgb(0, 0, 0);">Tags</th>
+                        <th style="color: rgb(0, 0, 0);">Description</th>
+                    </tr>
+                </thead>
+                <tbody >
+                    {{#each products}}
+                    <tr>
+                        <td style="background-color: #ffffff;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="circular-image-container">
+                                    <img class="img-fluid rounded-circle" src="/images/cropped_{{this.img1}}" alt="Image 1">
+                                </div><br>
+                                <div class="circular-image-container">
+                                    <img class="img-fluid rounded-circle" src="/images/cropped_{{this.img2}}" alt="Image 2">
+                                </div><br>
+                                <div class="circular-image-container">
+                                    <img class="img-fluid rounded-circle" src="/images/cropped_{{this.img3}}" alt="Image 3">
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                    <td>{{this.productName}}</td>
-                    <td>{{this.category}}</td>
-                    <td>{{this.brand}}</td>
-                    <td>{{this.price}}</td>
-                    <td>{{this.oldPrice}}</td>
-                    <td>{{this.trending}}</td>
-                    <td>{{this.offer}}</td>
-                    <td>{{this.howTouse}}</td>
-                    <td>{{this.Ingredients}}</td>
-                    <td>{{this.features}}</td>
-                    <td>{{this.tags}}</td>
-                    <td>{{this.description}}</td>
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
+                        </td>
+                        <td style="background-color: #ffffff;">{{this.productName}}</td>
+                        <td style="background-color: #ffffff;">{{this.category.categoryName}}</td>
+                        <td style="background-color: #ffffff;">{{this.brand}}</td>
+                        <td style="background-color: #ffffff;">{{this.price}}</td>
+                        <td style="background-color: #ffffff;">{{this.oldPrice}}</td>
+                        <td style="background-color: #ffffff;">{{this.trending}}</td>
+                        <td style="background-color: #ffffff;"> {{this.offer}}</td>
+                        <td style="background-color: #ffffff;">{{this.howTouse}}</td>
+                        <td style="background-color: #ffffff;">{{this.Ingredients}}</td>
+                        <td style="background-color: #ffffff;">{{this.features}}</td>
+                        <td style="background-color: #ffffff;"> {{this.tags}}</td>
+                        <td style="background-color: #ffffff;">{{this.description}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
     </div>
-   
-</div>
-
-	<div style="margin-top: 5%; " class="text-center">
-		<button  class="backward" id="first"></button>
-		<button style="font-size: xx-large;"  class="backward" id="prev"></button>
-		<button class="forward" id="next"></button>
-		<button  class="forward" id="last"></button>
-		<div class="page-numbers" id="pageNumbers"></div>
-	</div>
-
-  </div>
-</div>
-	
-  </div> <!-- card-body end// -->
 </section>
-<script>
-let currentPage = 1;
-const rows = Array.prototype.slice.call(document.querySelectorAll('tbody tr'));
-const firstBtn = document.getElementById('first');
-const lastBtn = document.getElementById('last');
-const prevBtn = document.getElementById('prev');
-const nextBtn = document.getElementById('next');
-const numberPerPage = 2; // Show 5 rows per page
-const numberOfPages = getNumberOfPages();
-const pageNumbers = document.getElementById('pageNumbers');
 
-firstBtn.addEventListener('click', firstPage, false);
-lastBtn.addEventListener('click', lastPage, false);
-prevBtn.addEventListener('click', prevPage, false);
-nextBtn.addEventListener('click', nextPage, false);
 
-window.onload = load(numberOfPages);
-
-function getNumberOfPages() {
-  return Math.ceil(rows.length / numberPerPage);
-}
-
-function generatePageNumbers(pageCount) {
-  for (let j = 1; j <= pageCount; j++) {
-    const pageNumber = document.createElement('span');
-    pageNumber.innerHTML = j;
-    pageNumber.classList.add('page-number');
-    pageNumbers.appendChild(pageNumber);
-    if (j === currentPage) {
-      pageNumber.classList.add('active');
-    }
-    pageNumber.addEventListener('click', jumpToPage, false);
-  }
-}
-
-function jumpToPage(event) {
-  currentPage = parseInt(event.target.innerHTML);
-  loadRows();
-  activePageNum(currentPage);
-}
-
-function activePageNum(activePage) {
-  const pageNumbers = Array.prototype.slice.call(document.querySelectorAll('.page-number'));
-  pageNumbers.forEach(function(pageNumber) {
-    if (parseInt(pageNumber.innerHTML) === activePage) {
-      pageNumber.classList.add('active');
-    } else {
-      pageNumber.classList.remove('active');
-    }
-  });
-}
-
-function nextPage() {
-  currentPage += 1;
-  loadRows();
-  activePageNum(currentPage);
-}
-
-function prevPage() {
-  currentPage -= 1;
-  loadRows();
-  activePageNum(currentPage);
-}
-
-function firstPage() {
-  currentPage = 1;
-  loadRows();
-  activePageNum(currentPage);
-}
-
-function lastPage() {
-  currentPage = numberOfPages;
-  loadRows();
-  activePageNum(currentPage);
-}
-
-function loadRows() {
-  const start = (currentPage - 1) * numberPerPage;
-  const end = start + numberPerPage;
-  for (let i = 0; i < rows.length; i++) {
-    if (i >= start && i < end) {
-      rows[i].style.display = 'table-row';
-    } else {
-      rows[i].style.display = 'none';
-    }
-  }
-  buttonStates();
-}
-
-function buttonStates() {
-  document.getElementById('next').disabled = currentPage === numberOfPages;
-  document.getElementById('prev').disabled = currentPage === 1;
-  document.getElementById('first').disabled = currentPage === 1;
-  document.getElementById('last').disabled = currentPage === numberOfPages;
-}
-
-function load(pageCount) {
-  generatePageNumbers(pageCount);
-  loadRows();
-}
-
-</script>

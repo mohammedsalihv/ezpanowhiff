@@ -153,18 +153,27 @@
                                         <table class="table table-hover">
                                             <thead style="text-align: center; font-weight:900; font-size:larger;">
                                                 <tr>
-                                                    <th>Order ID</th>
-                                                    <th>Total</th>
-                                                    <th>Payment Method</th>
-                                                    <th>Order Status</th>
-                                                    <th>More</th>
+                                                    <th style="font-weight: 900;">Order ID</th>
+                                                    <th style="font-weight: 900;">Total</th>
+                                                    <th style="font-weight: 900;">Payment Method</th>
+                                                    <th style="font-weight: 900;">Order Status</th>
+                                                    <th style="font-weight: 900;">More</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="text-center">
                                                 <!-- Orders printed as a loop -->
                                               {{#each orders}}
                                                 <tr>
-                                                    <td class="td-admin-order">{{this.nameRandom}}</td>
+                                                   
+                                                    <td class="td-admin-order">
+                                                         {{#if this.returnRequest}}
+                                                         <div class="text-left">
+                                                             <i style="color: orange;" class="fa-solid fa-bell"></i>
+                                                         </div>
+                                                        {{/if}}
+                                                        {{this.nameRandom}}
+
+                                                    </td>
                                                    <td  class="td-admin-order">{{this.totalAmount}}</td>
                                                   <td  class="td-admin-order">{{this.paymentMethod}}</td>
                                                    <td  class="td-admin-order">{{this.orderStatus}}</td>
@@ -178,22 +187,15 @@
                                         </table>
                                     </div>
                                 </div>
-                                 <div class="pagination-wrap">
-                                    <ul  class="pagination">
-                                        <li class="page-item {{#if (eq page 1)}}disabled{{/if}}">
-                                            <a class="page-link"
-                                                href="/admin/orderManagement?page={{add page - 1}}&limit={{limit}}">&laquo;</a>
+                                   <div class="pagination-wrap">
+                                    <ul class="pagination">
+                                        {{#range 1 totalPages}}
+                                        <li style="background-color: #ffffff;"
+                                            class="page-item {{#if (eq ../page this)}}active{{/if}}">
+                                            <a style="background-color: #ffffff; color:#000000" class="page-link"
+                                                 href="/admin/orderManagement?page={{this}}&limit={{../limitRow}}"><strong>{{this}}</strong></a>
                                         </li>
-                                        {{#each pages}}
-                                        <li class="page-item {{#if (eq page this)}}active{{/if}}">
-                                            <a class="page-link"
-                                                href="/admin/orderManagement?page={{this}}&limit={{limit}}">{{this}}</a>
-                                        </li>
-                                        {{/each}}
-                                        <li class="page-item {{#if (eq page totalPages)}}disabled{{/if}}">
-                                            <a class="page-link"
-                                                href="/admin/orderManagement?page={{add page 1}}&limit={{limit}}">&raquo;</a>
-                                        </li>
+                                        {{/range}}
                                     </ul>
                                 </div>
                             </div>

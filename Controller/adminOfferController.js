@@ -5,23 +5,38 @@ const Product = require('../models/productDB')
 
 
 
+
+
 const offerPage = async (req, res) => {
     try {
+
+
+        const page = parseInt(req.query.page) || 1;
+        const limitPerPage = parseInt(req.query.limit) || 5;
+
+        const totalOffers = await Offer.countDocuments({});
+        const totalPages = Math.ceil(totalOffers / limitPerPage);
+
+
         const offers = await Offer.find({})
             .populate('product')
             .populate('category')
+            .skip((page - 1) * limitPerPage)
+            .limit(limitPerPage)
             .lean();
 
         if (!offers.length) {
             return res.status(400).json({ message: 'Offers currently unavailable' });
         }
 
-        res.render('admin/adminOffer', { offers });
+        res.render('admin/adminOffer', { offers , page , totalPages , limitRow : limitPerPage });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 };
+
+
 
 
 

@@ -1,7 +1,7 @@
 
 const Order = require('../models/orderSchema')
 const Product = require('../models/productDB')
-
+const Wallet = require('../models/walletSchema')
 
 
 
@@ -32,7 +32,7 @@ const orderManagement = async (req, res) => {
           const totalPages = Math.ceil(totalCount / limitPerPage);
 
        
-      
+        
         res.render('admin/adminOrders', { orders , totalPages , page , limitPerPage});
     } catch (error) {
         console.log(error);
@@ -76,6 +76,9 @@ const moreOrderData = async (req, res) => {
             };
         });
 
+
+
+        
         // Consolidate data into a single order object
         const orderDetails = {
             orderId: orderData._id,
@@ -86,19 +89,28 @@ const moreOrderData = async (req, res) => {
             address: orderData.address,
             products: orderedProducts,
             OrderedDate: orderData.OrderedDate,
+            returnReason : orderData.returnReason,
+            ID : orderData._id,
+            requestTrue : orderData.returnRequest,
+            userId : orderData.userId
         };
 
-        req.session.idOrder = orderDetails.orderId;
         
+        req.session.idOrder = orderDetails.orderId;
         const reasons = orderedProducts.map(product => product.returnReason);
         const  reasonReturn = reasons[0]
-        console.log(reasons); // Log the reasons for debugging
+        
 
-        // Uncomment the following line to render the response
+
+       
+
+       
         res.render('admin/moreOrder', { 
             orderDetails,
             statusOf: orderDetails.orderStatus,
-            reasonReturn
+            reasonReturn : orderDetails.returnReason,
+            ID : orderDetails.ID
+             
         });
     } catch (error) {
         console.log(error);
@@ -197,9 +209,114 @@ const orderProductUpdate = async (req, res) => {
 
 
 
+const acceptReturn = async (req, res) => {
+    try {
+        const orderId = req.body.orderId;
+        const userId = req.body.userId
+
+        console.log(orderId, userId);
+
+        const order = await Order.findById(orderId);
+        if (!order) {
+            return res.status(404).json({ error: "Order not found" });
+        }
+
+        // Loop through each product and update its cancelstatus and other necessary fields
+        for (let i = 0; i < order.products.length; i++) {
+            await Order.updateOne(
+                { _id: orderId, [`products.productId`]: order.products[i].productId },
+                {
+                    $set: {
+                        [`products.${i}.cancelstatus`]: 'returned',
+                        [`products.${i}.returned`]: true,
+                        'returnRequest': false,
+                        'acceptRequest': true
+                    },
+                }
+            );
+        }
+
+        const totalAmount = order.totalAmount;
+        const wallet = await Wallet.findOne({ wallet_user: userId });
+
+        if (!wallet) {
+            return res.status(404).json({ error: "Wallet not found" });
+        }
+
+        // Create transaction
+        const newTransaction = {
+            amount: totalAmount,
+            type: 'credited',
+            description: 'Order payment',
+            canceled: 'order returned'
+        };
+
+        wallet.transactions.push(newTransaction);
+        // Mark transactions as modified
+        wallet.markModified('transactions');
+        wallet.balance += totalAmount;
+        await wallet.save();
+
+        // Update the overall order status if necessary
+        await Order.updateOne(
+            { _id: orderId },
+            { 
+                $set: { 
+                    orderStatus: 'returned', 
+                }
+            }
+        );
+
+        
+        return res.status(200).json({ success: true, message: 'Request accepted' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "An error occurred while processing the return" });
+    }
+};
+
+
+
+const rejectReturn = async (req, res) => {
+    try {
+        const { orderId } = req.body;
+
+        if (!orderId) {
+            return res.status(400).json({ success: false, message: "Order ID is required." });
+        }
+
+        const order = await Order.findByIdAndUpdate(orderId, {
+            orderStatus: 'delivered',
+            returnReason: null,
+            returnRequest: false,
+            rejectRequest: true
+        }, { new: true });
+
+        if (!order) {
+            return res.status(404).json({ success: false, message: "Order not found." });
+        }
+
+        order.products.forEach(product => {
+            product.cancelstatus = 'delivered';
+        });
+
+        await order.save();
+
+        return res.status(200).json({ success: true, message: "Return request successfully updated.", order });
+    } catch (error) {
+        console.error("Error in rejectReturn:", error);
+        return res.status(500).json({ success: false, message: "Internal server error." });
+    }
+}
+
+
+
+
 module.exports = {
     orderManagement,
     updateOrder,
     moreOrderData,
-    orderProductUpdate
+    orderProductUpdate,
+    acceptReturn,
+    rejectReturn
 }

@@ -88,51 +88,76 @@ const adminLoginValidation = async (req, res) => {
 
 
 
+const homeAdmin = (req,res)=>{
+     try {
+        res.render('admin/Dashboard')
+     } catch (error) {
+        console.log(error)
+     }
+}
+
+
 
 // ADMIN DASHBOARD
 
 const adminDashboard = async (req, res) => {
-    try {
-        if (req.session.admin) {
-
-            const ordersCount = await Order.countDocuments({}).lean()
-            const productCounts = await Product.countDocuments({}).lean()
-            const categoryCounts = await Category.countDocuments({}).lean()
-            const users = await User.countDocuments({}).lean()
-
-            let totalRevenue = await Order.aggregate([
-                {
-                    $group: {
-                        _id: null,
-                        totalAmount: { $sum: "$totalAmount" } // Assuming total_amount is the field name
-                    }
-                },
-                {
-                    $project: {
-                        _id: 0,
-                        totalAmount: 1
-                    }
-                }
-            ]);
-
-            const totalAmount = totalRevenue[0].totalAmount;
-            
+    const topProducts = await getTopProductsSale();
+    const topCategoryies = await getTopCategories();
+    const totalUsers = await usersCount();
+    const totalOrders = await orderCount();
+    const totalRevenue = await getRevenueAmount();
+   const totalProducts = await Product.find({}).countDocuments();
+    return res.status(200).json({ topProducts, topCategoryies, totalUsers, totalOrders, totalRevenue, totalProducts });
+}
 
 
-            const products = await Product.find({}).lean()
-            const namesOfProducts = products.map(product => product.productName)
 
-            const categories = await Category.find({}).lean()
-            const namesOfcategory = categories.map(category => category.categoryName)
-             res.render('admin/Dashboard' , {ordersCount , productCounts , categoryCounts , users , totalAmount , namesOfProducts , namesOfcategory})
-        } else {
-            res.redirect('/admin/login')
+
+const customDashboard = async (req,res)=>{
+ 
+    let { fromDate, toDate, filterType } = req.query;
+    try{
+        if(filterType === 'custom') {
+            if(new Date(fromDate) >= new Date(toDate)) return res.status(200).json({ error: 'from Date should be before the to Date'});
+            if(!fromDate || !toDate) return res.status(404).json({ error: 'Change the filter or choose the Date'});
+        }else if(filterType === 'daily'){
+            toDate = new Date();
+            fromDate = new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate() - 1);
+        }else if(filterType === 'weekly'){
+            toDate = new Date();
+            fromDate = new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate() - 7);
+        }else if(filterType ==='monthly'){
+            toDate = new Date();
+            fromDate = new Date(toDate.getFullYear(), toDate.getMonth() - 1, toDate.getDate());
+        }else if( filterType === 'yearly') {
+            toDate = new Date();
+            fromDate = new Date(toDate.getFullYear() -1 , toDate.getMonth(), toDate.getDate());
+        }else {
+            return res.status(400).json({ message: 'wrong filter type'});
         }
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).send('An error occurred');
+        const topProducts = await getTopProductsSale(fromDate, toDate);
+        const topCategoryies = await getTopCategories(fromDate, toDate);
+        const totalUsers = await usersCount(fromDate, toDate);
+        const totalOrders = await orderCount(fromDate, toDate);
+        const totalRevenue = await getRevenueAmount(fromDate, toDate);
+        const topBrands = await topSaledBrands(fromDate, toDate);
+        const totalProducts = await Product.find({}).countDocuments();
+        return res.status(200).json({ topProducts, topCategoryies, totalUsers, totalOrders, totalRevenue, totalProducts, topBrands });
+    }catch(err){
+        console.log(`Error inside customDetails : \n${err}`);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -249,6 +274,49 @@ const customSalesReport = async (req,res)=>{
 
 }
 
+
+
+
+
+
+
+async function topSaledBrands(fromDate, toDate) {
+    try {
+      const pipeline = [];
+  
+      // Filter by date range (if provided)
+      if (fromDate && toDate) {
+        pipeline.push({
+          $match: {
+            deliveredAt: {
+              $gte: new Date(fromDate),
+              $lte: new Date(toDate),
+            },
+          },
+        });
+      }
+  
+      // Group by brand and count documents
+      pipeline.push({
+        $group: {
+          _id: "$brand",
+          count: { $sum: 1 },
+        },
+      });
+  
+      // Sort by count in descending order
+      pipeline.push({
+        $sort: {
+          count: -1,
+        },
+      });
+  
+      const brands = await Product.aggregate(pipeline);
+      return brands
+    } catch (err) {
+      console.log(`Error at topSaledBrands: ${err}`);
+    }
+  }
 
 
 
@@ -383,18 +451,31 @@ const getTopProductsSale = async (fromDate, toDate) => {
 
 
 
-
 const getTopCategories = async (fromDate, toDate) => {
     try {
         let matchStage = {};
         if (fromDate && toDate) {
             matchStage = {
-                deliveredAt: {
+                createdDate: {
                     $gte: new Date(fromDate),
                     $lte: new Date(new Date(toDate).setHours(23, 59, 59, 999)) // End of the day
                 }
             };
         }
+
+        console.log('Match Stage:', JSON.stringify(matchStage, null, 2));
+
+        // Initial match stage
+        const initialMatch = await Order.aggregate([{ $match: matchStage }]);
+        console.log('Initial Match:', initialMatch.length);
+
+        if (initialMatch.length === 0) {
+            console.log('No orders found within the given date range.');
+            return [{ categoryName: 'No Data', count: 0 }];
+        }
+
+        // Other stages can be similarly tested...
+
         const pipeline = [
             { $match: matchStage },
             { $unwind: '$products' },
@@ -409,7 +490,7 @@ const getTopCategories = async (fromDate, toDate) => {
             { $unwind: '$productInfo' },
             {
                 $lookup: {
-                    from: 'categories',
+                    from: 'categories',  // Ensure this matches your collection name
                     localField: 'productInfo.category',
                     foreignField: '_id',
                     as: 'categoryInfo'
@@ -430,13 +511,40 @@ const getTopCategories = async (fromDate, toDate) => {
                 }
             }
         ];
-        const categoriesSale = await Order.aggregate(pipeline);
+
+        // Log each stage output
+        let result = await Order.aggregate(pipeline.slice(0, 1)); // match stage
+        console.log('After Match Stage:', result.length);
+
+        result = await Order.aggregate(pipeline.slice(0, 2)); // unwind products
+        console.log('After Unwind Products:', result.length);
+
+        result = await Order.aggregate(pipeline.slice(0, 3)); // lookup productInfo
+        console.log('After Lookup Products:', result.length);
+
+        result = await Order.aggregate(pipeline.slice(0, 4)); // unwind productInfo
+        console.log('After Unwind ProductInfo:', result.length);
+
+        result = await Order.aggregate(pipeline.slice(0, 5)); // lookup categoryInfo
+        console.log('After Lookup Categories:', result.length);
+
+        result = await Order.aggregate(pipeline.slice(0, 6)); // unwind categoryInfo
+        console.log('After Unwind CategoryInfo:', result.length);
+
+        result = await Order.aggregate(pipeline.slice(0, 7)); // group by categoryName
+        console.log('After Group:', result.length);
+
+        result = await Order.aggregate(pipeline); // full pipeline
+        console.log('After Project:', result.length);
+
+        const categoriesSale = result;
         return categoriesSale.length > 0 ? categoriesSale : [{ categoryName: 'No Data', count: 0 }];
     } catch (error) {
         console.error('Error getting top categories sale:', error);
         throw error;
     }
 };
+
 
 
 
@@ -598,12 +706,12 @@ async function genSalesReportPDF(doc, ...parameters) {
 
     doc.font('Helvetica').fontSize(10).text(`Date : ${new Date(Date.now()).toLocaleDateString()}`, { align: 'right'});
 
-    doc.font('Helvetica-Bold').fontSize(14).text('EzpanoWhiff');
+    doc.font('Helvetica-Bold').fontSize(14).text('Ezpano Whiff');
     doc.moveDown(0.3)
         .font('Helvetica')
-        .fontSize(8).text(`xyz street`)
-        .fontSize(8).text(`NewYork , USA , 00543`)
-        .fontSize(8).text(`1800-000-9898`)
+        .fontSize(8).text(`Main Street`)
+        .fontSize(8).text(`Unknown City, Malvadi , 01020`)
+        .fontSize(8).text(`1800-208-9898`)
         
     generateHr(doc, doc.y + 10);
     
@@ -617,37 +725,36 @@ async function genSalesReportPDF(doc, ...parameters) {
         
     // top selling products looping
     doc.moveDown(2);
-    doc.font('Helvetica-Bold').fontSize(14).text('Top Selling Products');
-    doc.font('Helvetica').fontSize(10).moveDown();
+    doc.font('Helvetica-Bold').fontSize(10).text('Top Selling Products' , { align: 'left'});
+    doc.font('Helvetica').fontSize(8).moveDown();
     for( let i = 0; i < top_products.length; i++ ){ doc.text(`${i+1} . ${top_products[i].productName} : ${ top_products[i].count }`).moveDown(0.3) }
     generateHr(doc, doc.y + 10);
 
     // top categories products looping
     doc.moveDown(2);
-    doc.font('Helvetica-Bold').fontSize(14).text(`Top Selling Categories`);
-    doc.font('Helvetica').fontSize(10).moveDown();
+    doc.font('Helvetica-Bold').fontSize(10).text(`Top Selling Categories`, { align: 'left'});
+    doc.font('Helvetica').fontSize(8).moveDown();
     for( let i = 0; i < top_categories.length; i++ ){ doc.text(`${i+1} . ${top_categories[i].categoryName} : ${ top_categories[i].count }`).moveDown(0.3) }
     generateHr(doc, doc.y + 10);
 
 
     // most using payments systems products looping
     doc.moveDown(2);
-    doc.font('Helvetica-Bold').fontSize(14).text('Most Using Payment Options');
-    doc.font('Helvetica').fontSize(10).moveDown();
+    doc.font('Helvetica-Bold').fontSize(10).text('Most Using Payment Options', { align: 'left'});
+    doc.font('Helvetica').fontSize(8).moveDown();
     for( let i = 0; i < top_payments.length; i++ ){ doc.text(`${i+1} . ${top_payments[i]._id} : ${ top_payments[i].count }`).moveDown(0.3) }
     generateHr(doc, doc.y + 10);
 
 
     // Order status looping
     doc.moveDown(2);
-    doc.font('Helvetica-Bold').fontSize(14).text('Order Status');
-    doc.font('Helvetica').fontSize(10).moveDown();
-    for( let i = 0; i < order_status.length; i++ ){ doc.text(`${i+1} . ${order_status[i]._id} : ${ order_status[i].count }`).moveDown(0.3) }
+    doc.font('Helvetica-Bold').fontSize(10).text('Order Status' , { align: 'left'});
+    doc.font('Helvetica').fontSize(8).moveDown();
+    for( let i = 0; i < order_status.length; i++ ){ doc.text(`${i+1} . ${order_status[i]._id} : ${ order_status[i].count }` ).moveDown(0.3) }
     generateHr(doc, doc.y + 10);
 
     return;
 }
-
 
 
 function generateHr(doc, y) {
@@ -658,8 +765,6 @@ function generateHr(doc, y) {
       .lineTo(550, y)
       .stroke();
   }
-
-
 
 
 
@@ -810,12 +915,14 @@ module.exports = {
     preventing,
     adminLoginValidation,
     adminLogout,
+    homeAdmin,
 
     adminDashboard,
+    customDashboard,
     salesReport,
     customSalesReport,
     salesReportPdf,
     salesReportExcel,
-    //getCouponAppled
+  
 
 }

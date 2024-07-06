@@ -136,7 +136,7 @@
                        
                     </div>
 
-                    <div class="row">
+                    <div class="row" style="margin-top: -3%;">
                         <div class="col-lg-12 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
@@ -146,18 +146,18 @@
                                     </div>
                                     <div class="table-responsive">
                                         <table class="table table-striped">
-                                            <thead>
+                                            <thead >
                                                 <tr>
-                                                    <th>Coupon Code</th>
-                                                    <th>Discount Percentage</th>
-                                                    <th>Minimum Amount</th>
-                                                    <th>Maximum Amount</th>
-                                                    <th>Status</th>
-                                                    <th>Expiration Date</th>
-                                                    <th>Description</th>
-                                                    <th>List/Unlist</th>
-                                                    <th>Coupon edit</th>
-                                                    <th>Coupon delete</th>
+                                                    <th style="font-weight: 900;">Coupon Code</th>
+                                                    <th style="font-weight: 900;">Discount Percentage</th>
+                                                    <th style="font-weight: 900;">Minimum Amount</th>
+                                                    <th style="font-weight: 900;">Maximum Amount</th>
+                                                    <th style="font-weight: 900;">Status</th>
+                                                    <th style="font-weight: 900;"> Expiration Date</th>
+                                                    <th style="font-weight: 900;">Description</th>
+                                                    <th style="font-weight: 900;">List/Unlist</th>
+                                                    <th style="font-weight: 900;">Coupon edit</th>
+                                                    <th style="font-weight: 900;">Coupon delete</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -192,6 +192,17 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                </div>
+                                  <div class="pagination-wrap">
+                                    <ul class="pagination">
+                                        {{#range 1 totalPages}}
+                                        <li style="background-color: #ffffff;"
+                                            class="page-item {{#if (eq ../page this)}}active{{/if}}">
+                                            <a style="background-color: #ffffff; color:#000000" class="page-link"
+                                                href="/admin/offerManagement?page={{this}}&limit={{../limitRow}}"><strong>{{this}}</strong></a>
+                                        </li>
+                                        {{/range}}
+                                    </ul>
                                 </div>
                             </div>
                         </div>

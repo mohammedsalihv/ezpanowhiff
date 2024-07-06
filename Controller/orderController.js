@@ -40,7 +40,7 @@ const ordersPage = async (req, res) => {
         }
 
         const orders = await Order.findById(orderID).lean();
-
+        console.log(orders);
         if (!orders) {
             return res.status(404).json({ error: "Order not found" });
         }
@@ -158,70 +158,152 @@ const returnProductOrder = async (req, res) => {
 
 
 
-const returnOrder = async (req, res) => {
+
+const returnRequest = async (req, res) => {
+    const { returnReason } = req.body;
+    const orderId = req.params.orderId;
+  
+    console.log(orderId, returnReason);
+    // Validate input
+    if (!returnReason || !orderId) {
+      return res.status(400).json({ success: false, message: "Return reason and order ID are required." });
+    }
+  
+  
+    
     try {
-        const { returnReason, orderId } = req.body;
-        const userId = req.session.user._id
+      const returnOrder = await Order.findByIdAndUpdate(orderId, {
+        orderStatus: 'processing',
+        returnReason : returnReason,
+        returnRequest: true
+      }, { new: true }); // { new: true } to return the updated document
+  
+      returnOrder.products.forEach(product => {
+        product.cancelstatus = 'processing';
+      });
+      
+        await returnOrder.save()
+      if (returnOrder) {
+        return res.status(200).json({ success: true, message: "Return request successfully updated.", returnOrder });
+      } else {
+        return res.status(404).json({ success: false, message: "Order not found." });
+      }
+    } catch (error) {
+      console.error("Error processing return request:", error);
+      return res.status(500).json({ success: false, message: "Internal server error." });
+    }
+  };
+  
 
-        console.log(orderId, returnReason);
+
+
+
+
+  const cancelRequest = async (req, res) => {
+    try {
+        const orderId = req.params.orderId;
+
+        // Validate input
+        if (!orderId) {
+            return res.status(400).json({ success: false, message: "Order ID is required." });
+        }
+
+        const cancel = await Order.findByIdAndUpdate(orderId, {
+            orderStatus: 'delivered',
+            returnRequest: false,
+            returnReason : null
+
+        }, { new: true });
+
+        // If cancel is null, it means the order was not found
+        if (!cancel) {
+            return res.status(404).json({ success: false, message: "Order not found." });
+        }
+
+        cancel.products.forEach(product => {
+            product.cancelstatus = 'delivered';
+        });
+
+        req.session.returnRequestReason = null;
+        req.session.orderIdReturn = null;
+
+        await cancel.save()
+        return res.status(200).json({ success: true, message: "Return request successfully updated.", cancel });
+
+    } catch (error) {
+        console.error("Error processing return cancel request:", error);
+        return res.status(500).json({ success: false, message: "Internal server error." });
+    }
+}
+
+
+
+
+
+// const returnOrder = async (req, res) => {
+//     try {
+//         const { returnReason, orderId } = req.body;
+//         const userId = req.session.user._id
+
+//         console.log(orderId, returnReason);
      
-        const order = await Order.findById(orderId);
-        if (!order) {
-            return res.status(404).json({ error: "Order not found" });
-        }
+//         const order = await Order.findById(orderId);
+//         if (!order) {
+//             return res.status(404).json({ error: "Order not found" });
+//         }
 
-        // Loop through each product and update its cancelstatus and reason
-        for (let i = 0; i < order.products.length; i++) {
-            await Order.updateOne(
-                { _id: orderId, [`products.${i}.productId`]: order.products[i].productId },
-                {
-                    $set: {
-                        [`products.${i}.cancelstatus`]: 'returned',
-                        [`products.${i}.returned`]: true,
-                        [`products.${i}.reason`]: returnReason,
-                    }
-                }
-            );
-        }
+//         // Loop through each product and update its cancelstatus and reason
+//         for (let i = 0; i < order.products.length; i++) {
+//             await Order.updateOne(
+//                 { _id: orderId, [`products.${i}.productId`]: order.products[i].productId },
+//                 {
+//                     $set: {
+//                         [`products.${i}.cancelstatus`]: 'returned',
+//                         [`products.${i}.returned`]: true,
+//                         [`products.${i}.reason`]: returnReason,
+//                     }
+//                 }
+//             );
+//         }
 
 
          
-        const totalAmount = order.totalAmount
-        const wallet = await Wallet.findOne({wallet_user : userId})
+//         const totalAmount = order.totalAmount
+//         const wallet = await Wallet.findOne({wallet_user : userId})
 
-           // Create transaction
-           const newTransaction = {
-            amount: totalAmount,
-            type: 'credited',
-            description: 'Order payment',
-            canceled : 'order returned'
-        };
+//            // Create transaction
+//            const newTransaction = {
+//             amount: totalAmount,
+//             type: 'credited',
+//             description: 'Order payment',
+//             canceled : 'order returned'
+//         };
 
-         wallet.transactions.push(newTransaction);
-         // Mark transactions as modified
-         wallet.markModified('transactions');
-         wallet.balance += totalAmount;
-         await wallet.save();
+//          wallet.transactions.push(newTransaction);
+//          // Mark transactions as modified
+//          wallet.markModified('transactions');
+//          wallet.balance += totalAmount;
+//          await wallet.save();
 
 
 
-        // Update the overall order status if necessary
-        await Order.updateOne(
-            { _id: orderId },
-            { 
-                $set: { 
-                    orderStatus: 'returned', 
-                    returnReason: returnReason 
-                }
-            }
-        );
+//         // Update the overall order status if necessary
+//         await Order.updateOne(
+//             { _id: orderId },
+//             { 
+//                 $set: { 
+//                     orderStatus: 'returned', 
+//                     returnReason: returnReason 
+//                 }
+//             }
+//         );
         
-        res.redirect(`/orderView?orderId=${orderId}`);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "An error occurred while returning the order" });
-    }
-};
+//         res.redirect(`/orderView?orderId=${orderId}`);
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ error: "An error occurred while returning the order" });
+//     }
+// };
 
 
 
@@ -291,69 +373,6 @@ const cancelOrder = async (req, res) => {
 
 
 
-
-
-// const productStatusReturn = async (req,res)=>{
-//     try {
-        
-    
-//         const newStatus = 'returned';
-//         const orderId = req.query.orderId
-//         const productId = req.query.productId
-
-    
-//         const orderData = await Order.updateOne(
-//             { _id: orderId, "products.productId": productId },
-//             {
-//                 $set: { "products.$.cancelstatus": newStatus }
-//             }
-//         );
-
-
-
-
-//         const order = await Order.findById(orderId);
-//         order.products.forEach(product => {
-//             if (newStatus === 'delivered') {
-//                 product.deliverOrder = true;
-//             } else if (newStatus === 'shipped') {
-//                 product.orderValid = true;
-//             } else if (newStatus === 'returned' || newStatus === 'canceled') {
-//                 product.returned = true;
-//             }
-//         });
-
-        
-     
-//         const retunrnProduct = Order.findOne({_id : productId})
-//         const totalAmount = retunrnProduct.price
-//         console.log(totalAmount);
-//         // const wallet = await Wallet.findOne({wallet_user : userId})
-
-//         //    // Create transaction
-//         //    const newTransaction = {
-//         //     amount: totalAmount,
-//         //     type: 'credited',
-//         //     description: 'Order payment',
-//         //     canceled : 'order returned'
-//         // };
-
-//         //  wallet.transactions.push(newTransaction);
-//         //  // Mark transactions as modified
-//         //  wallet.markModified('transactions');
-//         //  wallet.balance += totalAmount;
-//         //  await wallet.save();
-     
-
-//         // if (orderData.nModified === 0) {
-//         //     return res.status(404).json({ message: 'Order or Product not found' });
-//         // }
-//         // res.redirect(`/orderView?orderId=${orderId}`);
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ message: 'An error occurred while updating the product status' });
-//     }
-// }
 
 
 
@@ -503,8 +522,12 @@ const invoice = async (req, res) => {
     }
 };
 
+
+
+
+
 module.exports = {
 
-    ordersPage , returnOrder , cancelOrder , productStatusCancel , successOrder, invoice ,
+    ordersPage , returnRequest , cancelRequest , cancelOrder , productStatusCancel , successOrder, invoice ,
     returnProductOrder
 }

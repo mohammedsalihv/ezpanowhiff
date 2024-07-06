@@ -1,153 +1,296 @@
+<div class="d-flex justify-content-left">
 
-   <div class="d-flex justify-content-left">
-       
-        <button  style="margin-left: 3%; margin-top:5%; background-color:black; color:aliceblue; padding:7px; border-radius:5px;" onclick="goBack()">
-         Go back
-        </button>
-      
-    </div>
-   
-    <div class="container " style="margin-top: 2%;">
-      <h4 id="addingMsg" style="text-align: end;"></h4>
-      <h1 class="text-center mb-4">Add Product</h1>
+  <button
+    style="margin-left: 3%; margin-top:5%; background-color:black; color:aliceblue; padding:7px; border-radius:5px;"
+    onclick="goBack()">
+    Go back
+  </button>
+
+</div>
+<div class="container " style="margin-top: -6%; height:300vh;">
+  <h4 id="addingMsg" style="text-align: end;"></h4>
+  <h4 class="text-center mb-4">Add Product</h4>
+  <div class="row">
+    <form id="productForm"  class="col s12" enctype="multipart/form-data">
       <div class="row">
-        <form action="/admin/productUpload" method="post" class="col s12" enctype="multipart/form-data">
-          <div class="row">
-            <div class="input-field col s12 m12 l6">
-              <input  name="productName" id="first_name" type="text">
-              <label for="first_name">Product name</label>
-            </div>
-           <div class="input-field col s12 m12 l6">
-                            <select class="form-select" name="category" aria-label="Default select example">
-                                <option selected disabled>Categories</option>
-                                {{#each categories}}
-                                <option >{{this.categoryName}}</option>
-                                {{/each}}
-                            </select>
-             </div>
-            <div class="input-field col s12 m12 l6">
-              <input  name="brand" id="last_name" type="text">
-              <label for="last_name">Brand</label>
-            </div>
-            <div class="input-field col s12 m12 l6">
-              <input name="oldPrice" id="last_name" type="text">
-              <label for="last_name">Old Price</label>
-            </div>
-            <div class="input-field col s12 m12 l6">
-              <input  name="price" id="last_name" type="text">
-              <label for="last_name">Offer price</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="input-field col s12 m12 l6">
-              <input  name="Qty" id="address" type="text">
-              <label for="address">Quantity</label>
-            </div>
-            <div class="input-field col s12 m12 l6">
-              <input  name="CountOfstock" id="address" type="text">
-              <label for="address">Stock</label>
-            </div>
-            <div class="input-field col s12 m12 l6">
-              <input  name="offer" id="address" type="text">
-              <label for="address">Offer</label>
-            </div>
-            <div class="input-field col s12 m12 l6">
-              <input name="trending" id="town" type="text">
-              <label for="town">Trending</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="input-field col s12 m12 l6">
-              <input name="size" id="address" type="text">
-              <label for="address">Available sizes</label>
-            </div>
-            <div class="input-field col s12 m12 l6">
-              <input  name="Ingredients" id="address" type="text">
-              <label for="address">Ingredients</label>
-            </div>
-            <div class="input-field col s12 m12 l6">
-              <input name="IdealFor" id="address" type="text">
-              <label for="address">Idea For</label>
-            </div>
-            <div class="input-field col s12 m12 l6">
-              <input name="update" id="address" type="text">
-              <label for="address">Stock update</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="input-field col s10 m12 l8">
-              <textarea name="features" id="town" type="text"></textarea>
-              <label for="town">Features</label>
-            </div>
-            <div class="input-field col s10 m12 l8">
-              <textarea name="tags" id="town" type="text"></textarea>
-              <label for="town">Tags</label>
-            </div>
-            <div class="input-field col s10 m12 l8">
-              <textarea name="deliveryInfo" id="town" type="text"></textarea>
-              <label for="town">Packaging & Delivery </label>
-            </div>
-            <div class="input-field col s10 m12 l8">
-              <textarea style="height: 2vh;" name="howTouse" id="town" type="text"></textarea>
-              <label for="town">How to Use</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="input-field col s10 m6 l4">
-              <textarea style="height: 1vh; margin-bottom:5%" name="description" id="town"
-                type="text"></textarea>
-              <label for="town">Full description</label>
-            </div>
-          </div>
-         
- <div class="input-field col s10 m6 l4">
-    <div class="row mt-4"></div>
-    <div class="input-uploads">
-        <img id="preview-img1" src="assets/imgs/theme/upload.svg" alt="">
-        <label class="btn-file-upload">
-            <input class="form-control" id="file-input1" type="file" name="img1[]" accept="image/*"
-                onchange="initCropper(event, 'preview-img1')">
-        </label>
-        <button class="btn-remove" onclick="removeImage('preview-img1', event)" type="button">
-            <i class="lni lni-cross-circle"></i>
-        </button>
-    </div>
-</div>
- <div class="input-field col s10 m6 l4">
-    <div class="row mt-4"></div>
-    <div class="input-uploads">
-        <img id="preview-img2" src="assets/imgs/theme/upload.svg" alt="">
-        <label class="btn-file-upload">
-            <input class="form-control" id="file-input1" type="file" name="img2[]" accept="image/*"
-                onchange="initCropper(event, 'preview-img2')">
-        </label>
-        <button class="btn-remove" onclick="removeImage('preview-img2', event)" type="button">
-            <i class="lni lni-cross-circle"></i>
-        </button>
-    </div>
-</div>
- 
-<div class="input-field col s10 m6 l4">
-    <div class="row mt-4"></div>
-    <div class="input-uploads" style="margin-bottom: 2%;">
-        <img id="preview-img3" src="assets/imgs/theme/upload.svg" alt="">
-        <label class="btn-file-upload">
-            <input class="form-control" id="file-input1" type="file" name="img3[]" accept="image/*"
-                onchange="initCropper(event, 'preview-img3')">
-        </label>
-        <button class="btn-remove" onclick="removeImage('preview-img3', event)" type="button">
-            <i class="lni lni-cross-circle"></i>
-        </button>
-    </div>
-</div>
-          </div>
-          <button style="color: rgb(255, 255, 255); background-color:black" id="btn-sbmit-product" class=" btn right" type="submit">ADD</button>
-        </form>
+        <div class="input-field col s12 m12 l6">
+          <input name="productName" id="productname" type="text">
+          <label >Product name</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <select id="category" class="form-select" name="category" aria-label="Default select example">
+            <option selected disabled>Categories</option>
+            {{#each categories}}
+            <option>{{this.categoryName}}</option>
+            {{/each}}
+          </select>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input name="brand" id="Brand" type="text">
+          <label for="last_name">Brand</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input name="oldPrice" id="oldPrice" type="text">
+          <label for="last_name">Old Price</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input name="price" id="offerPrice" type="text">
+          <label for="last_name">Offer price</label>
+        </div>
       </div>
+      <div class="row">
+        <div class="input-field col s12 m12 l6">
+          <input name="Qty" id="Quantity" type="text">
+          <label for="address">Quantity</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input name="offer" id="address" type="text">
+          <label for="address">Offer</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input name="trending" id="town" type="text">
+          <label for="town">Trending</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12 m12 l6">
+          <input name="size" id="sizes" type="text">
+          <label for="address">Available sizes</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input name="Ingredients" id="Ingredients" type="text">
+          <label for="address">Ingredients</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input name="IdealFor" id="idealFor" type="text">
+          <label for="address">Idea For</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input name="update" id="stockupdate" type="text">
+          <label for="address">Stock update</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s10 m12 l8">
+          <textarea name="features" id="Features" type="text"></textarea>
+          <label for="town">Features</label>
+        </div>
+        <div class="input-field col s10 m12 l8">
+          <textarea name="tags" id="tags" type="text"></textarea>
+          <label for="town">Tags</label>
+        </div>
+        <div class="input-field col s10 m12 l8">
+          <textarea name="deliveryInfo" id="Packaging" type="text"></textarea>
+          <label for="town">Packaging & Delivery </label>
+        </div>
+        <div class="input-field col s10 m12 l8">
+          <textarea style="height: 2vh;" name="howTouse" id="howTouse" type="text"></textarea>
+          <label for="town">How to Use</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s10 m6 l4">
+          <textarea style="height: 1vh; margin-bottom:5%" name="description" id="description" type="text"></textarea>
+          <label for="town">Full description</label>
+        </div>
+      </div>
+
+      <div class="input-field col s10 m6 l4">
+        <div class="row mt-4"></div>
+        <div class="input-uploads">
+          <img id="preview-img1" src="assets/imgs/theme/upload.svg" alt="">
+          <label class="btn-file-upload">
+            <input class="produtImage1" id="file-input1" type="file" name="img1[]" accept="image/*"
+              onchange="initCropper(event, 'preview-img1')">
+          </label>
+          <button style="margin-top: 5%; border-radius:50%; padding-top:3px; border:1px solid #fff;" class="bg badge-primary" onclick="removeImage('preview-img1', event)" type="button">
+            <i class="lni lni-cross-circle"></i>
+          </button>
+        </div>
+      </div>
+      <div class="input-field col s10 m6 l4">
+        <div class="row mt-4"></div>
+        <div class="input-uploads">
+          <img id="preview-img2" src="assets/imgs/theme/upload.svg" alt="">
+          <label class="btn-file-upload">
+            <input class="produtImage2" id="file-input1" type="file" name="img2[]" accept="image/*"
+              onchange="initCropper(event, 'preview-img2')">
+          </label>
+          <button style="margin-top: 5%; border-radius:50%; padding-top:3px; border:1px solid #fff;" class="bg badge-primary" onclick="removeImage('preview-img2', event)" type="button">
+            <i class="lni lni-cross-circle"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="input-field col s10 m6 l4">
+        <div class="row mt-4"></div>
+        <div class="input-uploads" style="margin-bottom: 2%;">
+          <img id="preview-img3" src="assets/imgs/theme/upload.svg" alt="">
+          <label class="btn-file-upload">
+            <input class="produtImage3" id="file-input1" type="file" name="img3[]" accept="image/*"
+              onchange="initCropper(event, 'preview-img3')">
+          </label>
+          <button style="margin-top: 5%; border-radius:50%; padding-top:3px; border:1px solid #fff;" class="bg badge-primary" onclick="removeImage('preview-img3', event)" type="button">
+            <i class="lni lni-cross-circle"></i>
+          </button>
+        </div>
+      </div>
+  </div>
+  <button style="color: rgb(255, 255, 255); background-color:black" id="btn-sbmit-product" class=" btn right"
+    type="submit">ADD</button>
+  </form>
+</div>
 
 </section>
 
 <script src="path/to/cropper.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+<script>
+  document.getElementById('productForm').addEventListener('submit', product);
+
+function product(event) {
+  event.preventDefault();
+
+  const productName = document.getElementById('productname');
+  const Brand = document.getElementById('Brand');
+  const oldPrice = document.getElementById('oldPrice');
+  const offerPrice = document.getElementById('offerPrice');
+  const Quantity = document.getElementById('Quantity');
+  const address = document.getElementById('address');
+  const town = document.getElementById('town');
+  const size = document.getElementById('sizes');
+  const Ingredients = document.getElementById('Ingredients');
+  const idealFor = document.getElementById('idealFor');
+  const stockupdate = document.getElementById('stockupdate');
+  const Features = document.getElementById('Features');
+  const tags = document.getElementById('tags');
+  const Packaging = document.getElementById('Packaging');
+  const howTouse = document.getElementById('howTouse');
+  const description = document.getElementById('description');
+
+  if (!validateInput(productName, 'Product name cannot be empty')) return;
+  if (!validateInput(Brand, 'Brand cannot be empty')) return;
+  if (!validateInput(oldPrice, 'Old price cannot be empty')) return;
+  if (!validateInput(offerPrice, 'Offer price cannot be empty')) return;
+  if (!validateInput(Quantity, 'Quantity cannot be empty')) return;
+  if (!validateInput(address, 'offer cannot be empty')) return;
+  if (!validateInput(town, 'Town cannot be empty')) return;
+  if (!validateInput(size, 'Size cannot be empty')) return;
+  if (!validateInput(Ingredients, 'Ingredients cannot be empty')) return;
+  if (!validateInput(idealFor, 'Ideal for cannot be empty')) return;
+  if (!validateInput(stockupdate, 'Stock update cannot be empty')) return;
+  if (!validateInput(Features, 'Features cannot be empty')) return;
+  if (!validateInput(tags, 'Tags cannot be empty')) return;
+  if (!validateInput(Packaging, 'Packaging cannot be empty')) return;
+  if (!validateInput(howTouse, 'How to use cannot be empty')) return;
+  if (!validateInput(description, 'Description cannot be empty')) return;
+
+ const image1 = document.getElementsByClassName('produtImage1')[0];
+const image2 = document.getElementsByClassName('produtImage2')[0];
+const image3 = document.getElementsByClassName('produtImage3')[0];
+
+if (!image1.files.length) {
+  Swal.fire({
+    icon: 'error',
+    title: 'Validation Error',
+    text: 'Please add all images',
+  });
+  return;
+}
+if (!image2.files.length) {
+  Swal.fire({
+    icon: 'error',
+    title: 'Validation Error',
+    text: 'Please add all images',
+  });
+  return;
+}
+if (!image3.files.length) {
+  Swal.fire({
+    icon: 'error',
+    title: 'Validation Error',
+    text: 'Please add all images',
+  });
+  return;
+}
+
+
+
+  const oldPriceValue = parseFloat(oldPrice.value);
+  const offerPriceValue = parseFloat(offerPrice.value);
+
+  if (oldPriceValue <= offerPriceValue) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Validation Error',
+      text: 'Offer price should be less than old price',
+    });
+    return;
+  }
+
+  const category = document.getElementById('category').value;
+  if (!category || category === 'Categories') {
+    Swal.fire({
+      icon: 'error',
+      title: 'Validation Error',
+      text: 'Please select at least one category',
+    });
+    return;
+  }
+
+  const formData = new FormData(document.getElementById('productForm'));
+
+  fetch('/admin/productUpload', {
+    method: 'POST',
+    body: formData,
+  })
+  .then(response => response.text())
+  .then(data => {
+    Swal.fire({
+      icon: 'success',
+      title: 'Success',
+      text: 'Product added successfully',
+    })
+    .then(() => {
+      window.location.href = '/admin/productManagement';
+    });
+  })
+  .catch(error => {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: error.message || 'Product adding failed',
+    });
+  });
+}
+
+function validateInput(input, errorMessage) {
+  if (!input.value.trim()) {
+    failureMessage(errorMessage);
+    return false;
+  }
+  return true;
+}
+
+function failureMessage(message) {
+  Swal.fire({
+    text: message,
+    position: 'top',
+    timer: 3000,
+    background: 'red',
+    color: 'white',
+    showConfirmButton: false
+  });
+}
+
+</script>
+
+
+
+
 
 
 <script>

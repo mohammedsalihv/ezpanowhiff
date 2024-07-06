@@ -12,60 +12,58 @@ const Category = require('../models/category');
 
 
 const productManagement = async (req, res) => {
-
     try {
-
-        if (req.session.admin) {
-
-            const page = parseInt(req.query.page) || 1;
-            const limitPerPage = 4;
-
-            const products = await Product.find({})
-                .skip((page - 1) * limitPerPage)
-                .limit(limitPerPage)
-                .lean()
-
-            // Counting total products for pagination
-            const totalCount = await Product.countDocuments();
-
-            // Counting total products for pagination
-            // Calculating total pages
-            const totalPages = Math.ceil(totalCount / limitPerPage);
-
-            if (products) {
-                res.render('admin/adminProductlist', { products  , totalPages , page , limitPerPage})
-            }
+      if (req.session.admin) {
+        const page = parseInt(req.query.page) || 1;
+        const limitPerPage = 4;
+  
+        // Fetch products and populate the category field
+        const products = await Product.find({})
+          .sort({ createdAt: -1 })
+          .skip((page - 1) * limitPerPage)
+          .limit(limitPerPage)
+          .populate('category', 'categoryName')  // populate category and select only categoryName field
+          .lean();
+  
+        // Counting total products for pagination
+        const totalCount = await Product.countDocuments();
+  
+        // Calculating total pages
+        const totalPages = Math.ceil(totalCount / limitPerPage);
+  
+        if (products) {
+          res.render('admin/adminProductlist', { products, totalPages, page, limitPerPage });
         } else {
-            res.redirect('/admin/adminLogout')
+          res.redirect('/admin/adminLogout');
         }
+      } else {
+        res.redirect('/admin/adminLogout');
+      }
     } catch (error) {
-        console.error('Error:', error);
-        res.status(500).send('Error while listing products');
+      console.error('Error:', error);
+      res.status(500).send('Error while listing products');
     }
-
-}
-
+  };
+  
 
 //GET
 
-const productManagementDetail = async (req,res)=>{
-    
+const productManagementDetail = async (req, res) => {
     try {
-
-        if (req.session.admin) {
-            const products = await Product.find({}).lean()
-            if (products) {
-                res.render('admin/productlistViewMore', { products })
-            }
+        const productId = req.params.productId;
+        const product = await Product.findOne({ _id: productId }).populate('category', 'categoryName').lean();
+        if (product) {
+            console.log(product);
+            return res.render('admin/productlistViewMore', { products: [product] }); // Pass an array
         } else {
-            res.redirect('/admin/adminLogout')
+            return res.status(404).send('Product not found');
         }
     } catch (error) {
-        console.error('Error:', error);
-        res.status(500).send('Error while listing products');
+        console.log(error);
+        return res.status(500).send('Internal Server Error');
     }
-
 }
+
 
 
 //GET
@@ -113,6 +111,7 @@ const uploadProduct = async (req, res) => {
             }
 
 
+            const categoryDetails = await Category.findOne({categoryName : category})
             
             let uploadedImages = [];
             for (let i = 0; i < req.files.length; i++) {
@@ -147,12 +146,12 @@ const uploadProduct = async (req, res) => {
             const productData = new Product({
                 productName: productName,
                 description: description,
-                Qty: Qty,
+                Qty: quantity,
                 price: price,
                 img1: uploadedImages[0] || "",
                 img2: uploadedImages[1] || "",
                 img3: uploadedImages[2] || "",
-                category: category,
+                category: categoryDetails._id,
                 brand: brand,
                 trending: trendingStatus,
                 offer: offer,
@@ -197,7 +196,6 @@ const productEdit = async (req, res) => {
     try {
         if (req.session.admin) {
             const productId = req.params.id
-            console.log(productId);
             const categories = await Category.find({}).lean()
             const data = await Product.findById(productId).lean()
             if(data){
@@ -221,9 +219,10 @@ const productEdit = async (req, res) => {
 
 const updateProduct = async (req, res) => {
     try {
+        const productId = req.params.productId;
         if (req.session.admin) {
-            const productId = req.params.id;
-            const { productName, category, brand, price, oldPrice, offer,  CountOfstock, Ingredients, IdealFor, description, size, features, tags, deliveryInfo, howTouse } = req.body;
+            
+            const { productName,  brand, price, oldPrice, offer,  CountOfstock, Ingredients, IdealFor, description, size, features, tags, deliveryInfo, howTouse } = req.body;
             const trendingStatus = req.body.trending === undefined ? false : true;
             const updateStatus = req.body.update === undefined ? false : true;
             const quantity = Number(req.body.Qty);
@@ -238,7 +237,7 @@ const updateProduct = async (req, res) => {
             }
 
 
-
+          //  const categoryDetails = await Category.findOne({categoryName : category})
            
 
             let uploadedImages = [];
@@ -290,7 +289,6 @@ const updateProduct = async (req, res) => {
                         img1: uploadedImages[0] || "",
                         img2: uploadedImages[1] || "",
                         img3: uploadedImages[2] || "",
-                        category: category,
                         brand: brand,
                         trending: trendingStatus,
                         offer: offer,
