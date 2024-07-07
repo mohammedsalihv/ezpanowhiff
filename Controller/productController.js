@@ -216,94 +216,106 @@ const productEdit = async (req, res) => {
 
 
 //POST 
-
 const updateProduct = async (req, res) => {
     try {
         const productId = req.params.productId;
         if (req.session.admin) {
-            
-            const { productName,  brand, price, oldPrice, offer,  CountOfstock, Ingredients, IdealFor, description, size, features, tags, deliveryInfo, howTouse } = req.body;
+            const {
+                productName,
+                brand,
+                price,
+                oldPrice,
+                offer,
+                CountOfstock,
+                Ingredients,
+                IdealFor,
+                description,
+                size,
+                features,
+                tags,
+                deliveryInfo,
+                howTouse
+            } = req.body;
             const trendingStatus = req.body.trending === undefined ? false : true;
             const updateStatus = req.body.update === undefined ? false : true;
             const quantity = Number(req.body.Qty);
 
-            let productStatus;
+            // Determine product status based on quantity
+            const productStatus = quantity === 0 || quantity === null ? 'Out of stock' : 'In stock';
 
-            console.log(quantity);
-            if(quantity === 0 || quantity=== null) {
-                productStatus = 'Out of stock';
-            } else {
-                productStatus = 'In stock';
+            // Fetch existing product
+            const existingProduct = await Product.findById(productId).lean();
+
+            if (!existingProduct) {
+                return res.status(404).json({ message: "Product not found" });
             }
 
+            // Initialize image variables with existing values
+            let Image1 = existingProduct.img1;
+            let Image2 = existingProduct.img2;
+            let Image3 = existingProduct.img3;
 
-          //  const categoryDetails = await Category.findOne({categoryName : category})
-           
-
-            let uploadedImages = [];
-
-            if (req.files.length === 0) {
-                // No new images uploaded, fetch existing images
-                const existingProduct = await Product.findById(productId).lean();
-                if (existingProduct) {
-                    uploadedImages = [existingProduct.img1, existingProduct.img2, existingProduct.img3];
+            // Process uploaded images
+            const files = req.files;
+            for (let file of files) {
+                if (!file || !file.path) {
+                    throw new Error('Uploaded file or file path is missing');
                 }
-            } else {
-                // Process uploaded images
-                for (let i = 0; i < req.files.length; i++) {
-                    const file = req.files[i];
 
-                    if (!file || !file.path) {
-                        throw new Error('Uploaded file or file path is missing');
-                    }
+                const filename = file.filename;
+                const tempImagePath = file.path; // Temporary file path
+                const croppedImagePath = `public/images/cropped_${filename}`;
 
-                    const filename = file.filename;
-                    const tempImagePath = file.path; // Temporary file path
-                    const croppedImagePath = `public/images/cropped_${filename}`;
+                // Resize and crop image
+                await sharp(tempImagePath)
+                    .resize({ width: 500 }) // Resize image to 500px width
+                    .extract({ width: 500, height: 500, left: 0, top: 0 }) // Crop image to 500x500 pixels from top-left corner
+                    .toFile(croppedImagePath); // Save cropped image
 
-                    // Resize and crop image
-                    await sharp(tempImagePath)
-                        .resize({ width: 500 }) // Resize image to 500px width
-                        .extract({ width: 500, height: 500, left: 0, top: 0 }) // Crop image to 500x500 pixels from top-left corner
-                        .toFile(croppedImagePath); // Save cropped image
+                // Remove the temporary file
+                try {
+                    await fs.unlink(tempImagePath);
+                } catch (unlinkError) {
+                    console.error('Error deleting temporary file:', unlinkError);
+                }
 
-                    // Remove the temporary file
-                    try {
-                        await fs.unlink(tempImagePath);
-                    } catch (unlinkError) {
-                        console.error('Error deleting temporary file:', unlinkError);
-                    }
-
-                    uploadedImages.push(filename);
+                // Assign uploaded images to corresponding fields
+                if (file.fieldname === 'img1[]') {
+                    Image1 = filename;
+                } else if (file.fieldname === 'img2[]') {
+                    Image2 = filename;
+                } else if (file.fieldname === 'img3[]') {
+                    Image3 = filename;
                 }
             }
 
+            // Update product in database
             const updatedProduct = await Product.findOneAndUpdate(
                 { _id: productId },
                 {
                     $set: {
-                        productName: productName,
-                        description: description,
+                        productName,
+                        description,
                         Qty: quantity,
-                        price: price,
-                        img1: uploadedImages[0] || "",
-                        img2: uploadedImages[1] || "",
-                        img3: uploadedImages[2] || "",
-                        brand: brand,
+                        price,
+                        img1: Image1,
+                        img2: Image2,
+                        img3: Image3,
+                        brand,
                         trending: trendingStatus,
-                        offer: offer,
+                        offer,
                         status: productStatus,
                         isDeleted: false,
                         Size: size,
                         update: updateStatus,
-                        oldPrice: oldPrice,
-                        CountOfstock: CountOfstock,
-                        Ingredients: Ingredients,
-                        IdealFor: IdealFor,
-                        features: features,
-                        tags: tags,
-                        deliveryInfo: deliveryInfo,
-                        howTouse: howTouse
+                        oldPrice,
+                        CountOfstock,
+                        Ingredients,
+                        IdealFor,
+                        features,
+                        tags,
+                        deliveryInfo,
+                        howTouse
                     }
                 },
                 { new: true }
@@ -322,6 +334,7 @@ const updateProduct = async (req, res) => {
         return res.status(500).json({ message: "An error occurred while updating the product" });
     }
 };
+
 
 
 //GET

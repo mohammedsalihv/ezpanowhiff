@@ -1,5 +1,4 @@
 <section>
-
   <div class="d-flex justify-content-left">
     <button style="margin-left: 3%; margin-top:5%; background-color:black; color:aliceblue; padding:7px; border-radius:5px;" onclick="goBack()">Go back</button>
   </div>
@@ -7,13 +6,12 @@
     <h4 id="addingMsg" style="text-align: end;">{{this.productAdding}}</h4>
     <h3 style="margin-bottom: 6%;" class="text-center">Edit Product</h3>
     <div class="row">
-      <form id="form-editProduct" class="col s12" enctype="multipart/form-data">
+      <form id="form-editProduct" class="col s12" enctype="multipart/form-data" method="POST" action="/updateProduct">
         <div class="row">
           <div class="input-field col s12 m12 l6">
             <input value="{{data.productName}}" name="productName" id="productname" type="text">
             <label for="productname">Product name</label>
           </div>
- 
           <div class="input-field col s12 m12 l6">
             <input value="{{data.brand}}" name="brand" id="Brand" type="text">
             <label for="Brand">Brand</label>
@@ -136,8 +134,8 @@
        <button style="color: rgb(255, 255, 255); background-color:black" id="btn-sbmit-product" class="btn right" type="submit">Submit</button>
       </form>
     </div>
-   
 </section>
+
 
 <script src="path/to/cropper.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
