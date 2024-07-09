@@ -92,16 +92,14 @@ const isLogged = (req,res,next)=>{
 user_route.get('/' , Controller.UserLogin)
 user_route.get('/login', Controller.loginPage)
 user_route.get('/signup' , Controller.UserSignup)
-user_route.get('/verify', Controller.verify)
-user_route.get('/resendOtp', Controller.resendOtp)
+user_route.get('/verify', Controller.sendOtp ,  Controller.verify)
 user_route.get('/forgotPasswordPage', Controller.forgotPasswordPage)
 user_route.get('/userLogout' , isBlocked ,Controller.userLogout)
-
+user_route.get('/signup/post' , Controller.userSignupPost)
 
 user_route.post('/login' , Controller.loginValidation)
 user_route.post('/userRegister', Controller.userRegister)
-user_route.post('/verifyOtp' , Controller.verifyOtp)
-user_route.post('/resendOtp',Controller.resendOtp)
+user_route.post('/signup/otp/validate' , Controller.verifyOtp)
 user_route.post('/forgotPasswordEmail', Controller.forgotPasswordEmail)
 user_route.post('/forgotOTP' , Controller.forgotOTP)
 

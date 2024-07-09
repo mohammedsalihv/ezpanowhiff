@@ -1,92 +1,208 @@
-<link rel="stylesheet" href="/css/verify.css">
-<section>
-    <div class="wrapper">
-        <div class="container main mt-2">
-            <div class="row" id="reset">
-                <div id="card-otp" class="col-md-6">
-                    <div class="input-box">
-                        <header id="title-head">
-                            <h6 id="head-otp">Enter OTP here</h6>
-                        </header>
-                        <p id="invalidOtp">{{ this.invalidOtp }}</p>
-                        <form action="/verifyOtp" method="post">
-                            <div class="input-field" id="otp-field">
-                                <input type="text" id="inpt-otp" name="otp" required autocomplete="off">
-                            </div>
-                            <div id="login-otp" class="input-field mt-4">
-                                <input type="submit" class="submit" value="VERIFY">
-                            </div>
-                        </form>
-                        <p id="timer">OTP will expire after <span id="timer-value">{{ timerValue }}</span> seconds</p>
-                        <a id="resendOtp" class="btn btn-dark disabled" href="#">Resend OTP</a>
-                    </div>
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Validation</title>
+    
+    <link rel="stylesheet" href="/user/custom-css/msg-boxes.css">
+    <link rel="stylesheet" href="assetss/css/main.css">
+    <style>
+        .page-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f9fa;
+        }
+
+        .otp-div {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .heading {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .form-child {
+            margin-bottom: 1rem;
+        }
+
+        .form-control {
+            width: 100%;
+            height: 45px;
+            padding: 0.5rem;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+            font-size: 1rem;
+        }
+
+        .btn-submit {
+            width: 100%;
+            height: 45px;
+            background-color: #cf190c;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-submit:hover {
+            background-color:  #cf190c;
+        }
+
+        .back-link a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        .otp-timer-div {
+            text-align: center;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-wrapper">
+        <div class="otp-div">
+            <h2 class="heading">OTP Validation</h2>
+            <form action="/signup/otp" method="post" id="otp-form">
+                <div class="form-child msg-box">
+                    <p class="msg-para"></p>
                 </div>
-            </div>
+                <div class="form-child">
+                    <p>An OTP has been sent to your email. Please enter it below to confirm your account.</p>
+                </div>
+                <div class="form-child">
+                    <input type="text" class="form-control"  name="otp" id="otp" required>
+                </div>
+                <div class="otp-timer-div">
+                    <span class="otp-timer"></span>
+                </div>
+                <div class="form-child back-link">
+                    <a href="/signup">Go back</a>
+                </div>
+                <div class="form-child back-link">
+                    <a href="#" id="resend-otp-link">Resend OTP</a>
+                </div>
+                <div class="form-child">
+                    <button type="submit" class="btn-submit">Submit</button>
+                </div>
+            </form>
         </div>
     </div>
-</section>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+</body>
+</html>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const invalidOtp = document.getElementById('invalidOtp');
-        if (invalidOtp) {
-            setTimeout(() => {
-                invalidOtp.style.display = 'none';
-            }, 3000);
+    document.addEventListener('DOMContentLoaded', (e) => {
+    startTimer(60); // Start the timer with 60 seconds
+});
+
+const form = document.querySelector('form');
+const msgPara = document.querySelector('.msg-para');
+const timer = document.querySelector('.otp-timer');
+const resendOTPLink = document.querySelector('#resend-otp-link');
+
+let timerInterval;
+let remainingTime = 60; // Set the initial remaining time in seconds
+let timerOn = false;
+
+function startTimer(initialTime) {
+    remainingTime = initialTime;
+    timerOn = true;
+    resendOTPLink.style.pointerEvents = 'none'; // Disable the "Resend OTP" link initially
+    timerInterval = setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+    const minutes = Math.floor(remainingTime / 60);
+    const seconds = remainingTime % 60;
+
+    const formattedMinutes = String(minutes).padStart(2, '0');
+    const formattedSeconds = String(seconds).padStart(2, '0');
+
+    timer.innerHTML = `${formattedMinutes}:${formattedSeconds}`;
+
+    if (remainingTime <= 0) {
+        clearInterval(timerInterval);
+        timerOn = false;
+        resendOTPLink.style.pointerEvents = 'auto'; // Enable the "Resend OTP" link after the timer expires
+
+        const confi = confirm('Timeout for OTP, resend the OTP?');
+        if (confi) {
+            window.location.href = '/verify';
         }
+    } else {
+        remainingTime--;
+    }
+}
 
-        const resendButton = document.getElementById('resendOtp');
 
-        function updateTimer(timerValue) {
-            const timerElement = document.getElementById('timer-value');
-            timerElement.textContent = timerValue;
-            if (timerValue <= 0) {
-                resendButton.classList.remove('disabled');
-                resendButton.href = '/resendOtp';
-            } else {
-                resendButton.classList.add('disabled');
-                resendButton.removeAttribute('href');
+resendOTPLink.addEventListener('click', (e) => {
+    e.preventDefault(); // Prevent the default link behavior
+
+    if (resendOTPLink.style.pointerEvents !== 'none') {
+        startTimer(60);
+        alert('A new OTP has been sent to your email.');
+    }
+});
+
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const otp = document.querySelector('#otp').value;
+    const body = { otp };
+
+    if (isNaN(otp)) {
+        return displayError({ error: 'OTP must be a number' });
+    }
+
+    fetch('/signup/otp/validate', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.error) {
+                return displayError(data);
             }
-        }
-
-        function startTimer(duration) {
-            let timer = duration;
-            const interval = setInterval(function () {
-                if (timer < 0) {
-                    clearInterval(interval);
-                } else {
-                    updateTimer(timer);
-                    sessionStorage.setItem('otpTimer', timer);
-                    timer--;
-                }
-            }, 1000);
-        }
-
-        const storedTime = sessionStorage.getItem('otpTimer');
-        let timerValue = storedTime !== null ? parseInt(storedTime, 10) : {{ timerValue }};
-        const initialTimerValue = {{ timerValue }};
-        if (isNaN(timerValue) || timerValue < 0) {
-            timerValue = initialTimerValue;
-        }
-
-        startTimer(timerValue);
-
-        // Event listener for Resend OTP button
-        resendButton.addEventListener('click', function (event) {
-            event.preventDefault();
-            // Reset timer to 30 seconds
-            timerValue = initialTimerValue;
-            startTimer(timerValue);
-            // Make AJAX call to resend OTP
-            fetch('/resendOtp')
-                .then(response => response.json())
-                .then(data => {
-                    // Update UI if needed
-                })
-                .catch(error => {
-                    console.error('Error resending OTP:', error);
-                    // Handle error
-                });
+            window.location.href = '/signup/post';
+        })
+        .catch((err) => {
+            displayError({ error: err.error });
         });
-    });
-</script>
+});
 
+const displayError = (result) => {
+    msgPara.parentElement.className = 'msg-box-error';
+    msgPara.style.color = 'red';
+    msgPara.innerHTML = result.error;
+};
+
+</script>

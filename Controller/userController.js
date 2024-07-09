@@ -14,6 +14,9 @@ require('dotenv').config();
 const Cart = require('../models/cartDB')
 const Category = require('../models/category')
 const mongoose = require('mongoose');
+const otpModel = require('../models/otp')
+
+
 
 
 const { RAZORPAY_ID_KEY, RAZORPAY_SECRET_KEY } = process.env;
@@ -168,121 +171,68 @@ const UserSignup = (req, res) => {
 
 
 const userRegister = async (req, res) => {
-    try {
-        if (req.session.user) {
-            return res.redirect('/userHome');
-        }
+   
+    console.log('enter in to validatesignupbody');
 
-        const { name, email, phone, password, ConfirmPassword } = req.body || {};
-        
-        if (password !== ConfirmPassword) {
-            return res.render('user/signUp', { phoneError: "Passwords do not match" });
-        } else if (phone.length !== 10) {
-            return res.render('user/signUp', { phoneError: "Phone should be 10 digits long" });
-        }else if(name.trim() === ""){
-                return res.render('user/signUp', { phoneError: "Name must not be empty or just spaces."});
-        }
- 
-     
-        const trimmedemail = email.trim();
-        const trimmedpassword = password.replace(/\s+/g, '');
-        const trimmedphone = phone.trim();
-        const trimmedConfirmPassword = ConfirmPassword.trim();
+    const body = { username, email, phone , password, passwordRe } = req.body;
+    req.session.userEmail = email;
+    req.session.signupBody = body;
+    console.log(req.session);
+    console.log(req.body);
 
-        if (!trimmedemail || !trimmedpassword || !trimmedphone || !trimmedConfirmPassword) {
-            return res.render('user/signUp',{ enterUsername: "Details cannot be empty." });
-        }
-
-        const Existed = await User.findOne({ email });
-        if (Existed) {
-            return res.render('user/signUp',{ existingUser: 'Already member' });
-        }
-
-        const passwordErrors = strongPassword(trimmedpassword);
-        if (passwordErrors.length > 0) {
-            return res.render('user/signUp', { passwordError: passwordErrors });
-        }
-
-        const timerValue = await generateAndSendOTP(req, email, name, password, phone);
-        res.render('user/verify', { timerValue });
-    } catch (error) {
-        console.error('Error:', error);
-        res.redirect('/');
+    const isEmailValid = (email) => {
+    const emailRegex =  /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/g
+    return emailRegex.test(email)
     }
-};
 
 
-
-
-// PASSWORD VALIDATION
-
-const strongPassword = (userPassword) => {
-    const specialCharRegex = /[!@#$%^&*()-_+=]/;
-    const numberRegex = /\d/;
-    const uppercaseRegex = /[A-Z]/;
-    const lowercaseRegex = /[a-z]/;
-    const errors = [];
-
-    if (!specialCharRegex.test(userPassword)) {
-        errors.push("Password must contain at least one special character");
+    if(!username || !email || !phone || !password || !passwordRe ){
+    console.log('error 1');
+    return res.status(400).json({ error: 'All fields are required'});
     }
-    if (userPassword.length < 8) {
-        errors.push("Password must be at least 8 characters long");
-    }
-    if (!numberRegex.test(userPassword)) {
-        errors.push("Password must contain at least one number");
-    }
-    if (!uppercaseRegex.test(userPassword)) {
-        errors.push("Password must contain at least one uppercase letter");
-    }
-    if (!lowercaseRegex.test(userPassword)) {
-        errors.push("Password must contain at least one lowercase letter");
+
+    if(!isEmailValid(email)){
+    console.log('error 2');
+    return res.status(400).json({ error: 'email structure is not right'});
     }
     
-    return errors;
+    if(password !== passwordRe){
+    console.log('error 3');
+    return res.status(400).json({ error: 'password is not matching'});
+    }
+    
+    const isUnique = await User.findOne({ email });
+    if(isUnique){
+    console.log('not unique, error 4');
+    return res.status(400).json({ error: 'email is already registered'});
+    }
+
+    console.log('validateSingupbody is finished');
+    res.json({ message: 'validation is alright'});
 };
 
 
 
 
-
-//Store in session
-
-function generateOTP(req, email, OTP, name, password, phone) {
+const userSignupPost = async (req, res) => {
     try {
-        if (!req.session) {
-            throw new Error('Session is not available');
-        }
+        const { username, email, phone , password } = req.session.signupBody;
 
-        req.session.email = email;
-        req.session.otp = OTP;
-        req.session.name = name;
-        req.session.password = password;
-        req.session.phone = phone;
-        req.session.otpCreationTime = Date.now();
-        return true;
+
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+        
+        // Create user data object
+        const userData = { username, email, phone , password: hashedPassword };
+        
+        // Save user to the database
+        const result = await User.create(userData);
+        console.log('User created:', result);
+
+        // Redirect to login page after successful signup
+        res.render('user/loginPage' , {accountCreated : 'Account created'});
     } catch (error) {
-        console.error('Error setting session data:', error);
-        return false;
-    }
-}
-
-
-
-
-// Duration of OTP validity in seconds
-
-const resendOtp = async (req, res) => {
-    try {
-        const email = req.session.email;
-        if (!email) {
-            throw new Error('No email found in session');
-        }
-        const timerValue = await generateAndSendOTP(req, email, req.session.name, req.session.password, req.session.phone);
-        console.log('OTP resent successfully');
-        res.render('user/verify', { timerValue });
-    } catch (error) {
-        console.error('Error resending OTP:', error);
+        console.error('Signup error:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 };
@@ -290,27 +240,78 @@ const resendOtp = async (req, res) => {
 
 
 
-//  OTP GENERATING
+///OTP VERIFY
 
-
-const calculateRemainingTime = (otpCreationTime) => {
-    const currentTime = Date.now();
-    const elapsedTime = currentTime - otpCreationTime;
-    const remainingTime = OTP_EXPIRY_DURATION - Math.floor(elapsedTime / 1000);
-    return Math.max(0, remainingTime);
+const verifyOtp = async (req, res) => {
+    const { otp } = req.body;
+        try {
+            // Use await with exec() to execute the query and await the result
+            const dbOtp = await otpModel.findOne({ otp }).exec();
+    
+            console.log(`otp : ${otp}, dbOtp :, ${dbOtp}, email : ${req.session.userEmail}`);
+    
+            if(!otp){
+                return res.status(400).json({ success: false, error: 'OTP is required' });
+            }
+    
+            if (!dbOtp || !dbOtp.otp ) {
+                return res.status(400).json({ success: false, error: 'OTP is wrong' });
+            }
+    
+            if (dbOtp.otp !== otp ) {
+                return res.status(400).json({ success: false, error: 'OTP is not correct' });
+            }
+            console.log(`dbOtp.user: ${dbOtp.user}`);
+            console.log(`req.session.userEmail: ${req.session.userEmail}`);
+            if (dbOtp.user !== req.session.userEmail ) {
+                return res.status(400).json({ success: false, error: 'email is not matching' });
+            }
+    
+            // If OTP matches, return success response
+            return res.status(200).json({ success: true, message: 'OTP verification successful' });
+        } catch (error) {
+            console.error('Error retrieving OTP:', error);
+            return res.status(500).json({ success: false, error: 'Internal server error' });
+        }
 };
 
-const OTP_EXPIRY_DURATION = 30;
 
 
-const generateAndSendOTP = async (req, email, name, password, phone) => {
-    const OTP = Math.floor(1000 + Math.random() * 9000);
-    const success = generateOTP(req, email, OTP, name, password, phone);
-    if (!success) {
-        throw new Error('Failed to generate OTP');
+const verify = (req, res) => {
+
+    res.render('user/verify')
+}
+
+
+
+const sendOtp = async ( req, res , next ) => {
+
+    console.log('send otp');
+    if(req.body.email){
+        req.session.userEmail = req.body.email;
     }
+    const email = req.session.userEmail
+    console.log('email : ' + email );
+    const otpGen = require('otp-generator');
 
-    const transporter = nodemailer.createTransport({
+    const otp = otpGen.generate( 6, { 
+        upperCaseAlphabets: false,
+        lowerCaseAlphabets: false, 
+        specialChars: false,
+    })
+
+    console.log('otp : ' + otp );
+
+    const newDoc = { user: req.session.userEmail, otp };
+    console.log('newDoc : ' + newDoc.user, newDoc.otp);
+    const docRes = await new otpModel(newDoc)
+            .save();
+
+    console.log(docRes);
+
+    const nodemailer = require('nodemailer');
+    
+    const transport = nodemailer.createTransport({
         service: 'gmail',
         auth: {
             user: 'ezpanowhiffotp@gmail.com',
@@ -321,75 +322,25 @@ const generateAndSendOTP = async (req, email, name, password, phone) => {
     const mailOptions = {
         from: 'ezpanowhiffotp@gmail.com',
         to: email,
-        subject: 'Your OTP',
-        text: `On-Demand Tokencode : ${OTP}`
-    };
-    await transporter.sendMail(mailOptions);
-
-    const timerValue = calculateRemainingTime(req.session.otpCreationTime);
-    return timerValue;
-};
-
-
-
-
-
-///OTP VERIFY
-
-const verifyOtp = async (req, res) => {
-    const inputOtp = req.body.otp;
-    const validationOtp = req.session.otp;
-
-    try {
-        if (parseInt(inputOtp) === validationOtp) {
-            // OTP validation successful
-            const { name, email, password, phone } = req.session;
-
-            const saltRounds = 10;
-            const salt = await bcrypt.genSalt(saltRounds);
-            const hashedPassword = await bcrypt.hash(password, salt);
-
-            const existingUser = await User.findOne({ email });
-            if (existingUser) {
-                return res.render('user/signUp', { existingUser: 'Already member' });
-            } else {
-                const newUser = new User({
-                    name,
-                    email,
-                    password: hashedPassword,
-                    phone
-                });
-
-                await newUser.save();
-
-                // Clear session data after successful registration
-                req.session.destroy();
-
-                console.log('User created');
-                return res.render('user/loginPage', { accountCreated: 'Successfully completed' });
-            }
-        } else {
-            const timerValue = calculateRemainingTime(req.session.otpCreationTime);
-            if (timerValue <= 0) {
-                return res.render('user/signUp', { otpExpired: 'OTP expired. Please request a new one.' });
-            }
-            return res.render('user/verify', {
-                invalidOtp: 'Invalid OTP',
-                timerValue
-            });
-        }
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: 'Internal server error' });
+        subject: 'sending email to you',
+        text: `Your otp to verify your account is ${otp}, Thank you`
     }
-};
 
+    transport.sendMail( mailOptions, async ( err, info ) => {
+        if(err) console.log('error : ' + err);
+        else{
+            
+            console.log('success : ' + info.response );
+        }
+    })
 
-
-const verify = (req, res) => {
-
-    res.render('user/verify')
+next();
 }
+
+
+
+
+
 
 
 
@@ -1527,7 +1478,8 @@ module.exports = {
     loginValidation,
     UserSignup,
     userRegister,
-    resendOtp,
+    sendOtp,
+    userSignupPost,
     verifyOtp,
     verify,
     userLogout,
