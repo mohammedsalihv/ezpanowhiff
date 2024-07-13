@@ -627,6 +627,9 @@ const productList = async (req, res) => {
         const addTocartProductList = req.session.msgAddtocartProductlist || null;
         req.session.msgAddtocartProductlist = null;
 
+
+        const ErrorAddTocart = req.session.msgAddtocartProductlistError || null
+        req.session.msgAddtocartProductlistError = null
         // Rendering the template with products and pagination
         res.render('user/userProductlist', {
             products,
@@ -639,7 +642,8 @@ const productList = async (req, res) => {
             maxPrice,
             minPrice,
             addToWishlistProd,
-            addTocartProductList
+            addTocartProductList,
+            ErrorAddTocart
         });
 
     } catch (error) {
@@ -673,6 +677,8 @@ const searchProduct = async (req, res) => {
 
 
 
+
+
 const productDetail = async (req, res) => {
     try {
        
@@ -702,6 +708,8 @@ const productDetail = async (req, res) => {
 
         const addTowishlistMsg = req.session.addToWishlist || null
         const successMessage = req.session.successMessage || null;
+        const addTocartError = req.session.msgAddtocartProductPageError  || null
+        msgAddtocartProductPageError = null;
         req.session.successMessage = null; 
         req.session.addToWishlist = null
         
@@ -711,7 +719,8 @@ const productDetail = async (req, res) => {
             quantityOfProduct, 
             successMessage, 
             relatedProducts ,
-            addTowishlistMsg
+            addTowishlistMsg,
+            addTocartError
         });
     } catch (error) {
         console.error('Error fetching product:', error);
@@ -1101,7 +1110,7 @@ const walletPage = async (req, res) => {
         const perPage = 5; // Adjust as needed
 
         // Fetch wallet data for the user
-        const walletData = await Wallet.findOne({ wallet_user: userId }).lean();
+        const walletData = await Wallet.findOne({ wallet_user: userId }).sort({ createdAt: -1 }).lean();
         if (!walletData) {
             return res.status(404).json({ message: 'Wallet not found' });
         }
@@ -1111,6 +1120,9 @@ const walletPage = async (req, res) => {
         if (!Array.isArray(transactions)) {
             return res.status(500).json({ error: 'Transactions data is invalid' });
         }
+
+        // Sort transactions in descending order by createdAt
+        transactions.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
         // Calculate total number of transactions and total pages
         const totalTransactions = transactions.length;
@@ -1367,33 +1379,42 @@ const addTowishlistProductlist = async (req,res)=>{
 
 
 
-const productlistAddtocart = async (req,res)=>{
+const productlistAddtocart = async (req, res) => {
     try {
+        const qty = 1;
+        const productId = req.query.productId;
+        const userId = req.session.user._id;
 
-        const qty = 1
-        const productId = req.query.productId
-        const userId = req.session.user._id
-    
-        let usercart = await Cart.findOne({user_id : userId});
+        let usercart = await Cart.findOne({ user_id: userId });
         if (!usercart) {
             usercart = new Cart({ user_id: userId, products: [], subTotal: 0, cartTotal: 0 });
         }
 
         const existingProduct = usercart.products.find((product) => product.product.toString() === productId);
-        
+        const actualProduct = await Product.findById(productId);
+        const availableQuantity = actualProduct.Qty;
+
         if (existingProduct) {
+            if (existingProduct.cartCount + qty > availableQuantity) {
+                req.session.msgAddtocartProductlistError = 'Cannot add more than available stock.';
+                return res.redirect(`/userProductlist`);
+            }
             existingProduct.cartCount = Number(existingProduct.cartCount) + qty;
         } else {
+            if (qty > availableQuantity) {
+                req.session.msgAddtocartProductlistError = 'Cannot add more than available stock.';
+                return res.redirect(`/userProductlist`);
+            }
             usercart.products.push({ product: productId, cartCount: qty });
         }
-
 
         await usercart.save();
         req.session.msgAddtocartProductlist = 'Item added to cart successfully';
         res.redirect(`/userProductlist`);
-     } catch (error) {
-        console.log(error)
-     }
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('An error occurred');
+    }
 }
 
 

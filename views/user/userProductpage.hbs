@@ -83,6 +83,9 @@
         </div>
     </div>
     <section>
+        {{#if addTocartError}}
+          <div style="text-align: center; font-weight:900" class="alert alert-danger">{{addTocartError}}</div>
+        {{/if}}
         {{#if successMessage}}
         <div style="text-align: center; font-weight:900" class="alert alert-success">
             {{successMessage}}

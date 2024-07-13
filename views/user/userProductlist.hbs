@@ -84,6 +84,11 @@
         </div>
     </div>
     <section>
+        {{#if ErrorAddTocart}}
+        <div style="text-align: center; font-weight:900" class="alert alert-danger">
+            {{ErrorAddTocart}}
+        </div>
+        {{/if}}
         {{#if addToWishlistProd}}
         <div style="text-align: center; font-weight:900" class="alert alert-success">
             {{addToWishlistProd}}
@@ -250,18 +255,21 @@
                 </div>
             </div>
     </section>
-    <section class="d-flex justify-content-center" style="height: 10vh;  color:#fff">
-        <div class="pagination-wrap">
-            <ul class="pagination">
-                {{#range 1 totalPages}}
-                <li style="background-color: #ffffff;" class="page-item {{#if (eq ../page this)}}active{{/if}}">
-                    <a style="background-color: #ffffff; color:#000000" class="page-link"
-                        href="userProductlist?page={{this}}&limit={{../limitRow}}"><strong>{{this}}</strong></a>
-                </li>
-                {{/range}}
-            </ul>
-        </div>
-    </section>
+<section class="d-flex justify-content-center" style="height: 10vh;  color:#fff">
+    <div class="pagination-wrap">
+        <ul class="pagination">
+            {{#range 1 totalPages}}
+            <li style="background-color: #ffffff;" class="page-item {{#if (eq ../page this)}}active{{/if}}">
+                <a style="background-color: #ffffff; color:#000000" class="page-link"
+                    href="userProductlist?page={{this}}&limit={{../limitPerPage}}&filterBy={{../filterBy}}&sortBy={{../sortBy}}&minPrice={{../minPrice}}&maxPrice={{../maxPrice}}">
+                    <strong>{{this}}</strong>
+                </a>
+            </li>
+            {{/range}}
+        </ul>
+    </div>
+</section>
+
 
 
 </main>

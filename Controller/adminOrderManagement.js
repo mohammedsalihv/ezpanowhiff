@@ -122,12 +122,12 @@ const moreOrderData = async (req, res) => {
 
 const updateOrder = async (req, res) => {
     try {
-        const orderId = req.body.orderId;
-        const newStatus = req.body.newStatus;
+        const orderId = req.params.orderId;
+        const newStatus = req.body.selectStatus;
         const order = await Order.findById(orderId);
 
         if (!order) {
-            return res.status(404).send("Order not found");
+            return res.status(404).json({success : false , message : "Order not found"});
         }
 
         // Assuming product is an array and we need to update all products
@@ -145,7 +145,8 @@ const updateOrder = async (req, res) => {
         order.orderStatus = newStatus;
         await order.save();
 
-        res.redirect(`/admin/moreOrderData?orderId=${orderId}`);
+       // res.redirect(`/admin/moreOrderData?orderId=${orderId}`);
+       return res.status(200).json({success : true , message : 'Status changes successfully'})
     } catch (error) {
         console.error("Error updating order st:", error);
         res.status(500).send("Error updating order status");
@@ -158,25 +159,31 @@ const updateOrder = async (req, res) => {
 
 const orderProductUpdate = async (req, res) => {
     try {
-        const { productId, newStatus } = req.body;
+        const newStatus = req.body.productStatus;
+        const productId = req.params.productId
         const idOrder = req.session.idOrder;
+
+
+         console.log(newStatus);
+         console.log('p',productId);
+         console.log('o',idOrder);
 
         // Validate inputs
         if (!idOrder || !productId || !newStatus) {
-            return res.status(400).send('Missing required fields: idOrder, productId, or newStatus');
+            return res.status(400).json({success : false , message : 'Missing required fields: idOrder, productId, or newStatus'});
         }
 
         req.session.idOrder = null;
 
         const validStatuses = ['delivered', 'shipped', 'returned', 'canceled'];
         if (!validStatuses.includes(newStatus)) {
-            return res.status(400).send('Invalid order status');
+            return res.status(400).json({success : false , message :'Invalid order status'});
         }
 
         const order = await Order.findById(idOrder);
 
         if (!order) {
-            return res.status(404).send('Order not found');
+            return res.status(404).json({success : false , message :'Order not found'});
         }
 
         // Update products based on new status
@@ -198,7 +205,8 @@ const orderProductUpdate = async (req, res) => {
 
         await order.save();
 
-        res.redirect(`/admin/moreOrderData?orderId=${idOrder}`);
+        return res.status(200).json({success : true , message : 'Product status change successfully'})
+       // res.redirect(`/admin/moreOrderData?orderId=${idOrder}`);
     } catch (error) {
         console.error('Error updating order product status:', error);
         res.status(500).send('Internal Server Error');

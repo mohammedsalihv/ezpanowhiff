@@ -81,6 +81,7 @@ const adminLoginValidation = async (req, res) => {
         
         console.error('Error:', error);
         res.status(500).send('An error occurred');
+        
     }
 };
 

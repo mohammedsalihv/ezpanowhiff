@@ -104,8 +104,8 @@ admin_routes.get('/moreOrderData' , isAdmin , adminOrderController.moreOrderData
 admin_routes.post('/acceptReturn', isAdmin, adminOrderController.acceptReturn);
 admin_routes.post('/rejectReturn' , isAdmin , adminOrderController.rejectReturn)
 
-admin_routes.post('/ordersUpdate' , isAdmin , adminOrderController.updateOrder)
-admin_routes.post('/ordersProductUpdate' , isAdmin , adminOrderController.orderProductUpdate)
+admin_routes.post('/ordersUpdate/:orderId' , isAdmin , adminOrderController.updateOrder)
+admin_routes.post('/ordersProductUpdate/:productId' , isAdmin , adminOrderController.orderProductUpdate)
 
 
 

@@ -27,10 +27,24 @@ const addToCart = async (req, res) => {
         }
 
         const existingProduct = cart.products.find((product) => product.product.toString() === productId);
+        const actualProduct = await Product.findById(productId)
+        const availableQuantity = actualProduct.Qty
+
 
         if (existingProduct) {
+
+            if (existingProduct.cartCount + quantity > availableQuantity) {
+                req.session.msgAddtocartProductPageError = 'Cannot add more than available stock.';
+                return  res.redirect(`/productDetail?id=${productId}`);
+            }
+        
             existingProduct.cartCount = Number(existingProduct.cartCount) + quantity;
         } else {
+
+            if (quantity > availableQuantity) {
+                req.session.msgAddtocartProductPageError = 'Cannot add more than available stock.';
+                return res.redirect(`/productDetail?id=${productId}`);
+            }
             cart.products.push({ product: productId, cartCount: quantity, ml: size });
         }
         await cart.save();

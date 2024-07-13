@@ -231,16 +231,20 @@
                         </div>
                     </div>
                 </div>
-                <div class="container-divs">
-                    <div class="charts-container">
-                        <div class="line-chart-div">
-                            <canvas id="myChart-lines"></canvas>
-                        </div>
-                        <div class="product-chart-div">
-                            <canvas id="myChart-products"></canvas>
-                        </div>
-                    </div>
-                </div>
+    <div class="row">
+    <div class="col-lg-6">
+        <div style="height: 500px; width: 100%;" class="line-chart-div">
+            <canvas id="myChart-lines"></canvas>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div style="height: 400px; width: 100%;" class="product-chart-div">
+            <canvas id="myChart-products"></canvas>
+        </div>
+    </div>
+</div>
+
+         
                 <div class="row mt-4">
                     <div class="col-md-6 grid-margin stretch-card">
                         <div class="card">
@@ -311,7 +315,8 @@
    
 
 <script>
-  let productsChart, categoryChart;
+  let productsChart, categoryChart, myChartProducts, myChartLines;
+
 
 document.addEventListener("DOMContentLoaded", async function () {
   try {
@@ -335,6 +340,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         document.querySelector(".total-revenue").textContent = `Revenue: ₹${data.totalRevenue}`;
         document.querySelector(".total-products").textContent = `Products: ${data.totalProducts}`;
 
+      
         populateTable(data);
         createCharts(data);
         
@@ -357,46 +363,59 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
  function createCharts(data) {
-    if (productsChart) productsChart.destroy();
-    if (categoryChart) categoryChart.destroy();
+        if (productsChart) productsChart.destroy();
+        if (categoryChart) categoryChart.destroy();
 
-    const myChartProducts = document.getElementById("myChart-products");
-    productsChart = new Chart(myChartProducts, {
-        type: "bar",
-        data: {
-            labels: data.topProducts.map(item => item.productName),
-            datasets: [{
-                label: "Most Selling Products",
-                data: data.topProducts.map(item => item.count),
+        const myChartProducts = document.getElementById("myChart-products");
+        categoryChart = new Chart(myChartProducts, {
+          type: "pie",
+          data: {
+            labels: [...data.topCategoryies.map((item) => item.categoryName)],
+            datasets: [
+              {
+                label: "Most Selling Category",
+                data: [...data.topCategoryies.map((item) => item.count)],
                 borderWidth: 1,
-            }],
+              },
+            ],
+          },
+          options: {
+            animation: {
+          duration: 0 // Disable animation
         },
-        options: {
-            animation: { duration: 0 },
-            scales: { y: { beginAtZero: true } },
-        },
-    });
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        });
 
-
-
- const myChartLines = document.getElementById("myChart-lines");
-    categoryChart = new Chart(myChartLines, {
-        type: "line",
-        data: {
-            labels: data.topCategories.map(item => item.categoryName),
-            datasets: [{
-                label: "Most Selling Categories",
-                data: data.topCategories.map(item => item.count),
+        const myChartLines = document.getElementById("myChart-lines");
+        productsChart = new Chart(myChartLines, {
+          type: "bar",
+          data: {
+            labels: [...data.topProducts.map((item) => item.productName)],
+            datasets: [
+              {
+                label: "Most Selled Products",
+                data: [...data.topProducts.map((item) => item.count)],
                 borderWidth: 1,
-            }],
+              },
+            ],
+          },
+          options: {
+            animation: {
+          duration: 0 // Disable animation
         },
-        options: {
-            animation: { duration: 0 },
-            scales: { y: { beginAtZero: true } },
-        },
-    });
-}
-
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        });
+      }
 
 
 const filterForm = document.querySelector("#filter-form");
