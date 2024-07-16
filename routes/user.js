@@ -170,6 +170,9 @@ user_route.post('/checkout/newaddressAdding', isLogged , isBlocked ,  checkoutCo
 user_route.post('/placeorder' , isLogged , isBlocked , upload.none(), checkoutController.placeorder)
 user_route.post('/checkout-error', isLogged , isBlocked , upload.none(), checkoutController.errorCheckout)
 user_route.post('/payment-pending', isLogged , isBlocked , upload.none(), checkoutController.paymentContinue)
+
+
+
 //--------------------Coupons------------------------//
 
 user_route.post('/applyCoupon/:enteredCouponCode' , isLogged , isBlocked, checkoutController.applyCoupon)
