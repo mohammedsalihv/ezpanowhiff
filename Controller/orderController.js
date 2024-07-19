@@ -126,6 +126,7 @@ const returnProductOrder = async (req, res) => {
 
         const foundProduct = order.products[productIndex];
         const totalAmount = foundProduct.salesPrice;
+        const purchasedQuantity = foundProduct.quantity
 
         const wallet = await Wallet.findOne({ wallet_user: userId });
 
@@ -145,6 +146,12 @@ const returnProductOrder = async (req, res) => {
         wallet.balance += totalAmount;
         await wallet.save();
         await order.save();
+
+
+        await Product.findByIdAndUpdate(productId, {
+            $inc: { Qty: purchasedQuantity }
+        });
+
 
         res.redirect(`/orderView?orderId=${orderId}`);
     } catch (error) {
@@ -238,138 +245,76 @@ const returnRequest = async (req, res) => {
 
 
 
-
-
-// const returnOrder = async (req, res) => {
-//     try {
-//         const { returnReason, orderId } = req.body;
-//         const userId = req.session.user._id
-
-//         console.log(orderId, returnReason);
-     
-//         const order = await Order.findById(orderId);
-//         if (!order) {
-//             return res.status(404).json({ error: "Order not found" });
-//         }
-
-//         // Loop through each product and update its cancelstatus and reason
-//         for (let i = 0; i < order.products.length; i++) {
-//             await Order.updateOne(
-//                 { _id: orderId, [`products.${i}.productId`]: order.products[i].productId },
-//                 {
-//                     $set: {
-//                         [`products.${i}.cancelstatus`]: 'returned',
-//                         [`products.${i}.returned`]: true,
-//                         [`products.${i}.reason`]: returnReason,
-//                     }
-//                 }
-//             );
-//         }
-
-
-         
-//         const totalAmount = order.totalAmount
-//         const wallet = await Wallet.findOne({wallet_user : userId})
-
-//            // Create transaction
-//            const newTransaction = {
-//             amount: totalAmount,
-//             type: 'credited',
-//             description: 'Order payment',
-//             canceled : 'order returned'
-//         };
-
-//          wallet.transactions.push(newTransaction);
-//          // Mark transactions as modified
-//          wallet.markModified('transactions');
-//          wallet.balance += totalAmount;
-//          await wallet.save();
-
-
-
-//         // Update the overall order status if necessary
-//         await Order.updateOne(
-//             { _id: orderId },
-//             { 
-//                 $set: { 
-//                     orderStatus: 'returned', 
-//                     returnReason: returnReason 
-//                 }
-//             }
-//         );
-        
-//         res.redirect(`/orderView?orderId=${orderId}`);
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ error: "An error occurred while returning the order" });
-//     }
-// };
-
-
-
-
 const cancelOrder = async (req, res) => {
     try {
-      const orderId = req.body.orderId;
+        const { orderId } = req.body;
+        const userId = req.session.user._id;
     
-      const order = await Order.findById(orderId)
-      const paymentMethod = order.paymentMethod
-      const userId = req.session.user._id
+        const order = await Order.findById(orderId);
 
-   
-
-      if (order.orderStatus !== 'returned') {
-
-        const totalAmount = order.totalAmount
-        const wallet = await Wallet.findOne({wallet_user : userId})
-
-           // Create transaction
-           const newTransaction = {
-            amount: totalAmount,
-            type: 'credited',
-            description: 'Order payment',
-            canceled : 'order canceled'
-        };
-
-         wallet.transactions.push(newTransaction);
-         // Mark transactions as modified
-         wallet.markModified('transactions');
-         wallet.balance += totalAmount;
-         await wallet.save();
-
-    }
-
-
-      if (order.orderStatus !== 'delivered') {
-        try {
-          const updatedOrder = await Order.findOneAndUpdate(
-            { _id: orderId },
-            {
-              $set: {
-                orderStatus: 'canceled',
-                'products.$[elem].cancelstatus': 'canceled', // Update the cancelstatus of the matched element
-                'products.$[elem].returned': true // Update the cancelstatus of the matched element
-              }
-            },
-            {
-              arrayFilters: [{ 'elem.cancelstatus': { $ne: 'canceled' } }],
-              new: true // Return the updated document
-            }
-          );
-
-          
-          console.log('Updated order:', updatedOrder);
-        } catch (error) {
-          console.error('Error updating order:', error);
+        if (!order) {
+            return res.status(404).json({ error: "Order not found" });
         }
-      }
-    return res.status(200).json({ message: "Order cancelled successfully" });
+
+        if (order.orderStatus !== 'returned') {
+            const totalAmount = order.totalAmount;
+            const wallet = await Wallet.findOne({ wallet_user: userId });
+
+            if (!wallet) {
+                return res.status(404).json({ error: "Wallet not found" });
+            }
+
+            // Create transaction
+            const newTransaction = {
+                amount: totalAmount,
+                type: 'credited',
+                description: 'Order payment',
+                canceled: 'order canceled'
+            };
+
+            wallet.transactions.push(newTransaction);
+            // Mark transactions as modified
+            wallet.markModified('transactions');
+            wallet.balance += totalAmount;
+            await wallet.save();
+        }
+
+        if (order.orderStatus !== 'delivered') {
+            const updatedOrder = await Order.findOneAndUpdate(
+                { _id: orderId },
+                {
+                    $set: {
+                        orderStatus: 'canceled',
+                        'products.$[elem].cancelstatus': 'canceled',
+                        'products.$[elem].returned': true
+                    }
+                },
+                {
+                    arrayFilters: [{ 'elem.cancelstatus': { $ne: 'canceled' } }],
+                    new: true
+                }
+            );
+
+            const productIds = order.products.map(product => product.productId);
+
+            for (const productId of productIds) {
+                const product = order.products.find(p => p.productId.equals(productId));
+                if (product) {
+                    await Product.findByIdAndUpdate(productId, {
+                        $inc: { Qty: product.quantity }
+                    });
+                }
+            }
+
+            console.log('Updated order:', updatedOrder);
+        }
+
+        return res.status(200).json({ message: "Order cancelled successfully" });
     } catch (error) {
-      console.error(error);
-      return res.status(500).json({ error: "Item already delivered" });
+        console.error(error);
+        return res.status(500).json({ error: "An error occurred while canceling the order" });
     }
-  }
-  
+};
 
 
 
@@ -396,6 +341,7 @@ const productStatusCancel = async (req, res) => {
 
         const totalAmount = foundProduct.salesPrice;
         const currStatus = foundProduct.cancelstatus;
+        const purchasedQuantity = foundProduct.quantity
 
         if (currStatus !== 'returned') {
             const wallet = await Wallet.findOne({ wallet_user: userId });
@@ -435,6 +381,12 @@ const productStatusCancel = async (req, res) => {
         } 
 
         await updatedOrder.save();
+
+        
+        await Product.findByIdAndUpdate(productId, {
+            $inc: { Qty: purchasedQuantity }
+        });
+
 
         res.redirect(`/orderView?orderId=${orderId}`);
     } catch (error) {

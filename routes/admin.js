@@ -33,6 +33,7 @@ const isAdmin = (req,res,next)=>{
 
 // ---------ADMIN LOGIN ---------//
 
+
 admin_routes.get('/login' , Controller.adminLogin)
 admin_routes.get('/adminLogin', Controller.preventing)
 admin_routes.get('/adminLogout' , Controller.adminLogout)

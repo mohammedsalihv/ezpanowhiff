@@ -73,6 +73,10 @@ app.use(bodyParser.json());
 app.use('/', userRoutes);
 app.use('/admin', adminRoutes);
 
+app.get('*', function (req, res) {
+  res.status(404).render('layout/page-404');
+});
+
 app.listen(5000, () => {
   console.log('Server is running on port 5000');
 });

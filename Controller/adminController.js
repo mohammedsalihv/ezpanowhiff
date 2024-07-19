@@ -56,7 +56,7 @@ const adminLoginValidation = async (req, res) => {
            if(Admin){
 
             const validation = await admin.find({});
-            let validationEmail, validationPassword;
+            let validationEmail , validationPassword;
 
             validation.forEach(adminData => {
             validationEmail = adminData.email;
@@ -75,7 +75,7 @@ const adminLoginValidation = async (req, res) => {
             }
         
         }else{
-            res.render('admin/adminLogin', {notAdmin : 'Access Denied: You do not have permission to access the admin panel'})
+            res.render('admin/adminLogin', {notAdmin : ' You do not have permission to access the admin panel'})
         } 
 } catch (error) {
         

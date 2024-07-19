@@ -105,9 +105,8 @@ const UserLogin = (req, res) => {
 
 const loginValidation = async (req, res) => {
     try {
-
         if (req.session.user) {
-            res.redirect('/userHome')
+            res.redirect('/userHome');
         } else {
             const { email, password } = req.body || {};
             const userData = await User.findOne({ email });
@@ -120,9 +119,8 @@ const loginValidation = async (req, res) => {
                 const isPasswordValid = await bcrypt.compare(password, userData.password);
                 if (isPasswordValid) {
                     req.session.user = userData;
-                    const userId = userData._id
-                    userLogged = true
-
+                    const userId = userData._id;
+                    userLogged = true;
 
                     // Create a Wallet for the user if it doesn't exist
                     const existingWallet = await Wallet.findOne({ wallet_user: userId });
@@ -138,18 +136,19 @@ const loginValidation = async (req, res) => {
                             },
                         });
                     }
-                    res.render('user/homePage', { userLogged });
+                    // Corrected redirection
+                    res.redirect('/userHome');
                 } else {
                     res.render('user/loginPage', { invalidPassword: 'Password does not match' });
                 }
             }
         }
-
     } catch (error) {
         console.error("Error:", error);
         res.status(500).json({ error: "Internal server error." });
     }
-}
+};
+
 
 
 
@@ -516,6 +515,7 @@ const homePagerender = async (req, res) => {
 
 
 
+
 const productList = async (req, res) => {
     const userLogged = req.session.user ? true : false;
     const searchQuery = req.query.query || '';
@@ -596,12 +596,10 @@ const productList = async (req, res) => {
                 case 'newarrivals':
                     query.filter.category = new mongoose.Types.ObjectId('664e369e83b1998b6579e892');
                     break;
-                // Add more cases as per your application's categories
                 default:
                     break;
             }
         }
-
 
         // Applying price filtering
         if (!isNaN(minPrice) && !isNaN(maxPrice)) {
@@ -627,9 +625,9 @@ const productList = async (req, res) => {
         const addTocartProductList = req.session.msgAddtocartProductlist || null;
         req.session.msgAddtocartProductlist = null;
 
+        const ErrorAddTocart = req.session.msgAddtocartProductlistError || null;
+        req.session.msgAddtocartProductlistError = null;
 
-        const ErrorAddTocart = req.session.msgAddtocartProductlistError || null
-        req.session.msgAddtocartProductlistError = null
         // Rendering the template with products and pagination
         res.render('user/userProductlist', {
             products,
@@ -641,6 +639,7 @@ const productList = async (req, res) => {
             filterBy,
             maxPrice,
             minPrice,
+            searchQuery,
             addToWishlistProd,
             addTocartProductList,
             ErrorAddTocart
@@ -651,10 +650,6 @@ const productList = async (req, res) => {
         res.status(500).json({ error: "Product list page render error" });
     }
 };
-
-
-
-
 
 
 

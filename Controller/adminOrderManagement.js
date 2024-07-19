@@ -69,7 +69,6 @@ const moreOrderData = async (req, res) => {
             return {
                 ...orderProduct,
                 productName: productDetail.productName,
-                salesPrice: productDetail.price,
                 img1: productDetail.img1,
                 status: orderProduct.cancelstatus, 
                 returnReason: orderProduct.reason,
@@ -92,7 +91,8 @@ const moreOrderData = async (req, res) => {
             returnReason : orderData.returnReason,
             ID : orderData._id,
             requestTrue : orderData.returnRequest,
-            userId : orderData.userId
+            userId : orderData.userId,
+            salesPrice : orderedProducts.salesPrice
         };
 
         
@@ -275,6 +275,17 @@ const acceptReturn = async (req, res) => {
             }
         );
 
+
+        const productIds = order.products.map(product => product.productId);
+
+            for (const productId of productIds) {
+                const product = order.products.find(p => p.productId.equals(productId));
+                if (product) {
+                    await Product.findByIdAndUpdate(productId, {
+                        $inc: { Qty: product.quantity }
+                    });
+                }
+            }
         
         return res.status(200).json({ success: true, message: 'Request accepted' });
     } catch (error) {
