@@ -77,6 +77,12 @@ app.get('*', function (req, res) {
   res.status(404).render('layout/page-404');
 });
 
+app.use((err, req, res, next) => {
+  console.error(err.stack); // Log the error stack trace
+  res.status(500).render('layout/page-500'); // Render the custom 500 error page
+});
+
+
 app.listen(5000, () => {
   console.log('Server is running on port 5000');
 });
