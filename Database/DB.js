@@ -1,5 +1,7 @@
 const moongose = require('mongoose')
-const dbConnection = moongose.connect("mongodb://localhost:27017/EzpanoWhiff");
+require("dotenv").config();
+
+const dbConnection = moongose.connect(process.env.DATABASE_MONGODB);
 
 dbConnection
 .then(()=>{
