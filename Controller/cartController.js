@@ -120,47 +120,6 @@ const cart = async (req, res) => {
 
 
 
-// const updateCheckbox = async (req, res) => {
-//     try {
-//         const userData = req.session.user;
-//         const userId = userData._id;
-//         const productId = req.params.productId;
-        
-//         // Find the cart for the user
-//         const cart = await Cart.findOne({ user_id: userId });
-
-//         // Toggle isSelected for the specified product
-//         cart.products.forEach(product => {
-//             if (product.product.toString() === productId) {
-//                 product.isSelected = !product.isSelected;
-//             }
-//         });
-
-//         // Save the updated cart
-//         await cart.save();
-
-//         // Calculate the new cart total
-//         let cartTotal
-//         let subTotal = 0;
-//         for (const product of cart.products) {
-//             if (product.isSelected) {
-//                 const productDetails = await Product.findById(product.product);
-//                 subTotal += product.cartCount * productDetails.price;
-//             }
-//         }
-
-//         // Update the cart total
-//         cartTotal = subTotal;
-//         cart.cartTotal = cartTotal
-//         await cart.save();
-      
-//         res.status(200).json({ cartTotal });
-//     } catch (error) {
-//         console.error('Error in updateCheckbox:', error);
-//         res.status(500).json({ message: 'Internal Server Error' });
-//     }
-// };
-
 
 
 

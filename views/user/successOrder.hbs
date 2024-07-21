@@ -1,12 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
 
-  <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,700,900&display=swap" rel="stylesheet">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wallet Page</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <style>
+    @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800');
+
+    .nav {
+      width: 100%;
+      background-color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1000;
+    }
+
+    .nav-header {
+      padding-left: 1rem;
+    }
+
+    .nav-title button {
+      font-size: 22px;
+      color: #000000;
+      font-weight: 900;
+      background-color: #fff;
+      border: 0;
+    }
+
+    .nav-list {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-list li {
+      list-style-type: none;
+    }
+
+    .nav-list li a {
+      text-decoration: none;
+      color: #000000;
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    #nav-check {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .nav-list {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        background-color: #ffffff;
+        padding: 10px 0;
+      }
+
+      #nav-check:checked+.nav-list {
+        display: flex;
+      }
+
+      .nav-btn {
+        display: block;
+        font-size: 30px;
+        cursor: pointer;
+      }
+
+      .nav-list li {
+        text-align: center;
+        padding: 10px 0;
+      }
+
+      .nav-list .icon {
+        color: #000000;
+      }
+    }
+
     body {
       text-align: center;
-      padding: 40px 0;
       background: #ffffff;
       font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
-
     }
 
     h1 {
@@ -22,7 +102,7 @@
       margin: 0;
     }
 
-    i {
+    .checkmark {
       color: #098b0f;
       font-size: 100px;
       line-height: 200px;
@@ -34,26 +114,16 @@
       padding: 60px;
       border-radius: 4px;
       display: inline-block;
-      height: 80vh;
+      width: 100%;
+      max-width: 900px;
+      margin: auto;
     }
 
     .button-container {
       margin-top: 20px;
-    }
-
-    .button {
-      background-color: #000000;
-      color: white;
-      padding: 10px 20px;
-      text-decoration: none;
-      border-radius: 4px;
-      margin: 0 10px;
-      font-size: 16px;
-      transition: background-color 0.3s ease;
-    }
-
-    .button:hover {
-      background-color: #000000;
+      width: 100%;
+      max-width: 800px;
+      margin: auto;
     }
 
     #thankyouorder {
@@ -63,6 +133,7 @@
       padding: 6px;
       width: 98%;
       margin-left: 5px;
+      margin-bottom: 4%;
     }
 
     #link-ordr-confirm {
@@ -70,15 +141,76 @@
     }
 
     #link-ordr-confirm:hover {
-
       color: #ffffff;
+    }
+
+    footer .widget-title {
+      margin-bottom: 20px;
+    }
+
+    footer .footer-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    footer .footer-list li {
+      margin-bottom: 10px;
+    }
+
+    footer .footer-list li a {
+      color: #404F5E;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    footer .footer-list li a:hover {
+      color: #000000;
+    }
+
+    @media (max-width: 768px) {
+      footer .footer-mid .col-lg-2,
+      footer .footer-mid .col-lg-4 {
+        margin-bottom: 20px;
+      }
+
+      footer .footer-mid .col-lg-4 {
+        text-align: center;
+      }
+
+      footer .footer-bottom {
+        text-align: center;
+      }
     }
   </style>
 </head>
 
+<body>
+  <nav class="nav">
+    <input type="checkbox" id="nav-check">
+    <div class="nav-header">
+      <div class="nav-title">
+        <button onclick="homePage()">Home</button>
+      </div>
+    </div>
+    <div class="nav-btn">
+      <label for="nav-check">
+   
+      </label>
+    </div>
+    <ul class="nav-list">
+      <li><a href="/wishlistPage"><i class="fa-regular fa-heart"></i></a></li>
+      <li><a href="/cart"><i class="fa-solid fa-bag-shopping"></i></a></li>
+      <li><a href="/userProductlist">Shop</a></li>
+      <li><a href="/userAccount">Account</a></li>
+      {{#if this.userLogged}}
+      <li><a onclick="logoutConfirmation()">Logout</a></li>
+      {{else}}
+      <li><a href="/login">Login/Signup</a></li>
+      {{/if}}
+    </ul>
+  </nav>
 
   <div class="card">
-
     <div style="border-radius: 200px; height: 200px; width: 200px; background: #F8FAF5; margin: 0 auto;">
       <i class="checkmark">✓</i>
     </div>
@@ -87,31 +219,122 @@
       Thank you. Your order has been received.
     </p>
     <div class="button-container">
-      <a id="link-ordr-confirm" href="/userProductlist" class="button">Continue Shopping</a>
-      <a id="link-ordr-confirm" href="/userAccount" class="button">My Orders</a>
-      <!-- Add the download button with a link to the invoice -->
-      <!-- Add an onclick event to the Download Invoice link -->
-
-      <button class="button" onclick="downloadInvoice(`{{this.orderId}}`)">Download Invoice</button>
-      <!-- Add the following script to your HTML -->
-
-
-
-
+      <div class="row">
+        <div class="col-12 col-md-4 mb-2">
+          <button class="btn btn-primary w-100" onclick="Product()">Continue Shopping</button>
+        </div>
+        <div class="col-12 col-md-4 mb-2">
+          <button class="btn btn-primary w-100" onclick="Account()">My Orders</button>
+        </div>
+        <div class="col-12 col-md-4 mb-2">
+          <button class="btn btn-primary w-100" onclick="downloadInvoice('{{this.orderId}}')">Download Invoice</button>
+        </div>
+      </div>
     </div>
-
   </div>
+  <footer class="main">
+    <section class="section-padding footer-mid">
+      <div class="container pt-15 pb-20">
+        <div class="row">
+          <div class="col-lg-4 col-md-6">
+            <div class="widget-about font-md mb-md-5 mb-lg-0">
+              <div class="logo logo-width-1 wow fadeIn animated">
+                <a href="/userHome"><img style="width: 100px; height:90px;" src="Logo/5313c5dfeae341de827bdfebb4154726.png" alt="logo"></a>
+              </div>
+              <h5 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">Contact</h5>
+              <p class="wow fadeIn animated">
+                <strong>Address: </strong>562 Wellington Road, Street 32, San Francisco
+              </p>
+              <p class="wow fadeIn animated">
+                <strong>Phone: </strong>+01 2222 365 /(+91) 01 2345 6789
+              </p>
+              <p class="wow fadeIn animated">
+                <strong>Hours: </strong>10:00 - 18:00, Mon - Sat
+              </p>
+              <h5 class="mb-10 mt-30 fw-600 text-grey-4 wow fadeIn animated">Follow Us</h5>
+              <div class="mobile-social-icon wow fadeIn animated mb-sm-5 mb-md-0">
+                <a href="#"><img src="assets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
+                <a href="#"><img src="assets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
+                <a href="#"><img src="assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
+                <a href="#"><img src="assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
+                <a href="#"><img src="assets/imgs/theme/icons/icon-youtube.svg" alt=""></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-3">
+            <h5 class="widget-title wow fadeIn animated">About</h5>
+            <ul class="footer-list wow fadeIn animated">
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Delivery Information</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms &amp; Conditions</a></li>
+              <li><a href="#">Contact Us</a></li>
+              <li><a href="#">Support Center</a></li>
+            </ul>
+          </div>
+          <div class="col-lg-2 col-md-3">
+            <h5 class="widget-title wow fadeIn animated">My Account</h5>
+            <ul class="footer-list wow fadeIn animated">
+              <li><a href="#">Sign In</a></li>
+              <li><a href="#">View Cart</a></li>
+              <li><a href="#">My Wishlist</a></li>
+              <li><a href="#">Track My Order</a></li>
+              <li><a href="#">Help Ticket</a></li>
+              <li><a href="#">Shipping Details</a></li>
+              <li><a href="#">Compare products</a></li>
+            </ul>
+          </div>
+          <div class="col-lg-4">
+            <h5 class="widget-title wow fadeIn animated">Install App</h5>
+            <div class="row">
+              <div class="col-md-8 col-lg-8">
+                <p class="wow fadeIn animated">From App Store or Google Play</p>
+                <div class="download-app wow fadeIn animated">
+                  <a href="#" class="hover-up mb-sm-2 mb-lg-0"><img class="animated" src="assets/imgs/theme/app-store.jpg" alt=""></a>
+                  <a href="#" class="hover-up mb-sm-2 mb-lg-0"><img class="animated" src="assets/imgs/theme/google-play.jpg" alt=""></a>
+                </div>
+              </div>
+              <div class="col-md-8 col-lg-8 mt-2">
+                <p class="mb-20 wow fadeIn animated">Secured Payment Gateways</p>
+                <img class="wow fadeIn animated" src="assets/imgs/theme/payment-method.png" alt="">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="container pb-30 wow fadeIn animated">
+      <div class="row">
+        <div class="col-12 mb-20">
+          <div class="footer-bottom"></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-  <script>
+<script src="https://kit.fontawesome.com/yourkitid.js" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
 
-    function downloadInvoice(orderId) {
+  function Product(){
+     window.location.href = "/userProductlist";
+  }
+  function Account(){
+     window.location.href = "/userAccount";
+  }
 
-      // Construct the URL with the order ID
-      var url = '/generateInvoice/' + orderId;
+</script>
+<script>
+   function downloadInvoice(orderId) {
+    window.location.href = `/generateInvoice/${orderId}`;
+  }
+</script>
 
-      // Redirect to the generated URL
-      window.location.href = url;
-    }
+</body>
 
-  </script>
-  <script src="https://unpkg.com/easyinvoice/dist/easyinvoice.min.js"></script>
+</html>

@@ -13,11 +13,11 @@ const Wallet = require('../models/walletSchema')
 const successOrder = async (req,res)=>{
 
     try {
-        
+        const userLogged = req.session.user ? true : false;
         const orderId = req.params.orderId
         const orderSuccess =  await Order.findById(orderId)
        
-        res.render('user/successOrder' , {order :orderSuccess , orderId})
+        res.render('user/successOrder' , {userLogged ,order :orderSuccess , orderId})
 
     } catch (error) {
         console.log(error)
@@ -403,8 +403,10 @@ const productStatusCancel = async (req, res) => {
 
 
 const invoice = async (req, res) => {
+
     try {
-        const orderId = req.params.orderId;
+     
+        const orderId = req.params.orderId
         const order = await Order.findById(orderId)
                                  .populate('userId')
                                  .populate('products.productId')

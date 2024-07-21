@@ -151,7 +151,6 @@ user_route.get('/cart', isLogged , isBlocked ,  cartController.cart)
 user_route.get('/user/addTocart?:id' , isLogged , isBlocked ,  cartController.addToCart)
 user_route.get('/cart-Clear' , isLogged , isBlocked , cartController.cartClear)
 
-//user_route.post('/updateSelected/:productId' , isLogged , isBlocked ,cartController.updateCheckbox)
 user_route.post('/update-cart' , isLogged ,   isBlocked , cartController.changeQuantity);
 
 user_route.delete('/item-delete/:productId' , isLogged , isBlocked ,cartController.cartIteamDelete)

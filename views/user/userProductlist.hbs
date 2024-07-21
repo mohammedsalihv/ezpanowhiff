@@ -1,308 +1,339 @@
-<header class="header-area header-style-1">
-    <div id="main-header-higlights" style="background-color:#ffffff; border:1px solid #ffffff; color:black"
-        class="header-top header-top-ptb-1 d-none d-lg-block">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-xl-3 col-lg-4">
-                    <div style="color: #ffffff;" class="header-info">
-                        <ul>
-                            <li id="header-li-bg-clr">
-                                  {{#if this.userLogged}}
-                                <a style="color: black; font-weight:900;" href="/userHome">Home</a>
-                                   {{else}}
-                                <a style="color: black; font-weight:900;" href="/">Home</a>
-                                   {{/if}}
-                            </li>
-                            <li id="header-li-bg-clr"><a style="color: black; font-weight:900;" href="/userProductlist">Shop </a>
-                            </li>
-                            <li id="header-li-bg-clr">
-                                <a style="color: black; font-weight:900;" href="/userAccount">Account</a>
-                            </li>
-                        </ul>
-                    </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-4">
-                        <div class="text-center">
-                            <div style="color: black;" id="news-flash" class="d-inline-block">
-                                <ul>
-                    
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-4">
-                        <div class="header-info header-info-right">
-                            <ul>
-                    
-                                <div class="header-action-right">
-                                    <div class="header-action-2">
-                                        <div class="header-action-icon-2">
-                                            <a href="/wishlistPage">
-                                                <img class="svgInject" alt="Evara" src="assets/imgs/theme/icons/icon-heart.svg">
-                                                <span style="background-color: #ffffff; color:rgb(255, 255, 255)" class="pro-count "></span>
-                                            </a>
-                                        </div>
-                                        <div class="header-action-icon-2">
-                                            <a class="mini-cart-icon" href="/cart">
-                                                <img alt="Evara" src="assets/imgs/theme/icons/icon-cart.svg">
-                                                <span style="background-color: #ffffff; color:rgb(255, 255, 255)"
-                                                    class="pro-count #"></span>
-                                            </a>
-                    
-                                        </div>
-                                    </div>
-                                </div>
-                                {{#if this.userLogged}}
-                                <div class="d-flex justify-content-right ml-4 mt-2">
-                                    <button style="background: transparent; border:none" onclick="logoutConfirmation()" type="button">
-                                        <i style="color: #000000; font-size:x-large; " class="fa-solid fa-user"></i><i
-                                            style="color: #000000; font-size:small" class="fa-solid fa-right-from-bracket"></i>
-                                    </button>
-                                </div>
-                                {{else}}
-                                <li>
-                                    <div style="margin-left: 42%;" class="d-flex justify-content-right "></div>
-                                    <i class="fi-rs-user"></i><a style="color: #046963;" href="/login">Log In / Sign Up</a>
-                        </div>
-                        </li>
-                        {{/if}}
-                        </ul>
-                    </div>
-                    </div>
-                    </div>
-                    </div>
-                    </div>
-                    </header>
-                    <main class="main">
-                        <div class="page-header breadcrumb-wrap" style="background-color: #ffffff;">
-                            <div class="container d-flex justify-content-center" style="background-color: #ffffff;">
-                                <div class="breadcrumb" style="background-color: #ffffff;">
-                                    <a href="/userHome" rel="nofollow">Home</a>
-                                    <span></span> <a href="/userProductlist">Shop</a>
-                    
-                                </div>
-                            </div>
-                        </div>
-                        <section>
-                            {{#if ErrorAddTocart}}
-                            <div style="text-align: center; font-weight:900" class="alert alert-danger">
-                                {{ErrorAddTocart}}
-                            </div>
-                            {{/if}}
-                            {{#if addToWishlistProd}}
-                            <div style="text-align: center; font-weight:900" class="alert alert-success">
-                                {{addToWishlistProd}}
-                            </div>
-                            {{/if}}
-                            {{#if addTocartProductList}}
-                            <div style="text-align: center; font-weight:900" class="alert alert-success">
-                                {{addTocartProductList}}
-                            </div>
-                            {{/if}}
-                        </section>
-                        <section class="mt-50 mb-50">
-                            <div class="container">
-                                <div class="row flex-row-reverse">
-                                    <div class="col-lg-9">
-                                        <div class="shop-product-fillter">
-                                            <div class="totall-product">
-                                                <p><strong class="text-brand"></strong></p>
-                                            </div>
-                                            <div style="width:50%;" class="search-style-2">
-                                                <form id="productSearchForm" action="/userProductlist" method="get">
-                                                    <input id="productSearchInput" class="form-control me-2" type="search" name="query"
-                                                        placeholder="Search for products..." value="{{searchQuery}}">
-                                                    <input type="hidden" name="filterBy" value="{{filterBy}}">
-                                                    <input type="hidden" name="sortBy" value="{{sortBy}}">
-                                                    <input type="hidden" name="minPrice" value="{{minPrice}}">
-                                                    <input type="hidden" name="maxPrice" value="{{maxPrice}}">
-                                                </form>
-                                            </div>
-                                            <form id="formSorting" action="/userProductlist" method="get">
-                                                <div class="s">
-                                                    <select id="sort-btn-dropdwon" class="form-select" name="sortBy"
-                                                        aria-label="Default select example">
-                                                        <option value="default" {{#if (eq sortBy 'default' )}}selected{{/if}}>Sort by :
-                                                            Default</option>
-                                                        <option value="lowTohigh" {{#if (eq sortBy 'lowTohigh' )}}selected{{/if}}>Price: Low
-                                                            to High</option>
-                                                        <option value="highTolow" {{#if (eq sortBy 'highTolow' )}}selected{{/if}}>Price:
-                                                            High to Low</option>
-                                                        <option value="A-z" {{#if (eq sortBy 'A-z' )}}selected{{/if}}>Aa - Zz</option>
-                                                        <option value="z-A" {{#if (eq sortBy 'z-A' )}}selected{{/if}}>Zz - Aa</option>
-                                                        <option value="featured" {{#if (eq sortBy 'featured' )}}selected{{/if}}>Featured
-                                                        </option>
-                                                        <option value="newArrivals" {{#if (eq sortBy 'newArrivals' )}}selected{{/if}}>New
-                                                            Arrivals</option>
-                                                        <option value="popularity" {{#if (eq sortBy 'popularity' )}}selected{{/if}}>
-                                                            Popularity</option>
-                                                        <option value="rating" {{#if (eq sortBy 'rating' )}}selected{{/if}}>Avg Rating
-                                                        </option>
-                                                    </select>
-                                                    <input type="hidden" name="query" value="{{searchQuery}}">
-                                                    <input type="hidden" name="filterBy" value="{{filterBy}}">
-                                                    <input type="hidden" name="minPrice" value="{{minPrice}}">
-                                                    <input type="hidden" name="maxPrice" value="{{maxPrice}}">
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div class="row product-grid-3" id="product-list">
-                                            {{#each products}}
-                                            <div class="col-lg-4 col-md-4 col-12 col-sm-6">
-                                                <div class="product-cart-wrap mb-30">
-                                                    <div class="product-img-action-wrap">
-                                                        <div class="product-img product-img-zoom">
-                                                            <a href="/productDetail?id={{this._id}}">
-                                                                <img class="default-img" src="/images/{{this.img1}}" alt="">
-                                                                <img class="hover-img" src="/images/{{this.img3}}" alt="">
-                                                            </a>
-                                                        </div>
-                                                        <div class="product-action-1">
-                                                            <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal"
-                                                                data-bs-target="#quickViewModal">
-                                                                <i class="fi-rs-search"></i></a>
-                                                            <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                                href="/addTowishlistProductlist/{{this._id}}"><i
-                                                                    class="fi-rs-heart"></i></a>
-                                                            <a aria-label="Compare" class="action-btn hover-up" href=""><i
-                                                                    class="fi-rs-shuffle"></i></a>
-                                                        </div>
-                                                        <div class="product-badges product-badges-position product-badges-mrg">
-                                                            {{#if this.update}}
-                                                            <span style="background-color:#d00c0c;" id="outstock"
-                                                                class="sale">{{this.status}}</span>
-                                                            {{else}}
-                                                            <span style="background-color:#000000;" id="outstock"
-                                                                class="sale">{{this.status}}</span>
-                                                            {{/if}}
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-content-wrap">
-                                                        <div class="product-category">
-                                                            <a href="shop-grid-right.html"></a>
-                                                        </div>
-                                                        <h2><a href="shop-product-right.html">{{this.productName}}</a></h2>
-                                                        <div class="rating-result" title="90%">
-                                                            <span>
-                                                                <span></span>
-                                                            </span>
-                                                        </div>
-                                                        <div class="product-price">
-                                                            <span><i class="fa-solid fa-indian-rupee-sign"></i>{{this.price}}.00</span>
-                                                            <span class="old-price">{{this.offer}}</span>
-                                                        </div>
-                                                        <div class="product-action-1 show">
-                                                            <a aria-label="Add To Cart" class="action-btn hover-up"
-                                                                href="/productListAddtocart?productId={{this._id}}"><i
-                                                                    class="fi-rs-shopping-bag-add"></i></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            {{/each}}
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 primary-sidebar sticky-sidebar">
-                                        <div class="widget-category mb-30">
-                                           <!-- Filters section -->
-<h3 style="margin-bottom: 10%;" class="text-center">Filters</h3>
-{{#if sortBy}}
-  <button onclick="removeSort()" class="mb-4" style="background-color: grey; padding:5px; width:50%; color:#ffffff">
-    Sort by: {{this.sortBy}} <i style="margin-left:10px;" class="fa-solid fa-xmark"></i>
-  </button>
-{{/if}}
-{{#if filterBy}}
-  <button onclick="removeFilter()" class="mb-4" style="background-color: grey; padding:5px; width:50%; color:#ffffff">
-    Filter by: {{filterBy}} <i style="margin-left:10px;" class="fa-solid fa-xmark"></i>
-  </button>
-{{/if}}
-{{#if minPrice}}
-  <button onclick="removeFilter()" class="mb-4" style="background-color: grey; padding:5px; width:50%; color:#ffffff">
-    Price: {{minPrice}} - {{maxPrice}} <i style="margin-left:10px;" class="fa-solid fa-xmark"></i>
-  </button>
-{{/if}}
+<!DOCTYPE html>
+<html lang="en">
 
-<!-- Product list section -->
-<div class="row product-grid-3" id="product-list">
-  {{#each products}}
-    <!-- Your product card rendering logic here -->
-  {{/each}}
-</div>
-                    
-                    
-                                            <h5 class="section-title style-1 mb-30 wow fadeIn animated">Category</h5>
-                                            <ul class="categories">
-                                                <li><a
-                                                        href="/userProductlist?filterBy=men&query={{searchQuery}}&sortBy={{sortBy}}&minPrice={{minPrice}}&maxPrice={{maxPrice}}">Men's</a>
-                                                </li>
-                                                <li><a
-                                                        href="/userProductlist?filterBy=women&query={{searchQuery}}&sortBy={{sortBy}}&minPrice={{minPrice}}&maxPrice={{maxPrice}}">Women's</a>
-                                                </li>
-                                                <li><a
-                                                        href="/userProductlist?filterBy=featured&query={{searchQuery}}&sortBy={{sortBy}}&minPrice={{minPrice}}&maxPrice={{maxPrice}}">Featured</a>
-                                                </li>
-                                                <li><a
-                                                        href="/userProductlist?filterBy=fragrance&query={{searchQuery}}&sortBy={{sortBy}}&minPrice={{minPrice}}&maxPrice={{maxPrice}}">Fragrance</a>
-                                                </li>
-                                                <li><a
-                                                        href="/userProductlist?filterBy=top-sales&query={{searchQuery}}&sortBy={{sortBy}}&minPrice={{minPrice}}&maxPrice={{maxPrice}}">Top
-                                                        Sales</a></li>
-                                                <li><a
-                                                        href="/userProductlist?filterBy=newarrivals&query={{searchQuery}}&sortBy={{sortBy}}&minPrice={{minPrice}}&maxPrice={{maxPrice}}">New
-                                                        Arrivals</a></li>
-                                            </ul>
-                                        </div>
-                                        <!-- Filter By Price -->
-                                        <div class="sidebar-widget price_range range mb-30">
-                                            <div class="widget-header position-relative mb-20 ">
-                                                <h5 class="widget-title mb-10">Filter by price</h5>
-                                                <div class="bt-1 border-color-1"></div>
-                                            </div>
-                                            <form id="formFilter" action="/userProductlist" method="get">
-                                                <div class="price-filter mb-3">
-                                                    <div class="price-filter-inner">
-                                                        <div class="price-slider-amount">
-                                                            <div class="label-input">
-                                                                <div class="row">
-                                                                    <div class="col">
-                                                                        <input type="text" id="price-min" name="minPrice"
-                                                                            placeholder="Min: 500" value="{{minPrice}}" />
-                                                                    </div>
-                                                                    <div class="col">
-                                                                        <input type="text" id="price-max" name="maxPrice"
-                                                                            placeholder="Max: 10000" value="{{maxPrice}}" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet Page</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800');
+
+        .nav {
+            width: 100%;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            position: relative;
+            /* Ensure it's on top */
+            z-index: 1000;
+        }
+
+        .nav>.nav-header {
+            flex: 0.95;
+            padding-left: 1rem;
+        }
+
+        .nav>.nav-header>.nav-title {
+            font-size: 22px;
+            color: #000000;
+            /* Black text */
+            font-weight: 900;
+        }
+
+        .nav>.nav-list {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav>.nav-list>li {
+            list-style-type: none;
+        }
+
+        .nav>.nav-list>li a {
+            text-decoration: none;
+            color: #000000;
+            /* Black text */
+            cursor: pointer;
+            font-weight: 900;
+        }
+
+        .nav>#nav-check {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .nav>#nav-check {
+                display: block;
+                /* Show the menu icon */
+            }
+
+            .nav>#nav-check:checked+.nav-list {
+                display: block;
+                /* Display the menu items when checked */
+            }
+
+            /* Change the icon color to black */
+            .nav>#nav-check+.nav-list .icon {
+                color: #000000;
+                /* Black icon color */
+                font-weight: 900;
+            }
+        }
+    </style>
+</head>
+<nav class="nav">
+    <input type="checkbox" id="nav-check">
+    <div class="nav-header">
+        <div class="nav-title">
+            <button onclick="homePage()" style="background-color: #fff; border:0;"> Home</button>
+        </div>
+    </div>
+    <div class="nav-btn">
+        <label for="nav-check">
+
+        </label>
+    </div>
+
+    <ul class="nav-list">
+        <li><a href="/wishlistPage">
+                <i class="fa-regular fa-heart"></i></a></li>
+        <li><a href="/cart">
+                <i class="fa-solid fa-bag-shopping"></i></a></li>
+        <li><a href="/userProductlist">Shop</a></li>
+        <li><a href="/userAccount">Account</a></li>
+        {{#if this.userLogged}}
+        <li><a onclick="logoutConfirmation()">Logout</a></li>
+        {{else}}
+        <li><a href="/login">Login/Signup</a></li>
+        {{/if}}
+    </ul>
+</nav>
+<main class="main">
+    <div class="page-header breadcrumb-wrap" style="background-color: #ffffff;">
+        <div class="container d-flex justify-content-center" style="background-color: #ffffff;">
+            <div class="breadcrumb" style="background-color: #ffffff;">
+                <a href="/userHome" rel="nofollow">Home</a>
+                <span></span> <a href="/userProductlist">Shop</a>
+
+            </div>
+        </div>
+    </div>
+    <section>
+        {{#if ErrorAddTocart}}
+        <div style="text-align: center; font-weight:900" class="alert alert-danger">
+            {{ErrorAddTocart}}
+        </div>
+        {{/if}}
+        {{#if addToWishlistProd}}
+        <div style="text-align: center; font-weight:900" class="alert alert-success">
+            {{addToWishlistProd}}
+        </div>
+        {{/if}}
+        {{#if addTocartProductList}}
+        <div style="text-align: center; font-weight:900" class="alert alert-success">
+            {{addTocartProductList}}
+        </div>
+        {{/if}}
+    </section>
+    <section class="mt-50 mb-50">
+        <div class="container">
+            <div class="row flex-row-reverse">
+                <div class="col-lg-9">
+                    <div class="shop-product-fillter">
+                        <div class="totall-product">
+                            <p><strong class="text-brand"></strong></p>
+                        </div>
+                        <div style="width:50%;" class="search-style-2">
+                            <form id="productSearchForm" action="/userProductlist" method="get">
+                                <input id="productSearchInput" class="form-control me-2" type="search" name="query"
+                                    placeholder="Search for products..." value="{{searchQuery}}">
+                                <input type="hidden" name="filterBy" value="{{filterBy}}">
+                                <input type="hidden" name="sortBy" value="{{sortBy}}">
+                                <input type="hidden" name="minPrice" value="{{minPrice}}">
+                                <input type="hidden" name="maxPrice" value="{{maxPrice}}">
+                            </form>
+                        </div>
+                        <form id="formSorting" action="/userProductlist" method="get">
+                            <div class="s">
+                                <select id="sort-btn-dropdwon" class="form-select" name="sortBy"
+                                    aria-label="Default select example">
+                                    <option value="default" {{#if (eq sortBy 'default' )}}selected{{/if}}>Sort by :
+                                        Default</option>
+                                    <option value="lowTohigh" {{#if (eq sortBy 'lowTohigh' )}}selected{{/if}}>Price: Low
+                                        to High</option>
+                                    <option value="highTolow" {{#if (eq sortBy 'highTolow' )}}selected{{/if}}>Price:
+                                        High to Low</option>
+                                    <option value="A-z" {{#if (eq sortBy 'A-z' )}}selected{{/if}}>Aa - Zz</option>
+                                    <option value="z-A" {{#if (eq sortBy 'z-A' )}}selected{{/if}}>Zz - Aa</option>
+                                    <option value="featured" {{#if (eq sortBy 'featured' )}}selected{{/if}}>Featured
+                                    </option>
+                                    <option value="newArrivals" {{#if (eq sortBy 'newArrivals' )}}selected{{/if}}>New
+                                        Arrivals</option>
+                                    <option value="popularity" {{#if (eq sortBy 'popularity' )}}selected{{/if}}>
+                                        Popularity</option>
+                                    <option value="rating" {{#if (eq sortBy 'rating' )}}selected{{/if}}>Avg Rating
+                                    </option>
+                                </select>
+                                <input type="hidden" name="query" value="{{searchQuery}}">
+                                <input type="hidden" name="filterBy" value="{{filterBy}}">
+                                <input type="hidden" name="minPrice" value="{{minPrice}}">
+                                <input type="hidden" name="maxPrice" value="{{maxPrice}}">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row product-grid-3" id="product-list">
+                        {{#each products}}
+                        <div class="col-lg-4 col-md-4 col-12 col-sm-6">
+                            <div class="product-cart-wrap mb-30">
+                                <div class="product-img-action-wrap">
+                                    <div class="product-img product-img-zoom">
+                                        <a href="/productDetail?id={{this._id}}">
+                                            <img class="default-img" src="/images/{{this.img1}}" alt="">
+                                            <img class="hover-img" src="/images/{{this.img3}}" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="product-action-1">
+                                        <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal"
+                                            data-bs-target="#quickViewModal">
+                                            <i class="fi-rs-search"></i></a>
+                                        <a aria-label="Add To Wishlist" class="action-btn hover-up"
+                                            href="/addTowishlistProductlist/{{this._id}}"><i
+                                                class="fi-rs-heart"></i></a>
+                                        <a aria-label="Compare" class="action-btn hover-up" href=""><i
+                                                class="fi-rs-shuffle"></i></a>
+                                    </div>
+                                    <div class="product-badges product-badges-position product-badges-mrg">
+                                        {{#if this.update}}
+                                        <span style="background-color:#d00c0c;" id="outstock"
+                                            class="sale">{{this.status}}</span>
+                                        {{else}}
+                                        <span style="background-color:#000000;" id="outstock"
+                                            class="sale">{{this.status}}</span>
+                                        {{/if}}
+                                    </div>
+                                </div>
+                                <div class="product-content-wrap">
+                                    <div class="product-category">
+                                        <a href="shop-grid-right.html"></a>
+                                    </div>
+                                    <h2><a href="shop-product-right.html">{{this.productName}}</a></h2>
+                                    <div class="rating-result" title="90%">
+                                        <span>
+                                            <span></span>
+                                        </span>
+                                    </div>
+                                    <div class="product-price">
+                                        <span><i class="fa-solid fa-indian-rupee-sign"></i>{{this.price}}.00</span>
+                                        <span class="old-price">{{this.offer}}</span>
+                                    </div>
+                                    <div class="product-action-1 show">
+                                        <a aria-label="Add To Cart" class="action-btn hover-up"
+                                            href="/productListAddtocart?productId={{this._id}}"><i
+                                                class="fi-rs-shopping-bag-add"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
+                </div>
+                <div class="col-lg-3 primary-sidebar sticky-sidebar">
+                    <div class="widget-category mb-30">
+                        <!-- Filters section -->
+                        <h3 style="margin-bottom: 10%;" class="text-center">Filters</h3>
+                        {{#if sortBy}}
+                        <button onclick="removeSort()" class="mb-4"
+                            style="background-color: grey; padding:5px; width:50%; color:#ffffff">
+                            Sort by: {{this.sortBy}} <i style="margin-left:10px;" class="fa-solid fa-xmark"></i>
+                        </button>
+                        {{/if}}
+                        {{#if filterBy}}
+                        <button onclick="removeFilter()" class="mb-4"
+                            style="background-color: grey; padding:5px; width:50%; color:#ffffff">
+                            Filter by: {{filterBy}} <i style="margin-left:10px;" class="fa-solid fa-xmark"></i>
+                        </button>
+                        {{/if}}
+                        {{#if minPrice}}
+                        <button onclick="removeFilter()" class="mb-4"
+                            style="background-color: grey; padding:5px; width:50%; color:#ffffff">
+                            Price: {{minPrice}} - {{maxPrice}} <i style="margin-left:10px;"
+                                class="fa-solid fa-xmark"></i>
+                        </button>
+                        {{/if}}
+
+                        <!-- Product list section -->
+                        <div class="row product-grid-3" id="product-list">
+                            {{#each products}}
+                            <!-- Your product card rendering logic here -->
+                            {{/each}}
+                        </div>
+
+
+                        <h5 class="section-title style-1 mb-30 wow fadeIn animated">Category</h5>
+                        <ul class="categories">
+                            <li><a
+                                    href="/userProductlist?filterBy=men&query={{searchQuery}}&sortBy={{sortBy}}&minPrice={{minPrice}}&maxPrice={{maxPrice}}">Men's</a>
+                            </li>
+                            <li><a
+                                    href="/userProductlist?filterBy=women&query={{searchQuery}}&sortBy={{sortBy}}&minPrice={{minPrice}}&maxPrice={{maxPrice}}">Women's</a>
+                            </li>
+                            <li><a
+                                    href="/userProductlist?filterBy=featured&query={{searchQuery}}&sortBy={{sortBy}}&minPrice={{minPrice}}&maxPrice={{maxPrice}}">Featured</a>
+                            </li>
+                            <li><a
+                                    href="/userProductlist?filterBy=fragrance&query={{searchQuery}}&sortBy={{sortBy}}&minPrice={{minPrice}}&maxPrice={{maxPrice}}">Fragrance</a>
+                            </li>
+                            <li><a
+                                    href="/userProductlist?filterBy=top-sales&query={{searchQuery}}&sortBy={{sortBy}}&minPrice={{minPrice}}&maxPrice={{maxPrice}}">Top
+                                    Sales</a></li>
+                            <li><a
+                                    href="/userProductlist?filterBy=newarrivals&query={{searchQuery}}&sortBy={{sortBy}}&minPrice={{minPrice}}&maxPrice={{maxPrice}}">New
+                                    Arrivals</a></li>
+                        </ul>
+                    </div>
+                    <!-- Filter By Price -->
+                    <div class="sidebar-widget price_range range mb-30">
+                        <div class="widget-header position-relative mb-20 ">
+                            <h5 class="widget-title mb-10">Filter by price</h5>
+                            <div class="bt-1 border-color-1"></div>
+                        </div>
+                        <form id="formFilter" action="/userProductlist" method="get">
+                            <div class="price-filter mb-3">
+                                <div class="price-filter-inner">
+                                    <div class="price-slider-amount">
+                                        <div class="label-input">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <input type="text" id="price-min" name="minPrice"
+                                                        placeholder="Min: 500" value="{{minPrice}}" />
                                                 </div>
-                                                <input type="hidden" name="query" value="{{searchQuery}}">
-                                                <input type="hidden" name="sortBy" value="{{sortBy}}">
-                                                <input type="hidden" name="filterBy" value="{{filterBy}}">
-                                                <button type="submit" id="applyFilterBtn" class="btn-filter">
-                                                    <i class="fi-rs-filter mr-5"></i>Filter
-                                                </button>
-                                            </form>
+                                                <div class="col">
+                                                    <input type="text" id="price-max" name="maxPrice"
+                                                        placeholder="Max: 10000" value="{{maxPrice}}" />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </section>
-                    
-<section class="d-flex justify-content-center" style="height: 10vh; color:#fff">
-  <div class="pagination-wrap">
-    <ul class="pagination">
-      {{#range 1 totalPages}}
-        <li style="background-color: #ffffff;" class="page-item {{#if (eq ../page this)}}active{{/if}}">
-          <a style="background-color: #ffffff; color:#000000" class="page-link" href="/userProductlist?page={{this}}&limit={{../limitPerPage}}&filterBy={{../filterBy}}&sortBy={{../sortBy}}&minPrice={{../minPrice}}&maxPrice={{../maxPrice}}">
-            <strong>{{this}}</strong>
-          </a>
-        </li>
-      {{/range}}
-    </ul>
-  </div>
-</section>
+                            <input type="hidden" name="query" value="{{searchQuery}}">
+                            <input type="hidden" name="sortBy" value="{{sortBy}}">
+                            <input type="hidden" name="filterBy" value="{{filterBy}}">
+                            <button style="width: 100%;" type="submit" id="applyFilterBtn" class="btn-filter">
+                                <i class="fi-rs-filter mr-5"></i>Filter
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="d-flex justify-content-center" style="height: 10vh; color:#fff">
+        <div class="pagination-wrap">
+            <ul class="pagination">
+                {{#range 1 totalPages}}
+                <li style="background-color: #ffffff;" class="page-item {{#if (eq ../page this)}}active{{/if}}">
+                    <a style="background-color: #ffffff; color:#000000" class="page-link"
+                        href="/userProductlist?page={{this}}&limit={{../limitPerPage}}&filterBy={{../filterBy}}&sortBy={{../sortBy}}&minPrice={{../minPrice}}&maxPrice={{../maxPrice}}">
+                        <strong>{{this}}</strong>
+                    </a>
+                </li>
+                {{/range}}
+            </ul>
+        </div>
+    </section>
 
 
 
@@ -386,12 +417,13 @@
                 <div class="footer-bottom"></div>
             </div>
             <div class="col-lg-6">
-                <p class="float-md-left font-sm text-muted mb-0">&copy; 2022, <strong class="text-brand">Evara</strong>
-                    - HTML Ecommerce Template </p>
+                <p class="float-md-left font-sm text-muted mb-0">&copy; 2024, <strong
+                        class="text-brand">EzpanoWhiff</strong>
+                    Pvt Ltd </p>
             </div>
             <div class="col-lg-6">
                 <p class="text-lg-end text-start font-sm text-muted mb-0">
-                    Designed by <a href="http://alithemes.com" target="_blank">Alithemes.com</a>. All rights reserved
+                    Designed by <a href="http://alithemes.com" target="_blank">Mohammed salih v</a>. All rights reserved
                 </p>
             </div>
         </div>
@@ -419,6 +451,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
+
+    function homePage() {
+        window.location.href = '/userHome'
+    }
+
+
+
     function logoutConfirmation() {
         Swal.fire({
             title: 'Are you sure?',
@@ -437,8 +476,6 @@
                 ).then(() => {
                     window.location.href = "/userLogout";
                 });
-            } else {
-                window.location.href = "/userHome";
             }
         });
     }
@@ -550,12 +587,12 @@
         window.location.href = '/userProductlist'
     }
 
-    function removeSort(){
-         window.location.href = '/userProductlist'
+    function removeSort() {
+        window.location.href = '/userProductlist'
     }
 </script>
 <script>
-    document.getElementById('sort-btn-dropdwon').addEventListener('change', function() {
+    document.getElementById('sort-btn-dropdwon').addEventListener('change', function () {
         document.getElementById('formSorting').submit();
     });
 </script>

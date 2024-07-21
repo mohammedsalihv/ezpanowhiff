@@ -1,196 +1,196 @@
-<header class="header-area header-style-1">
-    <div id="main-header-higlights" style="background-color:#ffffff; border:1px solid #ffffff; color:black"
-        class="header-top header-top-ptb-1 d-none d-lg-block">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-xl-3 col-lg-4">
-                    <div style="color: #ffffff;" class="header-info">
-                        <ul>
-                            <li id="header-li-bg-clr">
-                                <a style="color: black; font-weight:900;" href="/userHome">Home</a>
-                            </li>
-                            <li id="header-li-bg-clr"><a style="color: black; font-weight:900;"
-                                    href="/userProductlist">Shop </a>
-                            </li>
-                            <li id="header-li-bg-clr">
-                                <a style="color: black; font-weight:900;" href="/userAccount">Account</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-xl-6 col-lg-4">
-                    <div class="text-center">
-                        <div style="color: black;" id="news-flash" class="d-inline-block">
-                            <ul>
+<!DOCTYPE html>
+<html lang="en">
 
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4">
-                    <div class="header-info header-info-right">
-                        <ul>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Page</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800');
 
-                            <div class="header-action-right">
-                                <div class="header-action-2">
-                                    <div class="header-action-icon-2">
-                                        <a href="/wishlistPage">
-                                            <img class="svgInject" alt="Evara"
-                                                src="assets/imgs/theme/icons/icon-heart.svg">
-                                            <span style="background-color: #ffffff; color:rgb(255, 255, 255)"
-                                                class="pro-count "></span>
-                                        </a>
-                                    </div>
-                                    <div class="header-action-icon-2">
-                                        <a class="mini-cart-icon" href="/cart">
-                                            <img alt="Evara" src="assets/imgs/theme/icons/icon-cart.svg">
-                                            <span style="background-color: #ffffff; color:rgb(255, 255, 255)"
-                                                class="pro-count #"></span>
-                                        </a>
+        .nav {
+            width: 100%;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            position: relative;
+            /* Ensure it's on top */
+            z-index: 1000;
+        }
 
-                                    </div>
-                                </div>
-                            </div>
-                            {{#if this.userLogged}}
-                            <div class="d-flex justify-content-right ml-4 mt-2">
-                                <button style="background: transparent; border:none" onclick="logoutConfirmation()" type="button">
-                                    <i style="color: #000000; font-size:x-large; " class="fa-solid fa-user"></i><i
-                                        style="color: #000000; font-size:small"
-                                        class="fa-solid fa-right-from-bracket"></i>
-                                </button>
-                            </div>
-                            {{else}}
-                            <li>
-                                <div style="margin-left: 42%;" class="d-flex justify-content-right "></div>
-                                <i class="fi-rs-user"></i><a style="color: #046963;" href="/login">Log In / Sign Up</a>
-                    </div>
-                    </li>
-                    {{/if}}
-                    </ul>
-                </div>
-            </div>
+        .nav>.nav-header {
+            flex: 0.95;
+            padding-left: 1rem;
+        }
+
+        .nav>.nav-header>.nav-title {
+            font-size: 22px;
+            color: #000000;
+            /* Black text */
+            font-weight: 900;
+        }
+
+        .nav>.nav-list {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav>.nav-list>li {
+            list-style-type: none;
+        }
+
+        .nav>.nav-list>li a {
+            text-decoration: none;
+            color: #000000;
+            /* Black text */
+            cursor: pointer;
+            font-weight: 900;
+        }
+
+        .nav>#nav-check {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .nav>#nav-check {
+                display: block;
+                /* Show the menu icon */
+            }
+
+            .nav>#nav-check:checked+.nav-list {
+                display: block;
+                /* Display the menu items when checked */
+            }
+
+            /* Change the icon color to black */
+            .nav>#nav-check+.nav-list .icon {
+                color: #000000;
+                /* Black icon color */
+                font-weight: 900;
+            }
+            
+        }
+
+        @media (max-width: 576px){
+
+            #btm-img{
+                margin-top: 40%;
+            }
+        }
+
+    </style>
+</head>
+<nav class="nav">
+    <input type="checkbox" id="nav-check">
+    <div class="nav-header">
+        <div class="nav-title">
+             {{#if this.userLogged}}
+            <button onclick="homePage()" style="background-color: #fff; border:0;"> Home</button>
+            {{else}}
+             <button onclick="landingPage()" style="background-color: #fff; border:0;"> Home</button>
+             {{/if}}
         </div>
     </div>
+    <div class="nav-btn">
+        <label for="nav-check">
+
+        </label>
     </div>
-</header>
-<main class="main">
-    <div class="page-header breadcrumb-wrap" style="background-color: #ffffff;">
-        <div class="container d-flex justify-content-center">
-            <div class="breadcrumb">
-                <a href="index.html" rel="nofollow">Home</a>
-                <span></span> {{productData.productName}}
-            </div>
-        </div>
-    </div>
-    <section>
-        {{#if addTocartError}}
-          <div style="text-align: center; font-weight:900" class="alert alert-danger">{{addTocartError}}</div>
+
+    <ul class="nav-list">
+        <li><a href="/wishlistPage">
+                <i class="fa-regular fa-heart"></i></a></li>
+        <li><a href="/cart">
+                <i class="fa-solid fa-bag-shopping"></i></a></li>
+        <li><a href="/userProductlist">Shop</a></li>
+        <li><a href="/userAccount">Account</a></li>
+        {{#if this.userLogged}}
+        <li><a onclick="logoutConfirmation()">Logout</a></li>
+        {{else}}
+        <li><a href="/login">Login/Signup</a></li>
         {{/if}}
-        {{#if successMessage}}
-        <div style="text-align: center; font-weight:900" class="alert alert-success">
-            {{successMessage}}
-        </div>
-        {{/if}}
-        {{#if addTowishlistMsg}}
-         <div style="text-align: center; font-weight:900" class="alert alert-success">
-            {{addTowishlistMsg}}
-        </div>
-        {{/if}}
-        
-    </section>
-    <section class="mt-50 mb-50">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="product-detail accordion-detail">
-                        <div style="width: 115%" class="row mb-50">
-                            <div   class="col-md-6 col-sm-12 col-xs-12">
-                                <div class="detail-gallery">
-                                    <span class="zoom-icon"><i class="fi-rs-search"></i></span>
-                                    <!-- MAIN SLIDES -->
-                                    <div style="height: 600px; width:600px" id="product-img"
-                                        class="product-image-slider">
-                                        <figure class="border-radius-10">
-                                            <img style="height: 700px; width:600px" src="/images/{{productData.img1}}"
+    </ul>
+</nav>
+
+    <main class="main">
+ 
+        <section class="mt-50 mb-50">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="product-detail accordion-detail">
+                            <div class="row mb-50">
+                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                    <div class="detail-gallery">
+                                        <span class="zoom-icon"><i class="fi-rs-search"></i></span>
+                                        <!-- MAIN SLIDES -->
+                                        <div style="height: 600px;" class="product-image-slider">
+                                            <figure class="border-radius-10">
+                                               <img style="height: 700px; width:600px" src="/images/{{productData.img1}}"
                                                 alt="product image">
-                                        </figure>
-                                        <figure class="border-radius-10">
-                                            <img style="height: 700px; width:600px" src="/images/{{productData.img2}}"
+                                            </figure>
+                                            <figure class="border-radius-10">
+                                                <img style="height: 700px; width:600px" src="/images/{{productData.img2}}"
                                                 alt="product image">
-                                        </figure>
-                                        <figure class="border-radius-10">
-                                            <img style="height: 700px; width:600px" src="/images/{{productData.img3}}"
+                                            </figure>
+                                            <figure class="border-radius-10">
+                                               <img style="height: 700px; width:600px" src="/images/{{productData.img3}}"
                                                 alt="product image">
-                                        </figure>
-                                    </div>
-                                    <!-- THUMBNAILS -->
-                                </div>
-                                <div class="slider-nav-thumbnails pl-15 pr-15">
-                                    <div><img style="height: 130px; width:150px" src="/images/{{productData.img1}}"
+                                            </figure>
+                                        </div>
+                                        <!-- THUMBNAILS -->
+                                        <div style="margin-top: 20%;" id="btm-img" class="slider-nav-thumbnails pl-15 pr-15">
+                                          <div><img style="height: 130px; width:150px" src="/images/{{productData.img1}}"
                                             alt="product image"></div>
                                     <div><img style="height: 130px; width:150px" src="/images/{{productData.img2}}"
                                             alt="product image"></div>
                                     <div><img style="height: 130px; width:150px" src="/images/{{productData.img3}}"
                                             alt="product image"></div>
+                                        </div>
+                                    </div>
+                                    <!-- End Gallery -->
                                 </div>
-                                <!-- End Gallery -->
-                            </div>
-                            <div style="width: 40%;"  class="col-md-6 col-sm-12 col-xs-12 ">
-                                <div class="detail-info">
-                                    <h2 id="productName" class="title-detail">{{productData.productName}}</h2>
-                                    <div class="product-detail-rating">
-                                        <div class="pro-details-brand">
-                                            <span> Brands: <a
-                                                    href="shop-grid-right.html">{{productData.brand}}</a></span><br>
-                                        </div>
-                                        <div class="product-rate-cover text-end">
-
-                                        </div>
-                                        <div class="product-extra-link2">
+                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                    <div class="detail-info">
+                                        <h2 class="title-detail">{{productData.productName}}</h2>
+                                        <div class="product-detail-rating">
+                                            <div class="pro-details-brand">
+                                                <span> Brands: <a href="#">{{productData.brand}}</a></span>
+                                            </div>
+                                            <div class="product-rate-cover text-end">
+                                               
+                                                {{#if productData.update}}
+                                        <span id="outOfstock-page" class="sale">{{productData.status}}</span>
+                                        {{else}}
+                                        <span id="inStock-page" class="sale">{{productData.status}}</span>
+                                        {{/if}}
+                                            </div>
+                                             <div class="product-extra-link2">
                                             <a aria-label="Add To Wishlist" class="action-btn hover-up" href="/addTowishlist/{{productData._id}}"><i
                                                     class="fi-rs-heart"></i></a>
                                             <a aria-label="Compare" class="action-btn hover-up"
                                                 href="#"><i class="fi-rs-shuffle"></i></a>
                                         </div>
-                                        {{#if productData.update}}
-                                        <span id="outOfstock-page" class="sale">{{productData.status}}</span>
-                                        {{else}}
-                                        <span id="inStock-page" class="sale">{{productData.status}}</span>
-                                        {{/if}}
-
-                                    </div>
-                                    <div class="clearfix product-price-cover">
-                                        <div class="product-price primary-color float-left">
-                                            <ins><span class="text-price">{{productData.price}}.00</span></ins>
-                                            <ins><span id="off" class="old-price font-md ml-15">({{productData.offer}}
-                                                    Off)</span></ins>
-                                            <span class="save-price  font-md color3 ml-15">Inclusive of all
-                                                taxes</span><br>
-
                                         </div>
-                                    </div>
-                                    <div class="bt-1 border-color-1 mt-15 mb-15"></div>
-                                    <div class="short-desc mb-30">
-
-                                    </div>
-                                    <div class="product_sort_info font-xs mb-30">
-                                        <ul>
-                                            <!-- HTML -->
+                                        <div class="clearfix product-price-cover">
+                                            <div class="product-price primary-color float-left">
+                                                <ins><span class="text-brand">{{productData.price}}.00</span></ins>
+                                                <ins><span class="old-price font-md ml-15">{{productData.oldPrice}}.00</span></ins>
+                                                <span class="save-price  font-md color3 ml-15">{{productData.offer}} Off</span>
+                                            </div>
+                                        </div>
+                                        <div class="bt-1 border-color-1 mt-15 mb-15"></div>
                                             <p id="few-left">Only <span style="color: red;">{{productData.Qty}}</span>
                                                 left in stock</p>
-                                            <li class="mb-10"><i class="fi-rs-crown mr-5"></i>Keep fresh</li>
-                                            </li>
-                                            <li class="mb-10"><i class="fi-rs-crown mr-5"></i>Pay on delivery might be
-                                                available</li>
-                                            </li>
-                                            <li class="mb-10"><i class="fi-rs-crown mr-5"></i> 100% Original Products
-                                            </li>
-                                            <li class="mb-10"><i class="fi-rs-crown mr-5"></i>Easy 14 days returns and
-                                                exchanges</li>
-                                        </ul>
-                                    </div>
-                                    <div class="bt-1 border-color-1 mt-30 mb-30"></div>
-                                    <div class="detail-extralink">
+                                        <div class="product_sort_info font-xs mb-30">
+                                            <ul>
+                                                <li class="mb-10"><i class="fi-rs-crown mr-5"></i> 100% Original Products</li>
+                                                <li class="mb-10"><i class="fi-rs-refresh mr-5"></i> Keep fresh</li>
+                                                <li><i class="fi-rs-credit-card mr-5"></i> Cash on Delivery available</li>
+                                            </ul>
+                                        </div>
+                                       <div class="detail-extralink">
                                         <div class="row">
                                             <div id="increment" class="row">
                                                 <button id="qty-down" onclick="decreaseQuantity()">
@@ -203,106 +203,91 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <input type="hidden" id="selected-size" name="selectedSize">
+                                      
+                                        <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                                        <div class="detail-extralink">
+                                        
+                                              <input type="hidden" id="selected-size" name="selectedSize">
                                     <input type="hidden" id="selected-quantity" name="selectedQuantity">
                                     <div class="product-extra-link2">
                                         <button id="btn-cart" type="submit" class="button button-add-to-cart">
                                             <p class="add-to-bag">ADD TO BAG</p>
                                         </button>
+                                       
 
                                     </div>
-                                    <div class="product-extra-link2">
-                                        <button id="btn-buy" type="submit" class="button button-add-to-cart">
-                                            <p class="buy">BUY</p>
-                                        </button>
-
-                                    </div>
-
+                                    
                                     <div class="delivery-check">
-                                        <input type="text" placeholder="Enter your postal code">
-                                        <button style="background-color: #000000;" id="btn-postal"
+                                        <input style="width: 50%;" type="text" placeholder="Enter your postal code">
+                                        <button  style="background-color: #000000; width:40%;" id="btn-postal"
                                             onclick="checkDelivery()">Check Delivery</button>
                                     </div>
-                                    <ul class="product-meta font-xs color-grey mt-50">
-
-                                        <li class="mb-5"><a href="#" rel="tag"></a></li>
-                                        <li class="mb-5">Features & Details <br><a href="#"
-                                                rel="tag">{{productData.tags}}</a></li>
-
-                                    </ul>
+                                        </div>
+                                        <ul class="product-meta font-xs color-grey mt-50">
+                                            <li class="mb-5">Features <a href="#">{{productData.tags}}</a></li>
+                                           
+                                        </ul>
+                                    </div>
+                                    <!-- Detail Info -->
                                 </div>
-                                <!-- Detail Info -->
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-10 m-auto entry-main-content">
-                                <h2 class="section-title style-1 mb-30">Description</h2>
-                                <div class="description mb-50">
-                                    <p>{{productData.description}}</p>
-
-                                    <ul class="product-more-infor mt-30">
-                                        <li><span>Type Of Packing</span> Bottle</li>
-                                        <li><span>Piece In One</span>Box</li>
-                                    </ul>
-                                    <hr class="wp-block-separator is-style-dots">
-
-                                    <h4 class="mt-30">Packaging & Delivery</h4>
-                                    <hr class="wp-block-separator is-style-wide">
-                                    <p>{{productData.deliveryInfo}}
-                                    </p>
-
+                            <div class="row">
+                                <div class="col-lg-10 m-auto entry-main-content">
+                                    <h2 class="section-title style-1 mb-30">Description</h2>
+                                    <div class="description mb-50">
+                                        <p>{{productData.description}}</p>
+                                      
+                                     
+                                        <hr class="wp-block-separator is-style-dots">
+                                       
+                                        <h4 class="mt-30">Packaging & Delivery</h4>
+                                        <hr class="wp-block-separator is-style-wide">
+                                        <p>{{productData.deliveryInfo}}
+                                         </p>
+                                    </div>
+                                    <h3 class="section-title style-1 mb-30">Additional info</h3>
+                                    <table class="font-md mb-30">
+                                        <tbody>
+                                            <tr class="stand-up">
+                                                <th>How to use</th>
+                                                <td>
+                                                    <p>{{productData.howTouse}}</p>
+                                                </td>
+                                            </tr>
+                                            <tr class="folded-wo-wheels">
+                                                <th>Ideal For</th>
+                                                <td>
+                                                    <p>{{productData.IdealFor}}</p>
+                                                </td>
+                                            </tr>
+                                            <tr class="folded-w-wheels">
+                                                <th>Ingredients</th>
+                                                <td>
+                                                    <p>{{productData.Ingredients}}</p>
+                                                </td>
+                                            </tr>
+                                           
+                                       
+                                        </tbody>
+                                    </table>
+                                    <div class="social-icons single-share">
+                                        <ul class="text-grey-5 d-inline-block">
+                                            <li><strong class="mr-10">Share this:</strong></li>
+                                            <li class="social-facebook"><a href="#"><img src="assets/imgs/theme/icons/icon-facebook.svg" alt=""></a></li>
+                                            <li class="social-twitter"> <a href="#"><img src="assets/imgs/theme/icons/icon-twitter.svg" alt=""></a></li>
+                                            <li class="social-instagram"><a href="#"><img src="assets/imgs/theme/icons/icon-instagram.svg" alt=""></a></li>
+                                            <li class="social-linkedin"><a href="#"><img src="assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a></li>
+                                        </ul>
+                                    </div>
+                              
                                 </div>
-                                <h3 class="section-title style-1 mb-30">Additional info</h3>
-                                <table class="font-md mb-30">
-                                    <tbody>
-
-                                        <tr class="frame">
-                                            <th>Ideal For </th>
-                                            <td>
-                                                <p>{{productData.IdealFor}}</p>
-                                            </td>
-                                        </tr>
-
-                                        <tr class="width">
-                                            <th>How to use</th>
-                                            <td>
-                                                <p>{{productData.howTouse}}</p>
-
-                                            </td>
-                                        </tr>
-
-                                        <tr class="wheels">
-                                            <th>Ingredients</th>
-                                            <td>
-                                                <p>{{productData.Ingredients}}</p>
-
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div class="social-icons single-share">
-                                    <ul class="text-grey-5 d-inline-block">
-                                        <li><strong class="mr-10">Share this:</strong></li>
-                                        <li class="social-facebook"><a href="#"><img
-                                                    src="assets/imgs/theme/icons/icon-facebook.svg" alt=""></a></li>
-                                        <li class="social-twitter"> <a href="#"><img
-                                                    src="assets/imgs/theme/icons/icon-twitter.svg" alt=""></a></li>
-                                        <li class="social-instagram"><a href="#"><img
-                                                    src="assets/imgs/theme/icons/icon-instagram.svg" alt=""></a></li>
-                                        <li class="social-linkedin"><a href="#"><img
-                                                    src="assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a></li>
-                                    </ul>
+                            </div>
+                            <div class="row mt-60">
+                                <div class="col-12">
+                                    <h3 class="section-title style-1 mb-30">Related products</h3>
                                 </div>
-
-
-                            </div>
-                        </div>
-                        <div class="row mt-60">
-                            <div class="col-12">
-                                <h3 class="section-title style-1 mb-30">Related products</h3>
-                            </div>
-                            <div class="col-12">
-                                <div class="row related-products">
+                                <div class="col-12">
+                                     <div class="row related-products">
                                     {{#each relatedProducts}}
                                     <div class="col-lg-3 col-md-4 col-12 col-sm-6">
                                         <div class="product-cart-wrap small hover-up">
@@ -356,14 +341,15 @@
                                     </div>
                                     {{/each}}
                                 </div>
+                                </div>
                             </div>
+           
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-</main>
+        </section>
+    </main>
 <footer class="main">
     <section class="section-padding footer-mid">
         <div class="container pt-15 pb-20">
@@ -371,15 +357,15 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="widget-about font-md mb-md-5 mb-lg-0">
                         <div class="logo logo-width-1 wow fadeIn animated">
-                            <a href="/userHome"><img style="width: 200px; height:90px;" src="/Logo/lg.png"
-                                    alt="logo"></a>
+                            <a href="/userHome"><img style="width: 100px; height:90px;"
+                                    src="Logo/5313c5dfeae341de827bdfebb4154726.png" alt="logo"></a>
                         </div>
                         <h5 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">Contact</h5>
                         <p class="wow fadeIn animated">
                             <strong>Address: </strong>562 Wellington Road, Street 32, San Francisco
                         </p>
                         <p class="wow fadeIn animated">
-                            <strong>Phone: </strong>+00000000
+                            <strong>Phone: </strong>+01 2222 365 /(+91) 01 2345 6789
                         </p>
                         <p class="wow fadeIn animated">
                             <strong>Hours: </strong>10:00 - 18:00, Mon - Sat
@@ -442,32 +428,32 @@
                 <div class="footer-bottom"></div>
             </div>
             <div class="col-lg-6">
-                <p class="float-md-left font-sm text-muted mb-0">&copy; 2024, <strong class="text-brand">Ezpano
-                        Whiff</strong>. All rights reserved</p>
+                <p class="float-md-left font-sm text-muted mb-0">&copy; 2024, <strong class="text-brand">EzpanoWhiff</strong>
+                   Pvt Ltd </p>
             </div>
             <div class="col-lg-6">
                 <p class="text-lg-end text-start font-sm text-muted mb-0">
-                    Designed by <a href="http://alithemes.com" target="_blank">MS</a>
+                    Designed by <a href="http://alithemes.com" target="_blank">Mohammed salih v</a>. All rights reserved
                 </p>
             </div>
         </div>
     </div>
 </footer>
-<!-- Preloader Start -->
-<div id="preloader-active">
-    <div class="preloader d-flex align-items-center justify-content-center">
-        <div class="preloader-inner position-relative">
-            <div class="text-center">
-                <h5 class="mb-5">Now Loading</h5>
-                <div class="loader">
-                    <div class="bar bar1"></div>
-                    <div class="bar bar2"></div>
-                    <div class="bar bar3"></div>
+    <!-- Preloader Start -->
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="text-center">
+                    <h5 class="mb-5">Now Loading</h5>
+                    <div class="loader">
+                        <div class="bar bar1"></div>
+                        <div class="bar bar2"></div>
+                        <div class="bar bar3"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 <script>
     // Assuming availableQuantity is correctly set to 8
     function setSize(size) {
@@ -549,6 +535,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
+
+function landingPage(){
+    window.location.href = '/'
+}
+
+
 function logoutConfirmation() {
     Swal.fire({
         title: 'Are you sure?',
@@ -567,9 +559,56 @@ function logoutConfirmation() {
             ).then(() => {
                 window.location.href = "/userLogout";
             });
-        } else {
-            window.location.href = "/userHome";
         }
     });
 }
+
+      function homePage(){
+            window.location.href = '/userHome'
+        }
 </script>
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Vendor JS-->
+    <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/plugins/slick.js"></script>
+    <script src="assets/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="assets/js/plugins/wow.js"></script>
+    <script src="assets/js/plugins/jquery-ui.js"></script>
+    <script src="assets/js/plugins/perfect-scrollbar.js"></script>
+    <script src="assets/js/plugins/magnific-popup.js"></script>
+    <script src="assets/js/plugins/select2.min.js"></script>
+    <script src="assets/js/plugins/waypoints.js"></script>
+    <script src="assets/js/plugins/counterup.js"></script>
+    <script src="assets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="assets/js/plugins/images-loaded.js"></script>
+    <script src="assets/js/plugins/isotope.js"></script>
+    <script src="assets/js/plugins/scrollup.js"></script>
+    <script src="assets/js/plugins/jquery.vticker-min.js"></script>
+    <script src="assets/js/plugins/jquery.theia.sticky.js"></script>
+    <script src="assets/js/plugins/jquery.elevatezoom.js"></script>
+    <!-- Template  JS -->
+    <script src="./assets/js/main.js?v=3.4"></script>
+    <script src="./assets/js/shop.js?v=3.4"></script>
+
+
+
+
+
+
+
+
+</body>  
+</html>

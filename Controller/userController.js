@@ -752,9 +752,11 @@ const userLogout = (req, res) => {
 //changes password
 
 const changePassword = (req,res)=>{
+
+   const  userLogged = req.session.user ? true : false
     try {
         if(req.session.user){
-            res.render('user/changePassword')
+            res.render('user/changePassword', {userLogged})
         }else{
             res.redirect('/')
         }
@@ -769,6 +771,7 @@ const changePassword = (req,res)=>{
 
 const ResetPassword = async (req, res) => {
     try {
+        const userLogged = req.session.user ? true : false;
         const { currentPassword, newPassword, cnfrmPassword } = req.body || {}
 
         const old = currentPassword.trim();
@@ -777,10 +780,10 @@ const ResetPassword = async (req, res) => {
 
         // Validation
         if (!old || !New || !cnfrm) {
-            return res.render('user/changePassword', { error: 'All fields are required.' });
+            return res.render('user/changePassword', { userLogged , error: 'All fields are required.' });
         }
         if (New !== cnfrm) {
-            return res.render('user/changePassword', { error: 'Passwords do not match.' });
+            return res.render('user/changePassword', { userLogged , error: 'Passwords do not match.' });
         }
 
         // Fetch user data
@@ -798,7 +801,7 @@ const ResetPassword = async (req, res) => {
         const oldPassword = userData.password;
         const compared = await bcrypt.compare(old, oldPassword);
         if (!compared) {
-            return res.render('user/changePassword', { error: 'Current password is incorrect.' });
+            return res.render('user/changePassword', { userLogged , error: 'Current password is incorrect.' });
         }
 
         // Update password
@@ -819,11 +822,12 @@ const ResetPassword = async (req, res) => {
 
 const editProfileForm = async (req,res)=>{
     try {
+        const  userLogged = req.session.user ? true : false
         if(req.session.user){
 
             const userData = req.session.user
             if(userData){
-                res.render('user/editProfile',{userData})
+                res.render('user/editProfile',{userData , userLogged})
             }
         }
     } catch (error) {
@@ -836,7 +840,7 @@ const editProfileForm = async (req,res)=>{
 
 const editedProfileData = async (req, res) => {
     try {
-        if (req.session.user) {
+    if (req.session.user) {
             const { name, phone  , email} = req.body || {};
             const userData = req.session.user;
             const userID = userData._id;
@@ -920,10 +924,11 @@ const userAccount = async (req, res) => {
 
 const addNewaddress = async (req,res)=>{
     try {
+        const userLogged = req.session.user ? true : false;
         if(req.session.user){
 
           const id = req.params.id
-          res.render('user/address' , {id})
+          res.render('user/address' , {userLogged , id})
 
         }else{
             res.redirect('/')
@@ -940,6 +945,7 @@ const addNewaddress = async (req,res)=>{
 
 const addingAddress = async (req, res) => {
     try {
+       
         const { fullname , phone , email, addressLine, street, City, state, pincode , country } = req.body || {};
         const userdata = req.session.user
         const userID = userdata._id
@@ -984,6 +990,7 @@ const addingAddress = async (req, res) => {
 
 const editAddress = async (req, res) => {
     try {
+        const userLogged = req.session.user ? true : false
         if (req.session.user) {
             const addressId = req.query.addressId;
             console.log(addressId);
@@ -999,7 +1006,7 @@ const editAddress = async (req, res) => {
             console.log(address);
 
             if (address) {
-                res.render('user/editAddress', { address, addressId });
+                res.render('user/editAddress', {userLogged , address, addressId });
             } else {
                 res.redirect('/userAccount');
             }

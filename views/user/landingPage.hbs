@@ -16,11 +16,25 @@
             position: relative;
             text-align: center;
             color: white;
+            height: 100vh; /* Make the hero section cover the entire viewport height */
+            overflow: hidden;
+        }
+
+        .hero-section p {
+            color: gray; /* Ensure the text color contrasts with the background */
+            position: absolute;
+            bottom: 10px; /* Adjust bottom spacing */
+            width: 100%;
+            text-align: center; /* Center the text */
+            font-size: 13px; /* Adjust font size as needed */
+            z-index: 10; /* Ensure it is above other elements */
+            font-weight: 900;
         }
 
         .hero-image {
             width: 100%;
-            height: auto;
+            height: 100%; /* Cover the entire hero section */
+            object-fit: cover; /* Ensure the image covers the area without distortion */
         }
 
         .nav-overlay {
@@ -30,6 +44,7 @@
             display: flex;
             justify-content: space-between;
             padding: 20px;
+            z-index: 10; /* Ensure the navigation is above the image */
         }
 
         .nav-overlay ul {
@@ -56,34 +71,77 @@
         .shop-button {
             font-style: italic;
             display: inline-block;
-            padding: 20px 20px;
+            padding: 15px 30px; /* Increased padding for wider button */
             background: transparent;
             color: #b31111;
-            border: none;
+            border: 2px solid #b31111;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 51px;
+            font-size: 24px; /* Adjust font size for better readability */
             position: absolute;
-            top: 50%;
+            top: 80%;
             left: 50%;
             transform: translate(-50%, -50%);
-            margin-left: 30%;
-            height: 34vh;
-            width: 33px;
             text-decoration: none;
             font-weight: bolder;
-          
+            z-index: 10; /* Ensure the button is above the image */
         }
 
         .shop-button:hover {
-            background: transparent;
-            color: #b31111;
+            background: #b31111;
+            color: white;
         }
-        
-        .link-main-home{
 
-         color: #000;
-             
+        .login-signup {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10; /* Ensure it is above the image */
+        }
+
+        .login-signup a {
+            color: white;
+            text-decoration: none;
+            margin-left: 15px;
+            font-size: 16px;
+        }
+
+        .login-signup a:hover {
+            text-decoration: underline;
+        }
+
+        .link-main-home {
+            color: #000;
+        }
+
+        /* Media queries for responsiveness */
+        @media (max-width: 768px) {
+            .nav-overlay {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-overlay ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-overlay li {
+                margin: 10px 0;
+            }
+
+            .shop-button {
+                font-size: 18px;
+                padding: 15px 30px; /* Ensure the padding remains consistent on smaller screens */
+            }
+
+            .logo img {
+                height: 60px; /* Adjust logo size for smaller screens */
+            }
+
+            .hero-section p {
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -93,22 +151,25 @@
         <div class="nav-overlay">
             <div class="logo">
                 <a href="/">
-                    <img src="/Logo/5313c5dfeae341de827bdfebb4154726.png" alt="Logo" style="height: 80px; border-radius:50px;"> <!-- Replace with your logo -->
+                    <img src="/Logo/5313c5dfeae341de827bdfebb4154726.png" alt="Logo" style="height: 80px; border-radius:50px;">
                 </a>
             </div>
-            <div class="nav-links">
-                <ul>
-                    <li><i class="fi-rs-user"></i><a style="color: #ffffff;" href="/login">Log In / Sign Up</a></li>
-                    <li><a class="link-main-home" style="color: #b31111; font-weight:bolder" href="/userProductlist">Shop</a></li>
-                    <li><a  style="color: #b31111; font-weight:bolder"  href="/userAccount">Account</a></li>
-                    <li><a  style="color: #b31111; font-weight:bolder" href="#">About</a></li>
-                    <li><a  style="color: #b31111; font-weight:bolder"  href="#">Contact</a></li>
-                </ul>
+            <div class="login-signup">
+                <a style="font-weight: 900;" href="/login">Login/Signup</a>
+               
             </div>
         </div>
-        
         <a style="text-decoration: none;" class="shop-button" href="/userProductlist">SHOP now<i style="color: white;" class="lni lni-pointer-right"></i></a>
+        <p>Design & Developed by : <span style="color: #b31111;"> SALIH V</span></p>
     </section>
 </body>
 </html>
+
+
+
+
+
+
+
+
 

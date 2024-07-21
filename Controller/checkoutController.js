@@ -371,8 +371,8 @@ const paymentContinue = async (req,res)=>{
 const addAddress = (req,res)=>{
 
     try {
-        
-        res.render('user/checkoutAddaddress')
+        const userLogged = req.session.user ? true : false;
+        res.render('user/checkoutAddaddress',{userLogged})
 
     } catch (error) {
         console.log(error);
