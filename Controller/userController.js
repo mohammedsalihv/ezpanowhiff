@@ -703,8 +703,8 @@ const productDetail = async (req, res) => {
 
         const addTowishlistMsg = req.session.addToWishlist || null
         const successMessage = req.session.successMessage || null;
-        const addTocartError = req.session.msgAddtocartProductPageError  || null
-        msgAddtocartProductPageError = null;
+        const addTocartError = req.session.msgAddtocartProductPageError  || null;
+        req.session.msgAddtocartProductPageError = null;
         req.session.successMessage = null; 
         req.session.addToWishlist = null
         

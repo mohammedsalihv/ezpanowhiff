@@ -112,7 +112,24 @@
         {{/if}}
     </ul>
 </nav>
+<section>
+    {{#if addTowishlistMsg}}
+    <div style="text-align: center; font-weight:900" class="alert alert-success">
+        {{addTowishlistMsg}}
+    </div>
+    {{/if}}
+    {{#if successMessage}}
+    <div style="text-align: center; font-weight:900" class="alert alert-success">
+        {{successMessage}}
+    </div>
+    {{/if}}
+    {{#if addTocartError}}
+    <div style="text-align: center; font-weight:900" class="alert alert-danger">
+        {{addTocartError}}
+    </div>
+    {{/if}}
 
+</section>
     <main class="main">
  
         <section class="mt-50 mb-50">
