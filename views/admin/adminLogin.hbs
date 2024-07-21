@@ -1,29 +1,55 @@
-<link rel="stylesheet" href="/css/adminlogin.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/adminlogin.css">
+    <!-- Add Bootstrap CSS for responsiveness -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Admin Login</title>
+    <style>
+        /* Add custom CSS for mobile margin top */
+        @media (max-width: 576px) {
+            .card-login {
+                margin-top: 200px;
+            }
+        }
 
-<section>
-    <div id="loginadmin" class="text-center">{{this.InvalidAdmin}}</div>
-    <div id="loginadmin" class="text-center">{{this.notAdmin}}</div>
- </section>
- <section class="content-main mt-150 mb-80" >
-   
-            <div class="card mx-auto card-login" style="width: 30%;">
-                
-                <div class="card-body">
-                   
-                    <h4 id="admn" class="card-title mb-4">ADMIN</h4>
-                    <form id="admin-form" action="/admin/adminValidation" method="post">
-                        <div class="mb-3">
-                            <label id="admin-label-login"  for="email">Email</label>
-                            <input value="" class="form-control"  type="text" name="email">
-                        </div> <!-- form-group// -->
-                        <div class="mb-3">
-                            <label id="admin-label-login" for="password">Password</label>
-                            <input value="" class="form-control"  type="password" name="password">
-                        </div> <!-- form-group// -->
-                        <div class="mb-4">
-                            <button id="isAdmin" type="submit" class="btn btn-info w-70"> Login </button>
-                        </div> <!-- form-group// -->
-                    </form>
-                </div>
+        @media (min-width: 1024px) {
+         .card-login {
+        margin-top: 50px; /* Example value, adjust as needed */
+    }
+}
+    </style>
+</head>
+<body style="background-color: black;">
+    <section>
+        <div id="loginadmin" class="text-center">{{this.InvalidAdmin}}</div>
+        <div id="loginadmin" class="text-center">{{this.notAdmin}}</div>
+    </section>
+    <section class="content-main mt-5 mb-5">
+        <div id="input-box-admin" class="card mx-auto card-login" style="max-width: 400px;">
+            <div class="card-body">
+                <h4 id="admn" class="card-title mb-4 text-center mr-1">ADMIN PANEL <i  class="fa-solid fa-lock"></i></h4>
+                <form id="admin-form" action="/admin/adminValidation" method="post">
+                    <div class="mb-3">
+                        <label id="admin-label-login" for="email">Email</label>
+                        <input id="input1-login-admin"  type="text" name="email">
+                    </div> <!-- form-group// -->
+                    <div class="mb-3">
+                        <label id="admin-label-login" for="password">Password</label>
+                        <input id="input2-login-admin"  type="password" name="password">
+                    </div> <!-- form-group// -->
+                    <div class="mb-4 text-center">
+                        <button id="isAdmin" type="submit" class="btn btn-primary">Login <i style="font-size: medium;" class="fa-solid fa-right-to-bracket"></i></button>
+                    </div> <!-- form-group// -->
+                </form>
             </div>
-        </section>
+        </div>
+    </section>
+    <!-- Add Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
