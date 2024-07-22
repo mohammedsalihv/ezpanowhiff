@@ -73,9 +73,9 @@ app.use(bodyParser.json());
 app.use('/', userRoutes);
 app.use('/admin', adminRoutes);
 
-// app.get('*', function (req, res) {
-//   res.status(404).render('layout/page-404');
-// });
+app.get('*', function (req, res) {
+  res.status(404).render('layout/page-404');
+});
 
 app.use((err, req, res, next) => {
   console.error(err.stack); // Log the error stack trace
